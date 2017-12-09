@@ -5,7 +5,7 @@
     android:id="@+id/main_frame_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.joshua.derivenav.com.example.joshua.derivenav.MainActivity">
+    tools:context="com.example.joshua.derivenav.MainActivity">
 
 
     <android.support.constraint.ConstraintLayout
@@ -13,16 +13,6 @@
         android:layout_height="match_parent"
         android:id="@+id/base_container">
 
-        <EditText
-            android:id="@+id/editText2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="Base Container"
-            android:inputType="date"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            tools:layout_editor_absoluteY="58dp" />
     </android.support.constraint.ConstraintLayout>
 
 

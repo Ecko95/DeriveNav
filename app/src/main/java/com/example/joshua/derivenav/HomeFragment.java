@@ -3,12 +3,13 @@ package com.example.joshua.derivenav;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-public class HomeFragment extends Fragment {
-
+public class HomeFragment extends Fragment{
 
     public static HomeFragment newInstance() {
         HomeFragment fragment = new HomeFragment();
@@ -34,6 +35,12 @@ public class HomeFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
     }
-
-
+    @Override
+    public void onResume() {
+        super.onResume();
+        MainActivity activity = (MainActivity) getActivity();
+        if(activity != null){
+            activity.hideUpButton();
+        }
+    }
 }

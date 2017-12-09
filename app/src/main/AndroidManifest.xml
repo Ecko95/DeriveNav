@@ -20,8 +20,10 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
-        <activity android:name="com.example.joshua.derivenav.SearchableActivity"></activity>
+        <activity android:name="com.example.joshua.derivenav.SearchableActivity">
+        </activity>
     </application>
 
 </manifest>
