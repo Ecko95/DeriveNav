@@ -28,7 +28,7 @@ public class IntroActivity extends AppIntro2 {
         // Instead of fragments, you can also use our default slide
         // Just set a title, description, background and image. AppIntro will do the rest.
 //        addSlide(AppIntroFragment.newInstance("title", "description",, Color.parseColor("#3F51B5")));
-        addSlide(AppIntroFragment.newInstance("", "", R.drawable.ic_launcher_background, Color.parseColor("#3F51B5")));
+//        addSlide(AppIntroFragment.newInstance("", "", R.drawable.ic_launcher_background, Color.parseColor("#3F51B5")));
 
 
         // OPTIONAL METHODS

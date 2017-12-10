@@ -38,7 +38,8 @@ public class DestinationSearchService extends AbstractService {
         StringBuilder result = new StringBuilder();
 
         try{
-            url = new URL("https://api.sandbox.amadeus.com/v1.2/points-of-interest/yapq-search-text?apikey=nEhIPL2nYIWbA11ILzCQcgu0e3lHuAcA&city_name=London" + query);
+
+            url = new URL("https://api.sandbox.amadeus.com/v1.2/points-of-interest/yapq-search-text?apikey=nEhIPL2nYIWbA11ILzCQcgu0e3lHuAcA&city_name=" + query);
             httpURLConnection = (HttpURLConnection)url.openConnection();
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(httpURLConnection.getInputStream()));
             String line;

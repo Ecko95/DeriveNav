@@ -34,25 +34,26 @@ public class SearchableActivity extends ListActivity implements ServiceListener{
         String[] result = new String[]{"Searching..."};
 
         DestinationSearchService destinationSearchService = new DestinationSearchService(query);
-
+        //ONLY WORKS IF SET TO STATIC, TUTORIALS SAYS PUBLIC
         DestinationSearchService.addListener(this);
         thread = new Thread(destinationSearchService);
         thread.start();
-        Toast.makeText(this, "thread started", Toast.LENGTH_SHORT).show();
+
         setListAdapter(new ArrayAdapter<String>(this,R.layout.cities_list_cell,R.id.text,result));
     }
 
 
+    //this method seems to never execute, not displaying not even no results.
     @Override
     public void serviceComplete(AbstractService abstractService) {
         if(!abstractService.hasError()) {
             DestinationSearchService destinationSearchService = (DestinationSearchService) abstractService;
 
             String[] result = new String[destinationSearchService.getResults().length()];
-
+            Toast.makeText(this, "thread started", Toast.LENGTH_SHORT).show();
             for (int i = 0; i < destinationSearchService.getResults().length(); i++) {
                 try {
-                    result[i] = destinationSearchService.getResults().getJSONObject(i).getString("name");
+                    result[i] = destinationSearchService.getResults().getJSONObject(i).getString("current_city");
                 } catch (JSONException ex) {
                     result[i] = "error";
                 }
