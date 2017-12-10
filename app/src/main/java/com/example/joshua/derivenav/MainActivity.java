@@ -2,7 +2,9 @@ package com.example.joshua.derivenav;
 
 import android.app.FragmentManager;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.speech.RecognizerIntent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -24,13 +26,59 @@ public class MainActivity extends AppCompatActivity{
 
     private TextView mTextMessage;
     private MaterialSearchView searchView;
-    FragmentManager fragmentManager = getFragmentManager();
+
+    private Menu menu;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
+
+        //runs AppIntro
+        startActivity(new Intent(getApplicationContext(),IntroActivity.class));
+
+        //  Declare a new thread to do a preference check
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                //  Initialize SharedPreferences
+                SharedPreferences getPrefs = PreferenceManager
+                        .getDefaultSharedPreferences(getBaseContext());
+
+                //  Create a new boolean and preference and set it to true
+                boolean isFirstStart = getPrefs.getBoolean("firstStart", true);
+
+                //  If the activity has never started before...
+                if (isFirstStart) {
+
+                    //  Launch app intro
+                    final Intent i = new Intent(MainActivity.this, IntroActivity.class);
+
+                    runOnUiThread(new Runnable() {
+                        @Override public void run() {
+                            startActivity(i);
+                        }
+                    });
+
+                    //  Make a new preferences editor
+                    SharedPreferences.Editor e = getPrefs.edit();
+
+                    //  Edit preference to make it false because we don't want this to run again
+                    e.putBoolean("firstStart", false);
+
+                    //  Apply changes
+                    e.apply();
+                }
+            }
+        });
+
+        // Start the thread
+        t.start();
+
+
+
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -146,24 +194,25 @@ public class MainActivity extends AppCompatActivity{
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.search, menu);
-
+        this.menu = menu;
         MenuItem item = menu.findItem(R.id.action_search);
         searchView.setMenuItem(item);
         searchView.setSuggestions(getResources().getStringArray(R.array.query_suggestions));
-        return true;
+        return super .onCreateOptionsMenu(menu);
     }
     @Override
     public void onBackPressed() {
-        if (getFragmentManager().getBackStackEntryCount() > 0) {
+        //closes app
+        /*if (getFragmentManager().getBackStackEntryCount() > 0) {
             getFragmentManager().popBackStack();
         } else {
             super.onBackPressed();
+        }*/
+        if (searchView.isSearchOpen()) {
+            searchView.closeSearch();
+        } else {
+            super.onBackPressed();
         }
-//        if (searchView.isSearchOpen()) {
-//            searchView.closeSearch();
-//        } else {
-//            super.onBackPressed();
-//        }
     }
 
 }

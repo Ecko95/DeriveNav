@@ -30,4 +30,8 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
 
     compile 'com.miguelcatalan:materialsearchview:1.4.0'
+
+    compile 'com.github.apl-devs:appintro:v4.2.2'
+
+    compile 'com.airbnb.android:lottie:2.1.2'
 }

@@ -11,6 +11,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/animation_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:lottie_fileName="Plane.json"
+            app:lottie_loop="true"
+            app:lottie_autoPlay="true" />
+
 
 
     </LinearLayout>
@@ -23,5 +31,6 @@
         android:ems="10"
         android:inputType="textPersonName"
         android:text="Home" />
+
 
 </RelativeLayout>
