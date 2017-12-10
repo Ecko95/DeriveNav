@@ -6,9 +6,18 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.widget.Toast;
 
-public class SearchableActivity extends ListActivity {
+import com.example.joshua.derivenav.com.joshua.service.AbstractService;
+import com.example.joshua.derivenav.com.joshua.service.DestinationSearchService;
+import com.example.joshua.derivenav.com.joshua.service.ServiceListener;
 
+import org.json.JSONException;
+
+public class SearchableActivity extends ListActivity implements ServiceListener{
+
+    private Thread thread;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -21,12 +30,39 @@ public class SearchableActivity extends ListActivity {
         }
     }
 
-    private void doSearch(String query) {
+    public void doSearch(String query){
+        String[] result = new String[]{"Searching..."};
 
-        String[] result = new String[]{query};
+        DestinationSearchService destinationSearchService = new DestinationSearchService(query);
 
-        setListAdapter(new ArrayAdapter<String>(this,android.R.layout.simple_dropdown_item_1line,R.id.text,result));
+        DestinationSearchService.addListener(this);
+        thread = new Thread(destinationSearchService);
+        thread.start();
+        Toast.makeText(this, "thread started", Toast.LENGTH_SHORT).show();
+        setListAdapter(new ArrayAdapter<String>(this,R.layout.cities_list_cell,R.id.text,result));
     }
 
 
+    @Override
+    public void serviceComplete(AbstractService abstractService) {
+        if(!abstractService.hasError()) {
+            DestinationSearchService destinationSearchService = (DestinationSearchService) abstractService;
+
+            String[] result = new String[destinationSearchService.getResults().length()];
+
+            for (int i = 0; i < destinationSearchService.getResults().length(); i++) {
+                try {
+                    result[i] = destinationSearchService.getResults().getJSONObject(i).getString("name");
+                } catch (JSONException ex) {
+                    result[i] = "error";
+                }
+            }
+
+            setListAdapter(new ArrayAdapter<String>(this, R.layout.cities_list_cell, R.id.text, result));
+        }else{
+
+            String[] result = new String[]{"No results"};
+            setListAdapter(new ArrayAdapter<String>(this,R.layout.cities_list_cell,R.id.text,result));
+        }
+    }
 }
