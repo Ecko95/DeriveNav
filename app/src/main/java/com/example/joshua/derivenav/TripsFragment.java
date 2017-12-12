@@ -18,7 +18,6 @@ import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
 public class TripsFragment extends Fragment{
 
-    private ListView lvDestinations;
 
     public static TripsFragment newInstance() {
         TripsFragment fragment = new TripsFragment();
@@ -39,9 +38,10 @@ public class TripsFragment extends Fragment{
         super.onCreate(savedInstanceState);
         //enables the fragment to have an options menu on Activity Toolbar
         setHasOptionsMenu(true);
-        
-    }
 
+
+
+    }
 
 
     @Override

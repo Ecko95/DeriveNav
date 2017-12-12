@@ -5,5 +5,6 @@ package com.example.joshua.derivenav.com.joshua.service;
  */
 
 public interface ServiceListener {
-    public void serviceComplete(AbstractService abstractService);
+    void serviceComplete(AbstractService abstractService);
 }
+

@@ -39,9 +39,9 @@ public class MainActivity extends AppCompatActivity{
 //    private MaterialSearchView searchView;
 
  private ListView lvDestinations;
-// private static final String[] CELLS = new String[]{
-//         "cell 0", "cell 1", "cell 2"
-// };
+ private static final String[] CELLS = new String[]{
+         ""
+ };
 
     private Menu menu;
 
@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
-
+        
         //runs AppIntro
         startActivity(new Intent(getApplicationContext(),IntroActivity.class));
 
@@ -93,12 +93,12 @@ public class MainActivity extends AppCompatActivity{
         // Start the thread
         t.start();
 
-//        lvDestinations = findViewById(R.id.main_destination_list_view);
-//        lvDestinations.setAdapter(new ArrayAdapter<String>(this,R.layout.cities_list_cell,R.id.text, CELLS));
+        lvDestinations = findViewById(R.id.main_destination_list_view);
+        lvDestinations.setAdapter(new ArrayAdapter<String>(this,R.layout.cities_list_cell,R.id.text, CELLS));
 
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+//        Toolbar toolbar = findViewById(R.id.toolbar);
+//        setSupportActionBar(toolbar);
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.navigation);
         //set listeners for search view

@@ -18,13 +18,14 @@ import org.json.JSONException;
 public class SearchableActivity extends ListActivity implements ServiceListener{
 
     private Thread thread;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_searchable);
 
         Intent intent = getIntent();
-        if(Intent.ACTION_SEARCH.equals(intent.getAction())){
+        if(intent.ACTION_SEARCH.equals(intent.getAction())){
             String query = intent.getStringExtra(SearchManager.QUERY);
             doSearch(query);
         }
@@ -34,36 +35,43 @@ public class SearchableActivity extends ListActivity implements ServiceListener{
         String[] result = new String[]{"Searching..."};
 
         DestinationSearchService destinationSearchService = new DestinationSearchService(query);
-        //ONLY WORKS IF SET TO STATIC, TUTORIALS SAYS PUBLIC
-        DestinationSearchService.addListener(this);
+
+        destinationSearchService.addListener(this);
+
         thread = new Thread(destinationSearchService);
+
         thread.start();
 
-        setListAdapter(new ArrayAdapter<String>(this,R.layout.cities_list_cell,R.id.text,result));
+        setListAdapter(new ArrayAdapter<String>(this, R.layout.cities_list_cell, R.id.text, result));
     }
 
+    @Override
+    protected void onRestart() {
+        Toast.makeText(this, "Refresh", Toast.LENGTH_SHORT).show();
+        super.onRestart();
+    }
 
-    //this method seems to never execute, not displaying not even no results.
     @Override
     public void serviceComplete(AbstractService abstractService) {
-        if(!abstractService.hasError()) {
-            DestinationSearchService destinationSearchService = (DestinationSearchService) abstractService;
 
+        if(!abstractService.hasError()){
+            DestinationSearchService destinationSearchService = (DestinationSearchService) abstractService;
             String[] result = new String[destinationSearchService.getResults().length()];
-            Toast.makeText(this, "thread started", Toast.LENGTH_SHORT).show();
-            for (int i = 0; i < destinationSearchService.getResults().length(); i++) {
+            for(int i = 0; i < destinationSearchService.getResults().length(); i++){
                 try {
-                    result[i] = destinationSearchService.getResults().getJSONObject(i).getString("current_city");
-                } catch (JSONException ex) {
+                    result[i] = destinationSearchService.getResults().getJSONObject(i).getString("title");
+                }catch (JSONException ex){
                     result[i] = "error";
                 }
             }
 
-            setListAdapter(new ArrayAdapter<String>(this, R.layout.cities_list_cell, R.id.text, result));
-        }else{
+            setListAdapter(new ArrayAdapter<String>(this,R.layout.cities_list_cell,R.id.text, result));
 
-            String[] result = new String[]{"No results"};
-            setListAdapter(new ArrayAdapter<String>(this,R.layout.cities_list_cell,R.id.text,result));
+        }else{
+            String[] result = new String[]{"No Results"};
+            setListAdapter(new ArrayAdapter<String>(this, R.layout.cities_list_cell, R.id.text, result));
         }
+
     }
 }
+
