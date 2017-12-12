@@ -46,12 +46,6 @@ public class SearchableActivity extends ListActivity implements ServiceListener{
     }
 
     @Override
-    protected void onRestart() {
-        Toast.makeText(this, "Refresh", Toast.LENGTH_SHORT).show();
-        super.onRestart();
-    }
-
-    @Override
     public void serviceComplete(AbstractService abstractService) {
 
         if(!abstractService.hasError()){

@@ -14,7 +14,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
 public class TripsFragment extends Fragment{
 

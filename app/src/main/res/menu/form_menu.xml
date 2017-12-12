@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/action_add"
-        android:icon="@drawable/ic_suggestion"
+        android:icon="@drawable/common_google_signin_btn_icon_dark_normal"
         android:orderInCategory="100"
         android:title="@string/search_hint"
         app:showAsAction="ifRoom" />

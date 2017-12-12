@@ -8,6 +8,7 @@
     tools:context="com.example.joshua.derivenav.MainActivity">
 
 
+    <!--frame layout allows to displa -->
     <FrameLayout
         android:id="@+id/base_container"
         android:layout_width="match_parent"
@@ -30,25 +31,25 @@
         android:background="?android:attr/windowBackground"
         app:menu="@menu/navigation" />
 
-    <!--<FrameLayout-->
-        <!--android:id="@+id/toolbar_container"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content">-->
+    <FrameLayout
+        android:id="@+id/toolbar_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-        <!--<android.support.v7.widget.Toolbar-->
-            <!--android:id="@+id/toolbar"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="?attr/actionBarSize"-->
-            <!--android:background="@color/colorPrimary"-->
-            <!--android:theme="@style/Base.ThemeOverlay.AppCompat.Dark.ActionBar"-->
-            <!--app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />-->
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/colorPrimary"
+            android:theme="@style/Base.ThemeOverlay.AppCompat.Dark.ActionBar"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
-        <!--<com.miguelcatalan.materialsearchview.MaterialSearchView-->
-            <!--android:id="@+id/search_view"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="match_parent">-->
+        <com.miguelcatalan.materialsearchview.MaterialSearchView
+            android:id="@+id/search_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-        <!--</com.miguelcatalan.materialsearchview.MaterialSearchView>-->
-    <!--</FrameLayout>-->
+        </com.miguelcatalan.materialsearchview.MaterialSearchView>
+    </FrameLayout>
 
 </RelativeLayout>

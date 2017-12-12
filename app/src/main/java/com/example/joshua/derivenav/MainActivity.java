@@ -2,6 +2,7 @@ package com.example.joshua.derivenav;
 
 import android.app.FragmentManager;
 import android.app.SearchManager;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -12,6 +13,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -29,21 +31,31 @@ import com.example.joshua.derivenav.com.joshua.service.DestinationSearchService;
 import com.example.joshua.derivenav.com.joshua.service.ServiceListener;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
+import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity{
 
+    private SearchView mSearchView;
     private TextView mTextMessage;
-//    private MaterialSearchView searchView;
+    private MaterialSearchView searchView;
+    //defines a menu so we can hide it or diplay it according to fragments
+    private Menu menu;
 
- private ListView lvDestinations;
+
+
+    private ListView lvDestinations;
  private static final String[] CELLS = new String[]{
          ""
  };
 
-    private Menu menu;
 
 
     @Override
@@ -51,7 +63,7 @@ public class MainActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
-        
+
         //runs AppIntro
         startActivity(new Intent(getApplicationContext(),IntroActivity.class));
 
@@ -93,12 +105,12 @@ public class MainActivity extends AppCompatActivity{
         // Start the thread
         t.start();
 
-        lvDestinations = findViewById(R.id.main_destination_list_view);
-        lvDestinations.setAdapter(new ArrayAdapter<String>(this,R.layout.cities_list_cell,R.id.text, CELLS));
+//        lvDestinations = findViewById(R.id.main_destination_list_view);
+//        lvDestinations.setAdapter(new ArrayAdapter<String>(this,R.layout.cities_list_cell,R.id.text, CELLS));
 
 
-//        Toolbar toolbar = findViewById(R.id.toolbar);
-//        setSupportActionBar(toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.navigation);
         //set listeners for search view
@@ -135,48 +147,57 @@ public class MainActivity extends AppCompatActivity{
         //Used to select an item programmatically
         bottomNavigationView.getMenu().getItem(0).setChecked(true);
 
-//            searchView = findViewById(R.id.search_view);
-//            searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
-//                @Override
-//                public boolean onQueryTextSubmit(String query) {
-//                    doSearch(query);
-//                    return false;
-//                }
-//
-//                @Override
-//                public boolean onQueryTextChange(String newText) {
-//
-//                    return false;
-//                }
-//            });
-//
-//            searchView.setOnSearchViewListener(new MaterialSearchView.SearchViewListener() {
-//                @Override
-//                public void onSearchViewShown() {
-//                    //Do some magic
-//                }
-//
-//                @Override
-//                public void onSearchViewClosed() {
-//                    //Do some magic
-//                }
-//            });
+
+        searchView = findViewById(R.id.search_view);
+        searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+
+                Intent searchIntent = new Intent(getApplicationContext(), SearchableActivity.class);
+                searchIntent.putExtra(SearchManager.QUERY, query);
+                searchIntent.setAction(Intent.ACTION_SEARCH);
+
+                startActivity(searchIntent);
 
 
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                //Do some magic
+                return false;
+            }
+        });
+
+        searchView.setOnSearchViewListener(new MaterialSearchView.SearchViewListener() {
+            @Override
+            public void onSearchViewShown() {
+                //Do some magic
+            }
+
+            @Override
+            public void onSearchViewClosed() {
+                //Do some magic
+            }
+        });
 
     }
-
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater menuInflater = getMenuInflater();
-        menuInflater.inflate(R.menu.menu,menu);
-        return true;
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == MaterialSearchView.REQUEST_VOICE && resultCode == RESULT_OK) {
+            ArrayList<String> matches = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+            if (matches != null && matches.size() > 0) {
+                String searchWrd = matches.get(0);
+                if (!TextUtils.isEmpty(searchWrd)) {
+                    searchView.setQuery(searchWrd, false);
+                }
+            }
+
+            return;
+        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
-
-
-
-
-
 
     public void showUpButton() {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -185,6 +206,9 @@ public class MainActivity extends AppCompatActivity{
     public void hideUpButton() {
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
     }
+
+
+
 //    @Override
 //    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 //
@@ -197,7 +221,6 @@ public class MainActivity extends AppCompatActivity{
 //                    searchView.setQuery(searchWrd, false);
 //                }
 //            }
-//
 //            return;
 //        }
 //
@@ -215,34 +238,49 @@ public class MainActivity extends AppCompatActivity{
             case R.id.itmSearch:
                 onSearchRequested();
                 return true;
+
             default:
                 Toast.makeText(this, "click", Toast.LENGTH_SHORT).show();
                 return false;
         }
     }
 
+
+
 //    @Override
 //    public boolean onCreateOptionsMenu(Menu menu) {
-//        getMenuInflater().inflate(R.menu.search, menu);
-//        this.menu = menu;
-//        MenuItem item = menu.findItem(R.id.action_search);
-//        searchView.setMenuItem(item);
-//        searchView.setSuggestions(getResources().getStringArray(R.array.query_suggestions));
-//        return super .onCreateOptionsMenu(menu);
+//        MenuInflater menuInflater = getMenuInflater();
+//        menuInflater.inflate(R.menu.menu,menu);
+//
+//        return true;
 //    }
-//    @Override
-//    public void onBackPressed() {
-//        //closes app
-//        /*if (getFragmentManager().getBackStackEntryCount() > 0) {
-//            getFragmentManager().popBackStack();
-//        } else {
-//            super.onBackPressed();
-//        }*/
-//        if (searchView.isSearchOpen()) {
-//            searchView.closeSearch();
-//        } else {
-//            super.onBackPressed();
-//        }
-//    }
+
+
+
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.search, menu);
+        this.menu = menu;
+        MenuItem item = menu.findItem(R.id.action_search);
+        searchView.setMenuItem(item);
+        searchView.setSuggestions(getResources().getStringArray(R.array.query_suggestions));
+        return super .onCreateOptionsMenu(menu);
+    }
+    @Override
+    public void onBackPressed() {
+        //closes app
+        /*if (getFragmentManager().getBackStackEntryCount() > 0) {
+            getFragmentManager().popBackStack();
+        } else {
+            super.onBackPressed();
+        }*/
+        if (searchView.isSearchOpen()) {
+            searchView.closeSearch();
+        } else {
+            super.onBackPressed();
+        }
+    }
 
 }
