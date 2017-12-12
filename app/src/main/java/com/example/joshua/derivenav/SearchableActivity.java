@@ -22,10 +22,24 @@ public class SearchableActivity extends ListActivity implements ServiceListener{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_searchable);
+        setContentView(R.layout.activity_main);
+        handleIntent(getIntent());
 
-        Intent intent = getIntent();
-        if(intent.ACTION_SEARCH.equals(intent.getAction())){
+//        Intent intent = getIntent();
+//        if(intent.ACTION_SEARCH.equals(intent.getAction())){
+//            String query = intent.getStringExtra(SearchManager.QUERY);
+//            //send data to fragment
+//            doSearch(query);
+//        }
+    }
+    @Override
+    protected void onNewIntent(Intent intent) {
+        setIntent(intent);
+        handleIntent(intent);
+    }
+
+    private void handleIntent(Intent intent) {
+        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             String query = intent.getStringExtra(SearchManager.QUERY);
             doSearch(query);
         }
@@ -45,6 +59,7 @@ public class SearchableActivity extends ListActivity implements ServiceListener{
         setListAdapter(new ArrayAdapter<String>(this, R.layout.cities_list_cell, R.id.text, result));
     }
 
+
     @Override
     public void serviceComplete(AbstractService abstractService) {
 
@@ -53,7 +68,10 @@ public class SearchableActivity extends ListActivity implements ServiceListener{
             String[] result = new String[destinationSearchService.getResults().length()];
             for(int i = 0; i < destinationSearchService.getResults().length(); i++){
                 try {
-                    result[i] = destinationSearchService.getResults().getJSONObject(i).getString("title");
+                    //search for the wanted object name, name, location, etc
+
+//                    result[i] = destinationSearchService.getResults().getJSONObject(i).getString("title");
+                    result[i] = destinationSearchService.getResults().getJSONObject(i).getString("recipeName");
                 }catch (JSONException ex){
                     result[i] = "error";
                 }

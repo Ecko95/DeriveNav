@@ -191,6 +191,7 @@ public class MainActivity extends AppCompatActivity{
                 String searchWrd = matches.get(0);
                 if (!TextUtils.isEmpty(searchWrd)) {
                     searchView.setQuery(searchWrd, false);
+                    Toast.makeText(this, searchWrd, Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -234,9 +235,6 @@ public class MainActivity extends AppCompatActivity{
             case android.R.id.home:
                 Toast.makeText(this, "back", Toast.LENGTH_SHORT).show();
                 onBackPressed();
-                return true;
-            case R.id.itmSearch:
-                onSearchRequested();
                 return true;
 
             default:
