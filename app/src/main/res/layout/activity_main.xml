@@ -9,7 +9,7 @@
 
 
 
-    <FrameLayout
+    <RelativeLayout
         android:id="@+id/base_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -20,13 +20,13 @@
             android:id="@+id/main_destination_list_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="gone" />
+            android:visibility="gone"/>
         <ListView android:id="@android:id/list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
 
 
-    </FrameLayout>
+    </RelativeLayout>
 
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/navigation"

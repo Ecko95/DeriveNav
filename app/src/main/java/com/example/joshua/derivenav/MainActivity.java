@@ -1,18 +1,27 @@
 package com.example.joshua.derivenav;
 
+import android.app.Activity;
+import android.app.Application;
 import android.app.FragmentManager;
 import android.app.SearchManager;
+import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.speech.RecognizerIntent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -20,6 +29,8 @@ import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.SearchView;
@@ -30,6 +41,7 @@ import com.example.joshua.derivenav.com.joshua.service.AbstractService;
 import com.example.joshua.derivenav.com.joshua.service.DestinationSearchService;
 import com.example.joshua.derivenav.com.joshua.service.ServiceListener;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
+import com.tapadoo.alerter.Alerter;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -41,6 +53,8 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 
+import com.example.joshua.derivenav.NetworkChangeReceiver;
+
 public class MainActivity extends AppCompatActivity{
 
     private SearchView mSearchView;
@@ -48,15 +62,14 @@ public class MainActivity extends AppCompatActivity{
     private MaterialSearchView searchView;
     //defines a menu so we can hide it or diplay it according to fragments
     private Menu menu;
-
-
-
     private ListView lvDestinations;
+
+    private BroadcastReceiver mNetworkReceiver;
+    static TextView tv_check_connection;
+
  private static final String[] CELLS = new String[]{
          ""
  };
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -181,8 +194,63 @@ public class MainActivity extends AppCompatActivity{
                 //Do some magic
             }
         });
+        searchView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(MainActivity.this, position, Toast.LENGTH_SHORT).show();
+            }
+        });
+
+//        tv_check_connection=(TextView) findViewById(R.id.tv_check_connection);
+        mNetworkReceiver = new NetworkChangeReceiver();
+        registerNetworkBroadcastForNougat();
 
     }
+
+    private void registerNetworkBroadcastForNougat() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            registerReceiver(mNetworkReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            registerReceiver(mNetworkReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+        }
+    }
+
+    protected void unregisterNetworkChanges() {
+        try {
+            unregisterReceiver(mNetworkReceiver);
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        unregisterNetworkChanges();
+    }
+
+
+    public static void dialog(boolean value, Context context){
+        Activity activity = (Activity) context;
+        if(!value){
+            Alerter.create(activity)
+                    .setTitle("You're Offline!")
+                    .setBackgroundColorRes(R.color.colorAccent)
+                    .enableSwipeToDismiss()
+                    .show();
+        }else {
+            Alerter.create(activity)
+                    .setTitle("You're back Online!")
+                    .setIcon(R.drawable.alerter_ic_face)
+                    .setBackgroundColorRes(R.color.colorPrimary)
+                    .enableSwipeToDismiss()
+                    .show();
+        }
+    }
+
+
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == MaterialSearchView.REQUEST_VOICE && resultCode == RESULT_OK) {
@@ -207,7 +275,6 @@ public class MainActivity extends AppCompatActivity{
     public void hideUpButton() {
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
     }
-
 
 
 //    @Override
@@ -242,8 +309,6 @@ public class MainActivity extends AppCompatActivity{
                 return false;
         }
     }
-
-
 
 //    @Override
 //    public boolean onCreateOptionsMenu(Menu menu) {
@@ -280,5 +345,7 @@ public class MainActivity extends AppCompatActivity{
             super.onBackPressed();
         }
     }
+
+
 
 }

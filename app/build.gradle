@@ -34,4 +34,6 @@ dependencies {
     compile 'com.github.apl-devs:appintro:v4.2.2'
 
     compile 'com.airbnb.android:lottie:2.1.2'
+
+    compile 'com.tapadoo.android:alerter:2.0.1'
 }

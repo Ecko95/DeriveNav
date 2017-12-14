@@ -4,6 +4,7 @@
 
     <!-- To access Google+ APIs: -->
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
 
     <application
         android:allowBackup="true"
@@ -24,6 +25,7 @@
             <meta-data
                 android:name="android.app.default_searchable"
                 android:value=".SearchableActivity"/>
+
         </activity>
         <activity
             android:name=".SearchableActivity"
@@ -33,6 +35,14 @@
                 android:resource="@xml/searchable"/>
         </activity>
         <activity android:name=".IntroActivity"></activity>
+        <receiver
+            android:name="com.example.joshua.derivenav.NetworkChangeReceiver"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
+            </intent-filter>
+        </receiver>
     </application>
+
 
 </manifest>
