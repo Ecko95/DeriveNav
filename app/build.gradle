@@ -29,6 +29,8 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
 
+    compile 'com.squareup.retrofit2:retrofit:2.3.0'
+
     compile 'com.miguelcatalan:materialsearchview:1.4.0'
 
     compile 'com.github.apl-devs:appintro:v4.2.2'
@@ -36,4 +38,6 @@ dependencies {
     compile 'com.airbnb.android:lottie:2.1.2'
 
     compile 'com.tapadoo.android:alerter:2.0.1'
+
+    compile 'com.ramotion.expandingcollection:expanding-collection:0.9.0'
 }

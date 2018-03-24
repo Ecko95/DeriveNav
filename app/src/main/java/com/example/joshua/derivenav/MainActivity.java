@@ -18,6 +18,7 @@ import android.preference.PreferenceManager;
 import android.speech.RecognizerIntent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -40,6 +41,7 @@ import android.widget.Toast;
 import com.example.joshua.derivenav.com.joshua.service.AbstractService;
 import com.example.joshua.derivenav.com.joshua.service.DestinationSearchService;
 import com.example.joshua.derivenav.com.joshua.service.ServiceListener;
+import com.example.joshua.derivenav.com.joshua.trips.NewTripFragment;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 import com.tapadoo.alerter.Alerter;
 
