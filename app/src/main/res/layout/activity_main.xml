@@ -7,8 +7,6 @@
     android:layout_height="match_parent"
     tools:context="com.example.joshua.derivenav.MainActivity">
 
-
-
     <RelativeLayout
         android:id="@+id/base_container"
         android:layout_width="match_parent"

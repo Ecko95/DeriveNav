@@ -1,11 +1,15 @@
 package com.example.joshua.derivenav;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -14,17 +18,75 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.joshua.derivenav.com.joshua.api.controller.RestManager;
+import com.example.joshua.derivenav.com.joshua.api.model.Facade.apiClient;
+import com.example.joshua.derivenav.com.joshua.api.model.adapter.POIAdapter;
 import com.example.joshua.derivenav.com.joshua.trips.NewTripFragment;
 
+import java.util.List;
 
-public class TripsFragment extends Fragment{
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
+
+public class TripsFragment extends Fragment implements POIAdapter.POIClickListener {
+
+    private RecyclerView mRecyclerView;
+    private POIAdapter mPOIAdapter;
+    private RestManager mManager;
+    private ProgressDialog mDialog;
 
     public static TripsFragment newInstance() {
         TripsFragment fragment = new TripsFragment();
         return fragment;
+    }
+
+    public void getFeed() {
+        mDialog = new ProgressDialog(getActivity());
+        mDialog.setMessage("Loading apiClient Data...");
+        mDialog.setCancelable(true);
+        mDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        mDialog.setIndeterminate(true);
+        mManager = new RestManager();
+        Call<List<apiClient>> listCall = mManager.getFlowerService().getAllPointsOfInterest();
+        listCall.enqueue(new Callback<List<apiClient>>() {
+            @Override
+            public void onResponse(Call<List<apiClient>> call, Response<List<apiClient>> response) {
+                if (response.isSuccessful()) {
+
+                    List<apiClient> flowerList = response.body();
+
+                    for (int i = 0; i < flowerList.size(); i++) {
+                        apiClient flower = flowerList.get(i);
+
+                        mPOIAdapter.addFlower(flower);
+                    }
+                } else {
+                    int sc = response.code();
+                    switch (sc) {
+                        case 400:
+                            Log.e("Error 400", "Bad Request");
+                            break;
+                        case 404:
+                            Log.e("Error 404", "Not Found");
+                            break;
+                        default:
+                            Log.e("Error", "Generic Error");
+                    }
+                }
+                mDialog.dismiss();
+            }
+
+            @Override
+            public void onFailure(Call<List<apiClient>> call, Throwable t) {
+                mDialog.dismiss();
+                Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @Override
@@ -65,8 +127,22 @@ public class TripsFragment extends Fragment{
             }
         });
 
+        View v = inflater.inflate(R.layout.fragment_home, container, false);
 
-        return inflater.inflate(R.layout.fragment_trips, container, false);
+        Toast.makeText(v.getContext(), "Recycler viewer loaded", Toast.LENGTH_SHORT).show();
+
+        mRecyclerView = v.findViewById(R.id.recyclerView);
+        mRecyclerView.setHasFixedSize(true);
+        mRecyclerView.setRecycledViewPool(new RecyclerView.RecycledViewPool());
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
+
+        mPOIAdapter = new POIAdapter(this);
+
+        mRecyclerView.setAdapter(mPOIAdapter);
+        getFeed();
+        return v;
+
+//        return inflater.inflate(R.layout.fragment_trips, container, false);
 
 
     }
@@ -82,5 +158,10 @@ public class TripsFragment extends Fragment{
         super.onPrepareOptionsMenu(menu);
 //        menu.clear(); // Remove all existing items from the menu, leaving it empty as if it had just been created.
         getActivity().getMenuInflater().inflate(R.menu.form_menu,menu);
+    }
+
+    @Override
+    public void onClick(int position) {
+
     }
 }

@@ -1,63 +1,41 @@
 package com.example.joshua.derivenav;
 
 import android.app.Activity;
-import android.app.Application;
-import android.app.FragmentManager;
 import android.app.SearchManager;
 import android.content.BroadcastReceiver;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.speech.RecognizerIntent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.content.LocalBroadcastManager;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.joshua.derivenav.com.joshua.service.AbstractService;
-import com.example.joshua.derivenav.com.joshua.service.DestinationSearchService;
-import com.example.joshua.derivenav.com.joshua.service.ServiceListener;
-import com.example.joshua.derivenav.com.joshua.trips.NewTripFragment;
+import com.example.joshua.derivenav.com.joshua.api.model.adapter.POIAdapter;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 import com.tapadoo.alerter.Alerter;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
 
-import com.example.joshua.derivenav.NetworkChangeReceiver;
-
-public class MainActivity extends AppCompatActivity{
+public class MainActivity extends AppCompatActivity {
 
     private SearchView mSearchView;
     private TextView mTextMessage;
@@ -68,6 +46,8 @@ public class MainActivity extends AppCompatActivity{
 
     private BroadcastReceiver mNetworkReceiver;
     static TextView tv_check_connection;
+    private POIAdapter mPOIAdapter;
+    private RecyclerView mRecyclerView;
 
  private static final String[] CELLS = new String[]{
          ""
@@ -80,7 +60,7 @@ public class MainActivity extends AppCompatActivity{
         setContentView(R.layout.activity_main);
 
         //runs AppIntro
-        startActivity(new Intent(getApplicationContext(),IntroActivity.class));
+//        startActivity(new Intent(getApplicationContext(),IntroActivity.class));
 
         //  Declare a new thread to do a preference check
         Thread t = new Thread(new Runnable() {
@@ -347,7 +327,5 @@ public class MainActivity extends AppCompatActivity{
             super.onBackPressed();
         }
     }
-
-
 
 }
