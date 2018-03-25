@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "229044041317",
+    "firebase_url": "https://derivenav-37e30.firebaseio.com",
+    "project_id": "derivenav-37e30",
+    "storage_bucket": "derivenav-37e30.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:229044041317:android:8fad7b60e25ee157",
+        "android_client_info": {
+          "package_name": "com.example.joshua.derivenav"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "229044041317-hi3jphg6fr8saat7sp1pr19if7sguc9t.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.joshua.derivenav",
+            "certificate_hash": "275143b419d78b88824ade13c427abafa04c9fb5"
+          }
+        },
+        {
+          "client_id": "229044041317-pq4i9qcslbokmjfavvnirfeldusoa3g9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBhQUgEbBHBwf2Bzw4gqbn2BPodLspnAzY"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "229044041317-pq4i9qcslbokmjfavvnirfeldusoa3g9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
