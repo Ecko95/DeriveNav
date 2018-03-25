@@ -127,11 +127,11 @@ public class TripsFragment extends Fragment implements POIAdapter.POIClickListen
             }
         });
 
-        View v = inflater.inflate(R.layout.fragment_home, container, false);
+//        View v = inflater.inflate(R.layout.fragment_home, container, false);
 
-        Toast.makeText(v.getContext(), "Recycler viewer loaded", Toast.LENGTH_SHORT).show();
+        Toast.makeText(view.getContext(), "Recycler viewer loaded", Toast.LENGTH_SHORT).show();
 
-        mRecyclerView = v.findViewById(R.id.recyclerView);
+        mRecyclerView = view.findViewById(R.id.recyclerView);
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setRecycledViewPool(new RecyclerView.RecycledViewPool());
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
@@ -140,7 +140,7 @@ public class TripsFragment extends Fragment implements POIAdapter.POIClickListen
 
         mRecyclerView.setAdapter(mPOIAdapter);
         getFeed();
-        return v;
+        return view;
 
 //        return inflater.inflate(R.layout.fragment_trips, container, false);
 
@@ -162,6 +162,6 @@ public class TripsFragment extends Fragment implements POIAdapter.POIClickListen
 
     @Override
     public void onClick(int position) {
-
+        Toast.makeText(getContext(), "you pressed: " + position+1, Toast.LENGTH_SHORT).show();
     }
 }
