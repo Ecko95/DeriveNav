@@ -1,7 +1,9 @@
 package com.example.joshua.derivenav;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -25,6 +27,9 @@ import com.example.joshua.derivenav.com.joshua.api.controller.RestManager;
 import com.example.joshua.derivenav.com.joshua.api.model.Facade.apiClient;
 import com.example.joshua.derivenav.com.joshua.api.model.adapter.POIAdapter;
 import com.example.joshua.derivenav.com.joshua.trips.NewTripFragment;
+import com.firebase.ui.auth.AuthUI;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 
 import java.util.List;
 
@@ -155,9 +160,14 @@ public class TripsFragment extends Fragment implements POIAdapter.POIClickListen
 
     @Override
     public void onPrepareOptionsMenu(Menu menu) {
-        super.onPrepareOptionsMenu(menu);
+
 //        menu.clear(); // Remove all existing items from the menu, leaving it empty as if it had just been created.
-        getActivity().getMenuInflater().inflate(R.menu.form_menu,menu);
+
+
+        //getActivity().getMenuInflater().inflate(R.menu.form_menu,menu); //add new menu to toolbar on fragment
+
+        menu.findItem(R.id.action_logout).setVisible(false);
+        super.onPrepareOptionsMenu(menu);
     }
 
     @Override

@@ -4,7 +4,7 @@
 
     <!-- To access Google+ APIs: -->
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:allowBackup="true"
@@ -19,30 +19,31 @@
             android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-                <action android:name="android.intent.action.SEARCH"/>
+                <action android:name="android.intent.action.SEARCH" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
             <meta-data
                 android:name="android.app.default_searchable"
-                android:value=".SearchableActivity"/>
-
+                android:value=".SearchableActivity" />
         </activity>
-        <activity
-            android:name=".SearchableActivity"
-           >
+        <activity android:name=".SearchableActivity">
             <meta-data
                 android:name="android.app.searchable"
-                android:resource="@xml/searchable"/>
+                android:resource="@xml/searchable" />
         </activity>
-        <activity android:name=".IntroActivity"></activity>
+        <activity android:name=".IntroActivity" />
+
         <receiver
-            android:name="com.example.joshua.derivenav.NetworkChangeReceiver"
+            android:name=".NetworkChangeReceiver"
             android:exported="false">
             <intent-filter>
-                <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
             </intent-filter>
         </receiver>
-    </application>
 
+        <activity android:name=".LoginActivity"></activity>
+    </application>
 
 </manifest>

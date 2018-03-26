@@ -3,10 +3,12 @@ package com.example.joshua.derivenav;
 import android.app.Activity;
 import android.app.SearchManager;
 import android.content.BroadcastReceiver;
+import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -21,6 +23,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -30,10 +33,19 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.joshua.derivenav.com.joshua.api.model.adapter.POIAdapter;
+import com.firebase.ui.auth.AuthUI;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 import com.tapadoo.alerter.Alerter;
 
+import net.steamcrafted.materialiconlib.MaterialMenuInflater;
+
 import java.util.ArrayList;
+
+import butterknife.BindView;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -58,6 +70,14 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
+
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            // User is signed in
+            Toast.makeText(this, "You're Logged In", Toast.LENGTH_SHORT).show();
+        } else {
+            startActivity(new Intent(this, LoginActivity.class));
+        }
 
         //runs AppIntro
 //        startActivity(new Intent(getApplicationContext(),IntroActivity.class));
@@ -286,33 +306,57 @@ public class MainActivity extends AppCompatActivity {
                 onBackPressed();
                 return true;
 
+            case R.id.action_logout:
+                AuthUI.getInstance()
+                        .signOut(this)
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                            public void onComplete(@NonNull Task<Void> task) {
+                                // user is now signed out
+                                startActivity(new Intent(MainActivity.this, LoginActivity.class));
+                                finish();
+                            }
+                        });
+                return true;
+
             default:
                 Toast.makeText(this, "click", Toast.LENGTH_SHORT).show();
                 return false;
         }
     }
 
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        MenuInflater menuInflater = getMenuInflater();
-//        menuInflater.inflate(R.menu.menu,menu);
-//
-//        return true;
-//    }
-
-
-
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.search, menu);
+        MaterialMenuInflater
+                .with(this) // Provide the activity context
+                // Set the fall-back color for all the icons. Colors set inside the XML will always have higher priority
+                .setDefaultColor(Color.WHITE)
+                // Inflate the menu
+                .inflate(R.menu.menu, menu);
+
         this.menu = menu;
         MenuItem item = menu.findItem(R.id.action_search);
         searchView.setMenuItem(item);
         searchView.setSuggestions(getResources().getStringArray(R.array.query_suggestions));
-        return super .onCreateOptionsMenu(menu);
+
+        return true;
     }
+
+
+
+
+
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        getMenuInflater().inflate(R.menu.search, menu);
+//        this.menu = menu;
+//        MenuItem item = menu.findItem(R.id.action_search);
+////
+//
+//        searchView.setMenuItem(item);
+//        searchView.setSuggestions(getResources().getStringArray(R.array.query_suggestions));
+//        return super .onCreateOptionsMenu(menu);
+//    }
     @Override
     public void onBackPressed() {
         //closes app
