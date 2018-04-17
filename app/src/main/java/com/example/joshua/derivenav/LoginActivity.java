@@ -56,7 +56,8 @@ public class LoginActivity extends AppCompatActivity {
 
         }else{
             if (response == null){
-                showSnackbar("auth not working");
+                finish();
+                //showSnackbar("auth not working");
                 return;
             }
             if(response.getError().getErrorCode() == ErrorCodes.NO_NETWORK){
@@ -102,5 +103,10 @@ public class LoginActivity extends AppCompatActivity {
 
 
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        finish();
     }
 }

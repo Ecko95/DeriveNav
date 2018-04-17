@@ -77,6 +77,7 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this, "You're Logged In", Toast.LENGTH_SHORT).show();
         } else {
             startActivity(new Intent(this, LoginActivity.class));
+            finish();
         }
 
         //runs AppIntro

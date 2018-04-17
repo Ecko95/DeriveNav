@@ -26,9 +26,6 @@ import static com.firebase.ui.auth.AuthUI.getApplicationContext;
 
 public class HomeFragment extends Fragment {
 
-    @BindView(R.id.btn_sign_out)
-    Button btnSignOut;
-
     public static HomeFragment newInstance() {
         HomeFragment fragment = new HomeFragment();
         return fragment;
