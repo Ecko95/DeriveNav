@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -20,12 +21,15 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 import static com.firebase.ui.auth.AuthUI.getApplicationContext;
 
 
 public class HomeFragment extends Fragment {
 
+    @BindView(R.id.action_card_profile) CardView action_card_profile;
     public static HomeFragment newInstance() {
         HomeFragment fragment = new HomeFragment();
         return fragment;
@@ -34,7 +38,9 @@ public class HomeFragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
+
     }
 
 
@@ -42,8 +48,13 @@ public class HomeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_home, container, false);
 
+//        return inflater.inflate(R.layout.fragment_home, container, false);
+
+        View view = inflater.inflate(R.layout.fragment_home, container, false);
+        ButterKnife.bind(this, view);
+
+        return view;
     }
 
 
@@ -62,4 +73,18 @@ public class HomeFragment extends Fragment {
         }
     }
 
+    @OnClick(R.id.action_card_add)
+    public void setAction_card_add(View view){
+        startActivity(new Intent(getActivity(), NewTripActivity.class));
+        Toast.makeText(getActivity(), "you clicked on action: add", Toast.LENGTH_SHORT).show();
+
+    }
+    @OnClick(R.id.action_card_profile)
+    public void setAction_card_profile(View view){
+        Toast.makeText(getActivity(), "you clicked on action: profile", Toast.LENGTH_SHORT).show();
+    }
+    @OnClick(R.id.action_card_help)
+    public void setAction_card_help(View view) {
+        Toast.makeText(getActivity(), "you clicked on action: help", Toast.LENGTH_SHORT).show();
+    }
 }
