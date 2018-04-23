@@ -57,6 +57,7 @@ public class LoginActivity extends AppCompatActivity {
         }else{
             if (response == null){
                 finish();
+                
                 //showSnackbar("auth not working");
                 return;
             }
