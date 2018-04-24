@@ -36,6 +36,7 @@ import com.example.joshua.derivenav.com.joshua.api.model.adapter.POIAdapter;
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
@@ -71,6 +72,9 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
 
+        //runs AppIntro
+//        startActivity(new Intent(getApplicationContext(),IntroActivity.class));
+
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
             // User is signed in
@@ -79,9 +83,6 @@ public class MainActivity extends AppCompatActivity {
             startActivity(new Intent(this, LoginActivity.class));
             finish();
         }
-
-        //runs AppIntro
-//        startActivity(new Intent(getApplicationContext(),IntroActivity.class));
 
         //  Declare a new thread to do a preference check
         Thread t = new Thread(new Runnable() {
@@ -128,6 +129,7 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+
         BottomNavigationView bottomNavigationView = findViewById(R.id.navigation);
         //set listeners for search view
 
@@ -162,6 +164,8 @@ public class MainActivity extends AppCompatActivity {
 
         //Used to select an item programmatically
         bottomNavigationView.getMenu().getItem(0).setChecked(true);
+
+
 
 
         searchView = findViewById(R.id.search_view);

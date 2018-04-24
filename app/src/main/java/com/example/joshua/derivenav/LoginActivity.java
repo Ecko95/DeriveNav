@@ -90,6 +90,7 @@ public class LoginActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
 
         if (mAuth.getCurrentUser() != null){
+
             Toast.makeText(this, "You're already signed in", Toast.LENGTH_SHORT).show();
         }else{
             Toast.makeText(this, "You're not signed in, try again", Toast.LENGTH_SHORT).show();

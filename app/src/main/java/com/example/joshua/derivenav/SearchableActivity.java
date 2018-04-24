@@ -1,10 +1,17 @@
 package com.example.joshua.derivenav;
 
+import android.app.Activity;
 import android.app.ListActivity;
 import android.app.SearchManager;
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -12,26 +19,51 @@ import android.widget.Toast;
 import com.example.joshua.derivenav.com.joshua.service.AbstractService;
 import com.example.joshua.derivenav.com.joshua.service.DestinationSearchService;
 import com.example.joshua.derivenav.com.joshua.service.ServiceListener;
+import com.miguelcatalan.materialsearchview.MaterialSearchView;
+
+import net.steamcrafted.materialiconlib.MaterialMenuInflater;
 
 import org.json.JSONException;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class SearchableActivity extends ListActivity implements ServiceListener{
 
     private Thread thread;
+    private Menu menu;
+
+    @BindView(android.R.id.list) ListView list;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_new_trip); //activity_main , activity_new_trip
         handleIntent(getIntent());
 
-//        Intent intent = getIntent();
-//        if(intent.ACTION_SEARCH.equals(intent.getAction())){
-//            String query = intent.getStringExtra(SearchManager.QUERY);
-//            //send data to fragment
-//            doSearch(query);
-//        }
+        Intent intent = getIntent();
+        if(intent.ACTION_SEARCH.equals(intent.getAction())){
+            String query = intent.getStringExtra(SearchManager.QUERY);
+            //send data to fragment
+            doSearch(query);
+        }
+
+        ButterKnife.bind(this);
+
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                Toast.makeText(SearchableActivity.this, "You clicked item: " + position, Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
     }
+
+
+
+
+
     @Override
     protected void onNewIntent(Intent intent) {
         setIntent(intent);

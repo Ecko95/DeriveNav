@@ -43,7 +43,8 @@
             </intent-filter>
         </receiver>
 
-        <activity android:name=".LoginActivity"></activity>
+        <activity android:name=".LoginActivity" />
+        <activity android:name=".NewTripActivity"></activity>
     </application>
 
 </manifest>
