@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.DisplayMetrics;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -38,7 +39,16 @@ public class SearchableActivity extends ListActivity implements ServiceListener{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_new_trip); //activity_main , activity_new_trip
+        setContentView(R.layout.activity_searchable); //activity_main , activity_new_trip
+
+//        DisplayMetrics displayMetrics = new DisplayMetrics();
+//        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+//
+//        int width = displayMetrics.widthPixels;
+//        int height = displayMetrics.heightPixels;
+//
+//        getWindow().setLayout((width*8),(height*6));
+
         handleIntent(getIntent());
 
         Intent intent = getIntent();
@@ -59,10 +69,6 @@ public class SearchableActivity extends ListActivity implements ServiceListener{
 
 
     }
-
-
-
-
 
     @Override
     protected void onNewIntent(Intent intent) {

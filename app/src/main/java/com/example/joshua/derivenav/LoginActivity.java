@@ -57,7 +57,6 @@ public class LoginActivity extends AppCompatActivity {
         }else{
             if (response == null){
                 finish();
-                
                 //showSnackbar("auth not working");
                 return;
             }
@@ -102,9 +101,6 @@ public class LoginActivity extends AppCompatActivity {
                         new AuthUI.IdpConfig.GoogleBuilder().build()
                 ))
                 .build(),RC_SIGN_IN);
-
-
-
     }
 
     @Override

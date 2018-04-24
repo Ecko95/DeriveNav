@@ -84,6 +84,7 @@ public class MainActivity extends AppCompatActivity {
             finish();
         }
 
+
         //  Declare a new thread to do a preference check
         Thread t = new Thread(new Runnable() {
             @Override

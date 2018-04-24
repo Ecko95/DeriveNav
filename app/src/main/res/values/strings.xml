@@ -16,5 +16,6 @@
         <item>Dubai</item>
         <item>Tokio</item>
     </string-array>
+    <string name="title_activity_results">ResultsActivity</string>
 
 </resources>
