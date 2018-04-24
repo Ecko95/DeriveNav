@@ -1,6 +1,7 @@
 package com.example.joshua.derivenav;
 
 import android.app.Activity;
+import android.app.ActivityOptions;
 import android.app.SearchManager;
 import android.content.BroadcastReceiver;
 import android.content.ClipData;
@@ -22,10 +23,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.transition.Explode;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SearchView;
@@ -39,6 +42,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 import com.tapadoo.alerter.Alerter;
 
@@ -62,6 +67,7 @@ public class MainActivity extends AppCompatActivity {
     private POIAdapter mPOIAdapter;
     private RecyclerView mRecyclerView;
 
+
  private static final String[] CELLS = new String[]{
          ""
  };
@@ -72,17 +78,22 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
 
+
         //runs AppIntro
 //        startActivity(new Intent(getApplicationContext(),IntroActivity.class));
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
             // User is signed in
-            Toast.makeText(this, "You're Logged In", Toast.LENGTH_SHORT).show();
+            Toast.makeText(MainActivity.this, "you're signed in", Toast.LENGTH_SHORT).show();
         } else {
-            startActivity(new Intent(this, LoginActivity.class));
+            startActivity(new Intent(MainActivity.this, LoginActivity.class));
             finish();
         }
+
+
+
+
 
 
         //  Declare a new thread to do a preference check
@@ -177,8 +188,8 @@ public class MainActivity extends AppCompatActivity {
                 Intent searchIntent = new Intent(getApplicationContext(), SearchableActivity.class);
                 searchIntent.putExtra(SearchManager.QUERY, query);
                 searchIntent.setAction(Intent.ACTION_SEARCH);
-
                 startActivity(searchIntent);
+
 
 
                 return false;

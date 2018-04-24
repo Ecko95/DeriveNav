@@ -1,5 +1,6 @@
 package com.example.joshua.derivenav;
 
+import android.app.ActivityOptions;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -29,7 +30,6 @@ import static com.firebase.ui.auth.AuthUI.getApplicationContext;
 
 public class HomeFragment extends Fragment {
 
-    @BindView(R.id.action_card_profile) CardView action_card_profile;
     public static HomeFragment newInstance() {
         HomeFragment fragment = new HomeFragment();
         return fragment;
@@ -76,12 +76,14 @@ public class HomeFragment extends Fragment {
     @OnClick(R.id.action_card_add)
     public void setAction_card_add(View view){
         startActivity(new Intent(getActivity(), NewTripActivity.class));
+//        ActivityOptions.makeSceneTransitionAnimation(getActivity()).toBundle();
         Toast.makeText(getActivity(), "you clicked on action: add", Toast.LENGTH_SHORT).show();
 
     }
     @OnClick(R.id.action_card_profile)
     public void setAction_card_profile(View view){
-        Toast.makeText(getActivity(), "you clicked on action: profile", Toast.LENGTH_SHORT).show();
+        startActivity(new Intent(getActivity(), ProfileActivity.class));
+        //Toast.makeText(getActivity(), "you clicked on action: profile", Toast.LENGTH_SHORT).show();
     }
     @OnClick(R.id.action_card_help)
     public void setAction_card_help(View view) {

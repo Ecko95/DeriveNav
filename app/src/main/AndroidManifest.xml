@@ -30,7 +30,7 @@
         </activity>
         <activity
             android:name=".SearchableActivity"
-            android:theme="@style/CustomTheme">
+            android:theme="@style/Theme.CustomTheme">
             <meta-data
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
@@ -46,16 +46,10 @@
         </receiver>
 
         <activity android:name=".LoginActivity" />
-        <activity android:name=".NewTripActivity" />
         <activity
-            android:name=".ResultsActivity"
-            android:label="@string/title_activity_results"
-            android:parentActivityName=".MainActivity"
-            android:theme="@style/AppTheme">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.joshua.derivenav.MainActivity" />
-        </activity>
+            android:name=".NewTripActivity"
+            android:theme="@style/AppTheme" />
+        <activity android:name=".ProfileActivity"></activity>
     </application>
 
 </manifest>

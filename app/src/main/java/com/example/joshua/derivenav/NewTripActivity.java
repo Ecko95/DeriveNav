@@ -22,6 +22,9 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.firebase.ui.auth.AuthUI;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
 import net.steamcrafted.materialiconlib.MaterialMenuInflater;
@@ -29,13 +32,8 @@ import net.steamcrafted.materialiconlib.MaterialMenuInflater;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class NewTripActivity extends Activity implements AppCompatCallback {
+public class NewTripActivity extends AppCompatActivity {
 
-    private Menu menu;
-    private MaterialSearchView searchView;
-    private AppCompatDelegate delegate;
-    @BindView(android.R.id.list)
-    ListView list;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,63 +42,28 @@ public class NewTripActivity extends Activity implements AppCompatCallback {
 
         Toast.makeText(this, "New Activity started", Toast.LENGTH_SHORT).show();
 
-        //let's create the delegate, passing the activity at both arguments (Activity, AppCompatCallback)
-        delegate = AppCompatDelegate.create(this, this);
-
-        //we need to call the onCreate() of the AppCompatDelegate
-        delegate.onCreate(savedInstanceState);
-
-        //we use the delegate to inflate the layout
-        delegate.setContentView(R.layout.activity_main);
-
-        //Finally, let's add the Toolbar
-        Toolbar toolbar= (Toolbar) findViewById(R.id.toolbar_search);
-        delegate.setSupportActionBar(toolbar);
+        Toolbar toolbar_newtrip = findViewById(R.id.toolbar_newtrip);
+        setSupportActionBar(toolbar_newtrip);
 
         ButterKnife.bind(this);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                Toast.makeText(NewTripActivity.this, "You clicked item: " + position, Toast.LENGTH_SHORT).show();
-            }
-        });
+
 
 
     }
 
-
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MaterialMenuInflater
-                .with(this) // Provide the activity context
-                // Set the fall-back color for all the icons. Colors set inside the XML will always have higher priority
-                .setDefaultColor(Color.WHITE)
-                // Inflate the menu
-                .inflate(R.menu.menu, menu);
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case android.R.id.home:
+                onBackPressed();
+                return true;
 
-        this.menu = menu;
-        MenuItem item = menu.findItem(R.id.action_search);
-        searchView.setMenuItem(item);
-        searchView.setSuggestions(getResources().getStringArray(R.array.query_suggestions));
-
-        return true;
-    }
-
-    @Override
-    public void onSupportActionModeStarted(ActionMode mode) {
-
-    }
-
-    @Override
-    public void onSupportActionModeFinished(ActionMode mode) {
-
-    }
-
-    @Nullable
-    @Override
-    public ActionMode onWindowStartingSupportActionMode(ActionMode.Callback callback) {
-        return null;
+            default:
+                Toast.makeText(this, "click", Toast.LENGTH_SHORT).show();
+                return false;
+        }
     }
 
 

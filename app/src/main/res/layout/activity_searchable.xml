@@ -1,24 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_frame_layout"
     android:layout_width="wrap_content"
-    android:layout_height="300dp"
+    android:layout_height="400dp"
     tools:context="com.example.joshua.derivenav.SearchableActivity">
 
     <ListView
         android:id="@android:id/list"
         android:layout_width="wrap_content"
-        android:layout_height="300dp"
-        android:padding="5dp"
-        android:layout_margin="20dp"
-        android:layout_below="@+id/main_destination_list_view"
-        android:layout_marginTop="53dp"
-        android:layout_toEndOf="@+id/main_destination_list_view"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/toolbar_container"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
         android:background="#fff"
-        android:elevation="6dp"/>
+        android:elevation="6dp"
+        android:padding="5dp" />
 
-</LinearLayout>
+    <FrameLayout
+        android:id="@+id/toolbar_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/search_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/colorPrimary"
+            android:theme="@style/AppTheme"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <net.steamcrafted.materialiconlib.MaterialIconView xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/icon_search_close"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginBottom="2dp"
+                android:layout_marginTop="2dp"
+                android:adjustViewBounds="false"
+                android:scaleType="center"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:materialIcon="close"
+                app:materialIconColor="#fff"
+                app:materialIconSize="26dp"
+                android:clickable="true"
+                />
+        </android.support.constraint.ConstraintLayout>
+    </FrameLayout>
+
+</RelativeLayout>
+
+
 

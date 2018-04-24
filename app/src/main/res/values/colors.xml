@@ -11,4 +11,5 @@
     <color name="blue500">#2196F3</color>
     <color name="indigo500">#3F51B5</color>
     <color name="purple500">#673AB7</color>
+    <color name="overlay_transparent">#a0000000</color>
 </resources>
