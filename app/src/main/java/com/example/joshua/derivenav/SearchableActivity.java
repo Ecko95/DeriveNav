@@ -60,7 +60,16 @@ public class SearchableActivity extends ListActivity implements ServiceListener{
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                Toast.makeText(SearchableActivity.this, "You clicked item: " + position, Toast.LENGTH_SHORT).show();
+//                Toast.makeText(SearchableActivity.this, "You clicked item: " + position, Toast.LENGTH_SHORT).show();
+                String selectedSearch = (String) getListAdapter().getItem(position);
+
+
+                Intent moreDetailsIntent = new Intent(SearchableActivity.this,NewTripActivity.class);
+
+                Bundle dataBundle = new Bundle();
+                dataBundle.putString("SelectedSearch", selectedSearch);
+                moreDetailsIntent.putExtras(dataBundle);
+                startActivity(moreDetailsIntent);
             }
         });
 

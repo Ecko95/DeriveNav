@@ -93,15 +93,15 @@ public class TripsFragment extends Fragment implements POIAdapter.POIClickListen
             }
         });
     }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        MainActivity activity = (MainActivity) getActivity();
-        if(activity != null){
-            activity.showUpButton();
-        }
-    }
+//
+//    @Override
+//    public void onResume() {
+//        super.onResume();
+//        MainActivity activity = (MainActivity) getActivity();
+//        if(activity != null){
+//            activity.showUpButton();
+//        }
+//    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -118,19 +118,19 @@ public class TripsFragment extends Fragment implements POIAdapter.POIClickListen
                              Bundle savedInstanceState) {
 
         View view= inflater.inflate(R.layout.fragment_trips, container, false);
-        FloatingActionButton fab = view.findViewById(R.id.floatingActionButton);
-
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Fragment fragment= new NewTripFragment();
-                FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                transaction.replace(R.id.fragment_container, fragment); // fragmen container id in first parameter is the  container(Main layout id) of Activity
-                transaction.addToBackStack(null);  // this will manage backstack
-                transaction.commit();
-                Toast.makeText(getContext(), "Done!", Toast.LENGTH_SHORT).show();
-            }
-        });
+//        FloatingActionButton fab = view.findViewById(R.id.floatingActionButton);
+//
+//        fab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Fragment fragment= new NewTripFragment();
+//                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+//                transaction.replace(R.id.fragment_container, fragment); // fragmen container id in first parameter is the  container(Main layout id) of Activity
+//                transaction.addToBackStack(null);  // this will manage backstack
+//                transaction.commit();
+//                Toast.makeText(getContext(), "Done!", Toast.LENGTH_SHORT).show();
+//            }
+//        });
 
 //        View v = inflater.inflate(R.layout.fragment_home, container, false);
 
@@ -158,20 +158,20 @@ public class TripsFragment extends Fragment implements POIAdapter.POIClickListen
 
     }
 
-    @Override
-    public void onPrepareOptionsMenu(Menu menu) {
-
-//        menu.clear(); // Remove all existing items from the menu, leaving it empty as if it had just been created.
-
-
-        //getActivity().getMenuInflater().inflate(R.menu.form_menu,menu); //add new menu to toolbar on fragment
-
-        menu.findItem(R.id.action_logout).setVisible(false);
-        super.onPrepareOptionsMenu(menu);
-    }
+//    @Override
+//    public void onPrepareOptionsMenu(Menu menu) {
+//
+////        menu.clear(); // Remove all existing items from the menu, leaving it empty as if it had just been created.
+//
+//
+//        //getActivity().getMenuInflater().inflate(R.menu.form_menu,menu); //add new menu to toolbar on fragment
+//
+//        menu.findItem(R.id.action_logout).setVisible(false);
+//        super.onPrepareOptionsMenu(menu);
+//    }
 
     @Override
     public void onClick(int position) {
-        Toast.makeText(getContext(), "you pressed: " + position+1, Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), "you pressed: " + position, Toast.LENGTH_SHORT).show();
     }
 }

@@ -1,4 +1,4 @@
-package com.example.joshua.derivenav.com.joshua.api.model.database;
+package com.example.joshua.derivenav.com.joshua.api.model;
 
 import android.net.Uri;
 
