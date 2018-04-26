@@ -5,7 +5,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
+import com.example.joshua.derivenav.com.joshua.api.model.Trip;
 import com.example.joshua.derivenav.com.joshua.api.model.User;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -50,10 +52,18 @@ public class ProfileActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
 
+//        mRef = FirebaseDatabase
+//                .getInstance()
+//                .getReference("Trips")
+//                .child(userID);
+
         mRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+
+
                 showData(dataSnapshot);
+
             }
 
             @Override
@@ -61,7 +71,9 @@ public class ProfileActivity extends AppCompatActivity {
 
             }
         });
+
     }
+
 
     private void showData(DataSnapshot dataSnapshot) {
         for(DataSnapshot ds : dataSnapshot.getChildren()){
@@ -78,6 +90,7 @@ public class ProfileActivity extends AppCompatActivity {
             arrayList.add(userInfo.getEmail());
             ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1,arrayList);
             mListView.setAdapter(adapter);
+
         }
     }
 }

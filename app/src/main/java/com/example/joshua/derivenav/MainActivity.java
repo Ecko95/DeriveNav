@@ -1,10 +1,8 @@
 package com.example.joshua.derivenav;
 
 import android.app.Activity;
-import android.app.ActivityOptions;
 import android.app.SearchManager;
 import android.content.BroadcastReceiver;
-import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -23,12 +21,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.transition.Explode;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SearchView;
@@ -39,19 +34,14 @@ import com.example.joshua.derivenav.com.joshua.api.model.adapter.POIAdapter;
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 import com.tapadoo.alerter.Alerter;
 
 import net.steamcrafted.materialiconlib.MaterialMenuInflater;
 
 import java.util.ArrayList;
-
-import butterknife.BindView;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -156,7 +146,7 @@ public class MainActivity extends AppCompatActivity {
                                 selectedFragment = HomeFragment.newInstance();
                                 break;
                             case R.id.navigation_trips:
-                                selectedFragment = TripsFragment.newInstance();
+                                selectedFragment = UserTripsFragment.newInstance();
                                 break;
                             case R.id.navigation_notifications:
                                 selectedFragment = HomeFragment.newInstance();

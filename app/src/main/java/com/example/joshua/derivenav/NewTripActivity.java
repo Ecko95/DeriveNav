@@ -35,6 +35,7 @@ import com.example.joshua.derivenav.NewTrip.Adapters.StepperAdapter;
 import com.example.joshua.derivenav.NewTrip.StepDataManager;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 import com.stepstone.stepper.StepperLayout;
+import com.stepstone.stepper.VerificationError;
 import com.tapadoo.alerter.Alerter;
 
 import net.steamcrafted.materialiconlib.MaterialMenuInflater;
@@ -45,7 +46,27 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
-public class NewTripActivity extends AppCompatActivity implements StepDataManager{
+public class NewTripActivity extends AppCompatActivity implements StepDataManager, StepperLayout.StepperListener{
+    @Override
+    public void onError(VerificationError verificationError) {
+
+    }
+
+    @Override
+    public void onStepSelected(int newStepPosition) {
+
+    }
+
+    @Override
+    public void onReturn() {
+        finish();
+    }
+
+    @Override
+    public void onCompleted(View completeButton) {
+        Toast.makeText(this, "onCompleted!", Toast.LENGTH_SHORT).show();
+    }
+
     @Override
     public void saveStepData(String data) {
         mData = data;
@@ -207,6 +228,9 @@ public class NewTripActivity extends AppCompatActivity implements StepDataManage
     public void hideSearch(){
         menu.findItem(R.id.action_search).setVisible(false);
     }
+
+
+
 
 
 }

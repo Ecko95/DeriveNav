@@ -31,6 +31,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.stepstone.stepper.BlockingStep;
 import com.stepstone.stepper.Step;
 import com.stepstone.stepper.StepperLayout;
 import com.stepstone.stepper.VerificationError;
@@ -45,7 +46,38 @@ import butterknife.OnClick;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class StepFragment3 extends ButterKnifeFragment implements Step{
+public class StepFragment3 extends ButterKnifeFragment implements BlockingStep {
+
+    @Override
+    public void onNextClicked(StepperLayout.OnNextClickedCallback callback) {
+
+    }
+
+    @Override
+    public void onCompleteClicked(StepperLayout.OnCompleteClickedCallback callback) {
+
+        String name = editName.getText().toString();
+        String desc = editDesc.getText().toString();
+        String key = dbRef.push().getKey();
+
+        if(name != "" && desc != ""){
+
+            Trip newTrip = new Trip(name,desc,key);
+            dbRef.child("Trips").child(userID).child(key).setValue(newTrip);
+            Toast.makeText(getContext(), "New Trip Added", Toast.LENGTH_SHORT).show();
+//            editName.setText("");
+//            editDesc.setText("");
+
+        }else{
+            Toast.makeText(getContext(), "Please fill in the fields", Toast.LENGTH_SHORT).show();
+        }
+        callback.complete();
+    }
+
+    @Override
+    public void onBackClicked(StepperLayout.OnBackClickedCallback callback) {
+        callback.goToPrevStep();
+    }
 
     private StepDataManager stepDataManager;
 
@@ -143,20 +175,7 @@ public class StepFragment3 extends ButterKnifeFragment implements Step{
     @OnClick(R.id.btn_save_trip)
     public void saveTrip(View view) {
 
-        String name = editName.getText().toString();
-        String desc = editDesc.getText().toString();
 
-        if(name != "" && desc != ""){
-
-            Trip newTrip = new Trip(name,desc);
-            dbRef.child("trips").child(userID).setValue(newTrip);
-            Toast.makeText(getContext(), "New Trip Added", Toast.LENGTH_SHORT).show();
-            editName.setText("");
-            editDesc.setText("");
-
-        }else{
-            Toast.makeText(getContext(), "Please fill in the fields", Toast.LENGTH_SHORT).show();
-        }
     }
 
     @Override

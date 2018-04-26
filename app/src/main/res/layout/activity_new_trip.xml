@@ -35,7 +35,7 @@
                 app:ms_inactiveStepColor="#006867"
                 app:ms_backButtonColor="@color/colorSecondaryText"
                 app:ms_nextButtonColor="@color/colorSecondaryText"
-                app:ms_completeButtonColor="@color/colorAccent"
+                app:ms_completeButtonColor="@color/colorSecondaryText"
                 app:ms_bottomNavigationBackground="@color/colorPrimary" />
 
             <FrameLayout

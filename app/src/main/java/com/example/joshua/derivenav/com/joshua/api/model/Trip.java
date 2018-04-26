@@ -8,11 +8,20 @@ public class Trip {
 
     private String name;
     private String desc;
+    private String pushID;
 
-
-    public Trip(String name, String desc) {
+    public Trip(String name, String desc,String pushID) {
         this.name = name;
         this.desc = desc;
+        this.pushID = pushID;
+    }
+
+    public String getPushID() {
+        return pushID;
+    }
+
+    public void setPushID(String pushID) {
+        this.pushID = pushID;
     }
 
     public String getName() {
