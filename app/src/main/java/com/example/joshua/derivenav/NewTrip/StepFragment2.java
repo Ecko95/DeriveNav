@@ -2,30 +2,28 @@ package com.example.joshua.derivenav.NewTrip;
 
 
 import android.app.ProgressDialog;
-import android.os.Bundle;
+import android.content.Context;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+
+import android.widget.TextView;
 import android.widget.Toast;
 
-import com.ahamed.multiviewadapter.DataListManager;
-import com.ahamed.multiviewadapter.RecyclerAdapter;
-import com.ahamed.multiviewadapter.SelectableAdapter;
-import com.example.joshua.derivenav.NewTrip.Binders.CityBinder;
+
 import com.example.joshua.derivenav.R;
 import com.example.joshua.derivenav.com.joshua.api.controller.RestManager;
 import com.example.joshua.derivenav.com.joshua.api.model.City;
 import com.example.joshua.derivenav.com.joshua.api.model.Facade.apiClient;
 import com.example.joshua.derivenav.com.joshua.api.model.adapter.POIAdapter;
+import com.stepstone.stepper.Step;
+import com.stepstone.stepper.VerificationError;
 
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -33,9 +31,28 @@ import retrofit2.Response;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class StepFragment2 extends Fragment implements POIAdapter.POIClickListener{
+public class StepFragment2 extends ButterKnifeFragment implements Step{
 
-    @BindView(R.id.rv_places) RecyclerView cityList;
+    @BindView(R.id.txt_selected_search)
+    TextView chosenSearch;
+
+    private StepDataManager stepDataManager;
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof StepDataManager) {
+            stepDataManager = (StepDataManager) context;
+        } else {
+            throw new IllegalStateException("Activity must implement DataManager interface!");
+        }
+    }
+
+    @Override
+    protected int getLayoutResId() {
+        return R.layout.fragment_step_fragment2;
+    }
+
     private POIAdapter mPOIAdapter;
     private ProgressDialog mDialog;
     private RestManager mManager;
@@ -44,88 +61,25 @@ public class StepFragment2 extends Fragment implements POIAdapter.POIClickListen
         // Required empty public constructor
     }
 
-    public void getFeed() {
-        mDialog = new ProgressDialog(getActivity());
-        mDialog.setMessage("Loading apiClient Data...");
-        mDialog.setCancelable(true);
-        mDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        mDialog.setIndeterminate(true);
-        mManager = new RestManager();
-        Call<List<apiClient>> listCall = mManager.getFlowerService().getAllPointsOfInterest();
-        listCall.enqueue(new Callback<List<apiClient>>() {
-            @Override
-            public void onResponse(Call<List<apiClient>> call, Response<List<apiClient>> response) {
-                if (response.isSuccessful()) {
 
-                    List<apiClient> flowerList = response.body();
-
-                    for (int i = 0; i < flowerList.size(); i++) {
-                        apiClient flower = flowerList.get(i);
-
-                        mPOIAdapter.addFlower(flower);
-                    }
-                } else {
-                    int sc = response.code();
-                    switch (sc) {
-                        case 400:
-                            Log.e("Error 400", "Bad Request");
-                            break;
-                        case 404:
-                            Log.e("Error 404", "Not Found");
-                            break;
-                        default:
-                            Log.e("Error", "Generic Error");
-                    }
-                }
-                mDialog.dismiss();
-            }
-
-            @Override
-            public void onFailure(Call<List<apiClient>> call, Throwable t) {
-                mDialog.dismiss();
-                Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
+    @Nullable
+    @Override
+    public VerificationError verifyStep() {
+        return null;
     }
 
+    @Override
+    public void onSelected() {
+        Toast.makeText(getContext(), stepDataManager.getData(), Toast.LENGTH_SHORT).show();
+        chosenSearch.setText(stepDataManager.getData());
+    }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-
-        View view = inflater.inflate(R.layout.fragment_step_fragment2, container, false);
-        ButterKnife.bind(this,view);
-
-        cityList.setHasFixedSize(true);
-        cityList.setRecycledViewPool(new RecyclerView.RecycledViewPool());
-        cityList.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
-
-        mPOIAdapter = new POIAdapter(this);
-
-        cityList.setAdapter(mPOIAdapter);
-
-        Thread t = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                //getFeed();
-            }
-        });
-
-        // Start the thread
-        t.start();
-
-
-        // Inflate the layout for this fragment
-        return view;
+    public void onError(@NonNull VerificationError error) {
 
     }
-//    private void setUpAdapter(List<City> cityList) {
-//        SelectableAdapter adapter = new SelectableAdapter();
-//        adapter.setSelectionMode(SelectableAdapter.SELECTION_MODE_MULTIPLE);
-//    }
 
-    @Override
-    public void onClick(int position) {
-        Toast.makeText(getContext(), "you pressed: " + position, Toast.LENGTH_SHORT).show();
+    public static Step newInstance() {
+        return new StepFragment2();
     }
 }

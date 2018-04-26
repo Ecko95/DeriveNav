@@ -59,9 +59,7 @@ dependencies {
     compile 'com.github.devahamed:multi-view-adapter:1.2.3'
     compile 'com.github.devahamed:multi-view-adapter-databinding:1.2.3'
 
-    implementation 'com.github.mancj:MaterialSearchBar:0.7.6'
-    compile 'me.drozdzynski.library.steppers:steppers:1.0.0'
-
+    compile 'com.stepstone.stepper:material-stepper:4.3.1'
 
 }
 apply plugin: 'com.google.gms.google-services'

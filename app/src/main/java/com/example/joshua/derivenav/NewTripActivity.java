@@ -23,22 +23,18 @@ import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.view.ActionMode;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.util.Log;
-import android.view.Gravity;
+
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ListView;
+
 import android.widget.Toast;
 
-import com.example.joshua.derivenav.NewTrip.StepFragment1;
-import com.example.joshua.derivenav.NewTrip.StepFragment2;
-import com.firebase.ui.auth.AuthUI;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.mancj.materialsearchbar.MaterialSearchBar;
+import com.example.joshua.derivenav.NewTrip.Adapters.StepperAdapter;
+import com.example.joshua.derivenav.NewTrip.StepDataManager;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
+import com.stepstone.stepper.StepperLayout;
 import com.tapadoo.alerter.Alerter;
 
 import net.steamcrafted.materialiconlib.MaterialMenuInflater;
@@ -47,15 +43,18 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import me.drozdzynski.library.steppers.SteppersItem;
-import me.drozdzynski.library.steppers.SteppersView;
-import me.drozdzynski.library.steppers.interfaces.OnCancelAction;
-import me.drozdzynski.library.steppers.interfaces.OnChangeStepAction;
-import me.drozdzynski.library.steppers.interfaces.OnClickContinue;
-import me.drozdzynski.library.steppers.interfaces.OnFinishAction;
-import me.drozdzynski.library.steppers.interfaces.OnSkipStepAction;
 
-public class NewTripActivity extends AppCompatActivity {
+
+public class NewTripActivity extends AppCompatActivity implements StepDataManager{
+    @Override
+    public void saveStepData(String data) {
+        mData = data;
+    }
+
+    @Override
+    public String getData() {
+        return mData;
+    }
 
 
     private static final String TAG = "";
@@ -63,15 +62,13 @@ public class NewTripActivity extends AppCompatActivity {
     @BindView(R.id.search_view_new)
     MaterialSearchView materialSearchView;
     @BindView(R.id.toolbar_newtrip) Toolbar toolbar_newtrip;
-
+    @BindView(R.id.stepperLayout) StepperLayout stepperLayout;
     private Menu menu;
 
-    @BindView(R.id.steppersView) SteppersView steppersView;
-
-
-    SteppersItem step1 = new SteppersItem();
-    SteppersItem step2 = new SteppersItem();
-    SteppersItem step3 = new SteppersItem();
+//    Data objects about to be pass to other fragments
+    private static final String CURRENT_STEP_POSITION_KEY = "position";
+    private static final String DATA = "data";
+    private String mData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,89 +77,14 @@ public class NewTripActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
 
-
-        step1.setLabel("Search for a City");
-//        step1.setSubLabel("Subtitle of step 1");
-        step1.setFragment(new StepFragment1());
-        step1.setPositiveButtonEnable(false);
-
-
-        step2.setLabel("Title of step 2");
-        step2.setSubLabel("Subtitle of step 2");
-        step2.setFragment(new StepFragment2());
-        step2.setPositiveButtonEnable(true);
-
-
-        step3.setLabel("Title of step 3");
-        step3.setSubLabel("Subtitle of step 3");
-        step3.setFragment(new StepFragment2());
-        step3.setPositiveButtonEnable(false);
-        step3.setPositiveButtonEnable(true);
-
-        try{
-            Bundle bundle = getIntent().getExtras(); // Getting the Bundle object that pass from another activity
-            if(bundle != null) {
-                step1.setPositiveButtonEnable(true);
-                String SelectedSearch = bundle.getString("SelectedSearch");
-                Toast.makeText(getApplicationContext(), SelectedSearch, Toast.LENGTH_SHORT).show();
-                mChosenSearch = SelectedSearch;
-
-            }else{
-                Toast.makeText(this, "Null", Toast.LENGTH_SHORT).show();
-            }
-
-        }catch(Exception e){
-            Log.d(TAG,"Error catch");
-        }
-
-
-        steppersView = (SteppersView) findViewById(R.id.steppersView);
-        SteppersView.Config steppersViewConfig = new SteppersView.Config();
-        steppersViewConfig.setOnFinishAction(new OnFinishAction() {
-            @Override
-            public void onFinish() {
-                NewTripActivity.this.startActivity(new Intent(NewTripActivity.this, MainActivity.class));
-                NewTripActivity.this.finish();
-            }
-        });
-
-        steppersViewConfig.setOnCancelAction(new OnCancelAction() {
-            @Override
-            public void onCancel() {
-                NewTripActivity.this.startActivity(new Intent(NewTripActivity.this, MainActivity.class));
-                NewTripActivity.this.finish();
-            }
-        });
-
-        steppersViewConfig.setOnChangeStepAction(new OnChangeStepAction() {
-            @Override
-            public void onChangeStep(int position, SteppersItem activeStep) {
-                Toast.makeText(NewTripActivity.this,
-                        "Step changed to: " + activeStep.getLabel() + " (" + position + ")",
-                        Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        // Setup Support Fragment Manager for fragments in steps
-        steppersViewConfig.setFragmentManager(getSupportFragmentManager());
-
-        ArrayList<SteppersItem> steps = new ArrayList<>();
-
-
-
-
-
-        steps.add(step1);
-        steps.add(step2);
-        steps.add(step3);
-
-        steppersView.setConfig(steppersViewConfig);
-        steppersView.setItems(steps);
-        steppersView.build();
-
         setSupportActionBar(toolbar_newtrip);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        int startingStepPosition = savedInstanceState != null ? savedInstanceState.getInt(CURRENT_STEP_POSITION_KEY) : 0;
+        mData = savedInstanceState != null ? savedInstanceState.getString(DATA) : null;
+        stepperLayout.setAdapter(new StepperAdapter(getSupportFragmentManager(), this), startingStepPosition);
+
 
         materialSearchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
             @Override
@@ -204,8 +126,6 @@ public class NewTripActivity extends AppCompatActivity {
 
 
 
-
-
     }
 
     public String getChosenSearch(){
@@ -213,29 +133,9 @@ public class NewTripActivity extends AppCompatActivity {
     }
 
 
-
-    public static void dialog(boolean value, Context context){
-        Activity activity = (Activity) context;
-        if(!value){
-            Alerter.create(activity)
-                    .setTitle("You're Offline!")
-                    .setBackgroundColorRes(R.color.colorAccent)
-                    .enableSwipeToDismiss()
-                    .show();
-        }else {
-            Alerter.create(activity)
-                    .setTitle("You're back Online!")
-                    .setIcon(R.drawable.alerter_ic_face)
-                    .setBackgroundColorRes(R.color.colorPrimary)
-                    .enableSwipeToDismiss()
-                    .show();
-        }
-    }
-
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-
         
     }
 
@@ -283,12 +183,31 @@ public class NewTripActivity extends AppCompatActivity {
         materialSearchView.setMenuItem(item);
         materialSearchView.setSuggestions(getResources().getStringArray(R.array.query_suggestions));
         menu.findItem(R.id.action_logout).setVisible(false);
-
+        hideSearch();
         return true;
     }
 
     @Override
     public void onBackPressed() {
-        finish();
+        final int currentStepPosition = stepperLayout.getCurrentStepPosition();
+        if (currentStepPosition > 0) {
+            stepperLayout.onBackClicked();
+        } else {
+            finish();
+        }
     }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putInt(CURRENT_STEP_POSITION_KEY, stepperLayout.getCurrentStepPosition());
+        outState.putString(DATA, mData);
+        super.onSaveInstanceState(outState);
+    }
+
+    public void hideSearch(){
+        menu.findItem(R.id.action_search).setVisible(false);
+    }
+
+
 }
+
