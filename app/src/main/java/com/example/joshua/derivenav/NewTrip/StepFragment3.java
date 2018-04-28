@@ -58,13 +58,13 @@ public class StepFragment3 extends ButterKnifeFragment implements BlockingStep {
 
         String name = editName.getText().toString();
         String desc = editDesc.getText().toString();
-        String key = dbRef.push().getKey();
+        final String key = dbRef.child("Trips").child(userID).push().getKey();
 
         if(name != "" && desc != ""){
 
-            Trip newTrip = new Trip(name,desc,key);
-            dbRef.child("Trips").child(userID).child(key).setValue(newTrip);
-            Toast.makeText(getContext(), "New Trip Added", Toast.LENGTH_SHORT).show();
+            Trip newTrip = new Trip(name,desc,name);
+            dbRef.child("Trips").child(userID).child(name).setValue(newTrip);
+            Toast.makeText(getContext(), name, Toast.LENGTH_SHORT).show();
 //            editName.setText("");
 //            editDesc.setText("");
 

@@ -1,5 +1,7 @@
 package com.example.joshua.derivenav.com.joshua.api.model;
 
+import android.support.annotation.Nullable;
+
 /**
  * Created by Joshua on 25/04/2018.
  */
@@ -8,12 +10,16 @@ public class Trip {
 
     private String name;
     private String desc;
-    private String pushID;
+    @Nullable private String pushID;
 
     public Trip(String name, String desc,String pushID) {
         this.name = name;
         this.desc = desc;
         this.pushID = pushID;
+    }
+
+    public Trip() {
+
     }
 
     public String getPushID() {

@@ -30,6 +30,8 @@ import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.joshua.derivenav.Destinations.Destinations;
+import com.example.joshua.derivenav.UserTrips.UserTripsFragment;
 import com.example.joshua.derivenav.com.joshua.api.model.adapter.POIAdapter;
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnCompleteListener;
