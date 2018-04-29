@@ -1,8 +1,6 @@
 package com.example.joshua.derivenav.NewTrip;
 
-import android.app.ProgressDialog;
 import android.content.Context;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -10,20 +8,15 @@ import android.support.v4.app.Fragment;
 
 import android.view.Menu;
 import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 
-import com.example.joshua.derivenav.NewTripActivity;
+import com.example.joshua.derivenav.Constants;
 import com.example.joshua.derivenav.R;
-import com.example.joshua.derivenav.com.joshua.api.controller.RestManager;
 
-import com.example.joshua.derivenav.com.joshua.api.model.City;
 import com.example.joshua.derivenav.com.joshua.api.model.Trip;
-import com.example.joshua.derivenav.com.joshua.api.model.adapter.POIAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -37,8 +30,6 @@ import com.stepstone.stepper.StepperLayout;
 import com.stepstone.stepper.VerificationError;
 
 
-import net.steamcrafted.materialiconlib.MaterialMenuInflater;
-
 import butterknife.BindView;
 import butterknife.OnClick;
 
@@ -48,10 +39,12 @@ import butterknife.OnClick;
  */
 public class StepFragment3 extends ButterKnifeFragment implements BlockingStep {
 
+
     @Override
     public void onNextClicked(StepperLayout.OnNextClickedCallback callback) {
 
     }
+
 
     @Override
     public void onCompleteClicked(StepperLayout.OnCompleteClickedCallback callback) {
@@ -60,13 +53,13 @@ public class StepFragment3 extends ButterKnifeFragment implements BlockingStep {
         String desc = editDesc.getText().toString();
         final String key = dbRef.child("Trips").child(userID).push().getKey();
 
+        //if fields are entered, then create new Trip
+        //populate data with API
         if(name != "" && desc != ""){
 
-            Trip newTrip = new Trip(name,desc,name);
-            dbRef.child("Trips").child(userID).child(name).setValue(newTrip);
-            Toast.makeText(getContext(), name, Toast.LENGTH_SHORT).show();
-//            editName.setText("");
-//            editDesc.setText("");
+            Trip newTrip = new Trip(name,desc,key);
+            dbRef.child("Trips").child(userID).child(key).setValue(newTrip);
+            getActivity().finish();
 
         }else{
             Toast.makeText(getContext(), "Please fill in the fields", Toast.LENGTH_SHORT).show();
@@ -169,12 +162,6 @@ public class StepFragment3 extends ButterKnifeFragment implements BlockingStep {
 
             }
         });
-
-    }
-
-    @OnClick(R.id.btn_save_trip)
-    public void saveTrip(View view) {
-
 
     }
 

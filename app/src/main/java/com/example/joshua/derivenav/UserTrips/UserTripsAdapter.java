@@ -64,8 +64,6 @@ public class UserTripsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         }
     }
 
-
-
     @Override
     public int getItemCount() {
 
@@ -95,16 +93,6 @@ public class UserTripsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         @BindView(R.id.item_txt_title) TextView itemTxtTitle;
         @BindView(R.id.item_txt_message) TextView itemTxtMessage;
 
-        // @BindView(R.id.img_user)
-        // ImageView imgUser;
-        // @BindView(R.id.item_txt_title)
-        // TextView itemTxtTitle;
-        // @BindView(R.id.item_txt_message)
-        // TextView itemTxtMessage;
-        // @BindView(R.id.radio_list)
-        // RadioButton itemTxtMessage;
-        // @BindView(R.id.check_list)
-        // CheckBox itemCheckList;
         public ViewHolder(final View itemView) {
             super(itemView);
 

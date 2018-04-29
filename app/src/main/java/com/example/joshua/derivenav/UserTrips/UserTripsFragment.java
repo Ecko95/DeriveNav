@@ -67,6 +67,7 @@ public class UserTripsFragment extends Fragment {
 
     private ArrayList<UserTrips> modelList = new ArrayList<>();
 
+
     private static final String TAG = "";
 
     private FirebaseAuth mAuth;
@@ -114,12 +115,22 @@ public class UserTripsFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+
+
+        mAdapter = new UserTripsAdapter(getActivity(), modelList);
+
+
+
     }
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+
+
+
 
         View view = inflater.inflate(R.layout.fragment_user_trips, container, false);
 
@@ -131,24 +142,24 @@ public class UserTripsFragment extends Fragment {
 
 
 
-
-
-
-
         mRef.child("Trips").child(userID).addValueEventListener(new ValueEventListener() {
+
+
 
             @Override
             public void onDataChange(final DataSnapshot dataSnapshot) {
 
-                mAdapter = new UserTripsAdapter(getActivity(), modelList);
-                setAdapter();
+                recyclerView.setAdapter(mAdapter);
+                //clears list for refresh
+                modelList.clear();
+
 
                     final Iterator<DataSnapshot> items = dataSnapshot.getChildren().iterator();
                     while (items.hasNext()){
+
                         DataSnapshot item = items.next();
                         Trip userInfo = item.getValue(Trip.class);
-                        modelList.add(new UserTrips(userInfo.getName(), userInfo.getDesc()));
-                        Toast.makeText(getContext(),"display", Toast.LENGTH_SHORT).show();
+                        modelList.add(new UserTrips(userInfo.getName(), userInfo.getDesc(), userInfo.getPushID()));
                     }
 
 
@@ -172,7 +183,8 @@ public class UserTripsFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this,view);
-        //setAdapter();
+
+        setAdapter();
 
         swipeRefreshRecyclerList.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -184,7 +196,7 @@ public class UserTripsFragment extends Fragment {
                     public void run() {
 
                         if (swipeRefreshRecyclerList.isRefreshing())
-
+                            mAdapter.notifyDataSetChanged();
                             swipeRefreshRecyclerList.setRefreshing(false);
 
                     }
@@ -197,38 +209,34 @@ public class UserTripsFragment extends Fragment {
 
     private void setAdapter() {
 
-
-
         recyclerView.setHasFixedSize(true);
-
-
         final GridLayoutManager layoutManager = new GridLayoutManager(getActivity(), 2);
         recyclerView.addItemDecoration(new GridMarginDecoration(getActivity(), 2, 2, 2, 2));
         recyclerView.setLayoutManager(layoutManager);
 
 
-        recyclerView.setAdapter(mAdapter);
-
 
         mAdapter.SetOnItemClickListener(new UserTripsAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position, UserTrips model) {
-
-                modelList.remove(position);
-                //handle item click events here
+                removeItem(model);
+                for (UserTrips trip : modelList) {
+                    System.out.println("Number = " + trip);
+                }
                 mAdapter.notifyDataSetChanged();
-                mAdapter.updateList(modelList);
-                mRef.child("Trips").child(userID).child(model.getTitle()).removeValue();
 //                Toast.makeText(getContext(), "Deleted: " + model.getTitle(), Toast.LENGTH_SHORT).show();
-
-
 
             }
         });
+    }
 
+    public void removeItem(UserTrips trip){
+        ArrayList<UserTrips> modelList2 = new ArrayList<>();
 
+        mRef.child("Trips").child(userID).child(trip.getKey()).removeValue();
 
-
+        mAdapter.updateList(modelList);
+        Toast.makeText(getContext(), "deleted" + trip.getTitle(), Toast.LENGTH_SHORT).show();
 
     }
 

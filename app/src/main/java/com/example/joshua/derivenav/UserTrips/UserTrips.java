@@ -10,14 +10,18 @@ public class UserTrips {
 
     private String key;
 
-
-    public UserTrips(String title, String description) {
-        this.title = title;
-        this.description = description;
-    }
-
     public UserTrips() {
 
+    }
+
+    public UserTrips(String title, String description, String key) {
+        this.title = title;
+        this.description = description;
+        this.key = key;
+    }
+
+    public String getKey() {
+        return key;
     }
 
     public String getTitle() {

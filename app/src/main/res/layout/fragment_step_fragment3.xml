@@ -81,18 +81,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <Button
-            android:id="@+id/btn_save_trip"
-            style="@android:style/Widget.Material.Light.Button.Borderless"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="SAVE"
-            android:clickable="true"
-            android:textColor="@color/colorSecondaryText"
-            app:layout_constraintBottom_toBottomOf="@+id/toolbar3"
-            app:layout_constraintEnd_toEndOf="@+id/toolbar3"
-            app:layout_constraintTop_toTopOf="parent" />
-
     </android.support.constraint.ConstraintLayout>
 
 
