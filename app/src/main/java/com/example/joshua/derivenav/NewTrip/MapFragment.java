@@ -36,7 +36,10 @@ import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.stepstone.stepper.BlockingStep;
 import com.stepstone.stepper.Step;
+import com.stepstone.stepper.StepperLayout;
 import com.stepstone.stepper.VerificationError;
 
 import android.widget.Toast;
@@ -55,7 +58,7 @@ import butterknife.ButterKnife;
  */
 
 
-public class MapFragment extends Fragment implements Step{
+public class MapFragment extends Fragment implements BlockingStep{
 
     private RecyclerView recyclerView;
 
@@ -101,13 +104,10 @@ public class MapFragment extends Fragment implements Step{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-
-
         View view = inflater.inflate(R.layout.fragment_map, container, false);
-
-
-         ButterKnife.bind(this, view);
+        ButterKnife.bind(this, view);
         findViews(view);
+        getLocationPermission();
 
         return view;
 
@@ -120,6 +120,7 @@ public class MapFragment extends Fragment implements Step{
             public void onMapReady(GoogleMap mMap) {
                 Toast.makeText(getActivity(), "Map Ready!", Toast.LENGTH_SHORT).show();
                 googleMap = mMap;
+                mMap.addMarker(new MarkerOptions().position(new LatLng(-3.6706871,40.415674 )).title("Marker"));
             }
         });
     }
@@ -236,4 +237,19 @@ public class MapFragment extends Fragment implements Step{
 
     }
 
+    @Override
+    public void onNextClicked(StepperLayout.OnNextClickedCallback callback) {
+        //null
+    }
+
+    @Override
+    public void onCompleteClicked(StepperLayout.OnCompleteClickedCallback callback) {
+        callback.complete();
+        getActivity().finish();
+    }
+
+    @Override
+    public void onBackClicked(StepperLayout.OnBackClickedCallback callback) {
+        callback.goToPrevStep();
+    }
 }

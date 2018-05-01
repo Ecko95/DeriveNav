@@ -109,16 +109,16 @@ public class StepFragment2 extends ButterKnifeFragment implements BlockingStep {
                 dialog.dismiss();
                 callback.goToNextStep();
             }
-        }, 2000L);
+        }, 1000L);
     }
 
     @Override
     public void onCompleteClicked(StepperLayout.OnCompleteClickedCallback callback) {
-
+        //null
     }
 
     @Override
     public void onBackClicked(StepperLayout.OnBackClickedCallback callback) {
-
+        callback.goToPrevStep();
     }
 }

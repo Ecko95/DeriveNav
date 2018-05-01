@@ -76,7 +76,7 @@ public class StepFragment3 extends ButterKnifeFragment implements BlockingStep {
                 dialog.dismiss();
                 callback.complete();
             }
-        }, 2000L);
+        }, 1000L);
 
 //        String name = editName.getText().toString();
 //        String desc = editDesc.getText().toString();
