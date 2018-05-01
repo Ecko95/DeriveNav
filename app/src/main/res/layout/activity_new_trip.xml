@@ -36,7 +36,7 @@
                 app:ms_backButtonColor="@color/colorSecondaryText"
                 app:ms_nextButtonColor="@color/colorSecondaryText"
                 app:ms_completeButtonColor="@color/colorSecondaryText"
-                app:ms_bottomNavigationBackground="@color/colorPrimary" />
+                app:ms_bottomNavigationBackground="@color/colorPrimary"/>
 
             <FrameLayout
                 android:id="@+id/toolbar_container_new"

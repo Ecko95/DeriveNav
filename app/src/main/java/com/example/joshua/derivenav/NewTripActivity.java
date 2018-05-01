@@ -47,6 +47,7 @@ import butterknife.ButterKnife;
 
 
 public class NewTripActivity extends AppCompatActivity implements StepDataManager, StepperLayout.StepperListener{
+
     @Override
     public void onError(VerificationError verificationError) {
 

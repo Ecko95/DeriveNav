@@ -1,11 +1,14 @@
 package com.example.joshua.derivenav.NewTrip;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
@@ -13,10 +16,11 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 
-import com.example.joshua.derivenav.Constants;
 import com.example.joshua.derivenav.R;
 
 import com.example.joshua.derivenav.com.joshua.api.model.Trip;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -31,7 +35,6 @@ import com.stepstone.stepper.VerificationError;
 
 
 import butterknife.BindView;
-import butterknife.OnClick;
 
 
 /**
@@ -40,31 +43,57 @@ import butterknife.OnClick;
 public class StepFragment3 extends ButterKnifeFragment implements BlockingStep {
 
 
-    @Override
-    public void onNextClicked(StepperLayout.OnNextClickedCallback callback) {
+    private AlertDialog dialog;
 
+    @Override
+    public void onNextClicked(final StepperLayout.OnNextClickedCallback callback) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setView(R.layout.fui_phone_progress_dialog);
+        builder.setCancelable(false);
+        dialog = builder.show();
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                dialog.dismiss();
+                callback.goToNextStep();
+            }
+        }, 2000L);
     }
 
 
     @Override
-    public void onCompleteClicked(StepperLayout.OnCompleteClickedCallback callback) {
+    public void onCompleteClicked(final StepperLayout.OnCompleteClickedCallback callback) {
 
-        String name = editName.getText().toString();
-        String desc = editDesc.getText().toString();
-        final String key = dbRef.child("Trips").child(userID).push().getKey();
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setView(R.layout.fui_phone_progress_dialog);
+        builder.setCancelable(false);
+        dialog = builder.show();
 
-        //if fields are entered, then create new Trip
-        //populate data with API
-        if(name != "" && desc != ""){
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                dialog.dismiss();
+                callback.complete();
+            }
+        }, 2000L);
 
-            Trip newTrip = new Trip(name,desc,key);
-            dbRef.child("Trips").child(userID).child(key).setValue(newTrip);
-            getActivity().finish();
-
-        }else{
-            Toast.makeText(getContext(), "Please fill in the fields", Toast.LENGTH_SHORT).show();
-        }
-        callback.complete();
+//        String name = editName.getText().toString();
+//        String desc = editDesc.getText().toString();
+//        final String key = dbRef.child("Trips").child(userID).push().getKey();
+//
+//        //if fields are entered, then create new Trip
+//        //populate data with API
+//        if(name != "" && desc != ""){
+//
+//            Trip newTrip = new Trip(name,desc,key);
+//            dbRef.child("Trips").child(userID).child(key).setValue(newTrip);
+//            getActivity().finish();
+//
+//        }else{
+//            Toast.makeText(getContext(), "Please fill in the fields", Toast.LENGTH_SHORT).show();
+//        }
+//        callback.complete();
     }
 
     @Override
@@ -81,6 +110,7 @@ public class StepFragment3 extends ButterKnifeFragment implements BlockingStep {
 
     private Menu menu;
 
+    private static final String TAG = "Debugger: ";
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
     private FirebaseDatabase mFirebaseDatabase;
@@ -171,6 +201,24 @@ public class StepFragment3 extends ButterKnifeFragment implements BlockingStep {
         menu.findItem(R.id.action_search).setVisible(false);
 
         super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    public boolean isServicesOK(){
+        Log.d(TAG, "isServicesOk: check google services version");
+        int available = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(getActivity());
+        if(available == ConnectionResult.SUCCESS){
+            Log.d(TAG, "isSerivcesOK: Google Play Services Working");
+
+        }
+        else if (GoogleApiAvailability.getInstance().isUserResolvableError(available)){
+            //an error ocurred
+            Log.d(TAG, "isServicesOK: an error occured but it can be fix");
+//            Dialog dialog = GoogleApiAvailability.getInstance().getErrorDialog(getActivity(), available, ERROR_DIALOG_REQUEST);
+//            dialog.show();
+        }else{
+            return false;
+        }
+        return false;
     }
 
 
