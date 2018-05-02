@@ -12,8 +12,8 @@
 package com.example.joshua.derivenav.com.joshua.api.controller;
 
 
-import com.example.joshua.derivenav.com.joshua.api.model.service.apiService;
-import com.example.joshua.derivenav.com.joshua.api.model.helper.Constants;
+import com.example.joshua.derivenav.com.joshua.api.service.apiService;
+import com.example.joshua.derivenav.com.joshua.api.helper.Constants;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;

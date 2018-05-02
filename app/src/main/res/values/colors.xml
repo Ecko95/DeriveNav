@@ -13,4 +13,7 @@
     <color name="indigo500">#3F51B5</color>
     <color name="purple500">#673AB7</color>
     <color name="overlay_transparent">#a0000000</color>
+    <color name="process_overlay">#96ffffff</color>
+
+
 </resources>

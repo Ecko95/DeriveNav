@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 
+import com.example.joshua.derivenav.NewTrip.CityDestinationsFragment;
 import com.example.joshua.derivenav.NewTrip.MapFragment;
 import com.example.joshua.derivenav.NewTrip.StepFragment1;
 import com.example.joshua.derivenav.NewTrip.StepFragment2;
@@ -26,7 +27,7 @@ public class StepperAdapter extends AbstractFragmentStepAdapter {
     @Override
 
     public int getCount() {
-        return 4;
+        return 3;
     }
 
     @Override
@@ -36,11 +37,9 @@ public class StepperAdapter extends AbstractFragmentStepAdapter {
           case 0:
               return StepFragment1.newInstance();
           case 1:
-              return StepFragment2.newInstance();
+              return CityDestinationsFragment.newInstance();
           case 2:
               return StepFragment3.newInstance();
-          case 3:
-              return MapFragment.newInstance();
           default:
               throw new IllegalArgumentException("Unsupported position: " + position);
       }

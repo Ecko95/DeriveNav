@@ -1,29 +1,15 @@
 package com.example.joshua.derivenav;
 
-import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.SearchManager;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.graphics.Color;
-import android.net.ConnectivityManager;
-import android.os.Build;
 import android.speech.RecognizerIntent;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.design.widget.BottomNavigationView;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatCallback;
-import android.support.v7.app.AppCompatDelegate;
-import android.support.v7.view.ActionMode;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -32,11 +18,10 @@ import android.widget.AdapterView;
 import android.widget.Toast;
 
 import com.example.joshua.derivenav.NewTrip.Adapters.StepperAdapter;
-import com.example.joshua.derivenav.NewTrip.StepDataManager;
+import com.example.joshua.derivenav.NewTrip.DataManagers.StepDataManager;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 import com.stepstone.stepper.StepperLayout;
 import com.stepstone.stepper.VerificationError;
-import com.tapadoo.alerter.Alerter;
 
 import net.steamcrafted.materialiconlib.MaterialMenuInflater;
 
@@ -87,6 +72,8 @@ public class NewTripActivity extends AppCompatActivity implements StepDataManage
     @BindView(R.id.stepperLayout) StepperLayout stepperLayout;
     private Menu menu;
 
+
+
 //    Data objects about to be pass to other fragments
     private static final String CURRENT_STEP_POSITION_KEY = "position";
     private static final String DATA = "data";
@@ -115,7 +102,6 @@ public class NewTripActivity extends AppCompatActivity implements StepDataManage
                 searchIntent.putExtra(SearchManager.QUERY, query);
                 searchIntent.setAction(Intent.ACTION_SEARCH);
                 startActivity(searchIntent);
-                NewTripActivity.this.finish();
                 return false;
             }
 
@@ -135,6 +121,7 @@ public class NewTripActivity extends AppCompatActivity implements StepDataManage
             @Override
             public void onSearchViewClosed() {
                 //Do some magic
+                NewTripActivity.this.finish();
             }
         });
         materialSearchView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -144,6 +131,25 @@ public class NewTripActivity extends AppCompatActivity implements StepDataManage
 
             }
         });
+
+        try{
+            Bundle bundle = getIntent().getExtras(); // Getting the Bundle object that pass from another activity
+            if(bundle != null) {
+                String SelectedSearch = bundle.getString("SelectedSearch");
+                Toast.makeText(getApplicationContext(), SelectedSearch, Toast.LENGTH_SHORT).show();
+                mChosenSearch = SelectedSearch;
+
+            }else{
+                stepperLayout.setNextButtonEnabled(false);
+                stepperLayout.setNextButtonVerificationFailed(true);
+                Toast.makeText(this, "Null", Toast.LENGTH_SHORT).show();
+            }
+
+        }catch(Exception e){
+            Log.d(TAG,"Error catch");
+        }
+
+
 
 
 
@@ -205,7 +211,7 @@ public class NewTripActivity extends AppCompatActivity implements StepDataManage
         materialSearchView.setMenuItem(item);
         materialSearchView.setSuggestions(getResources().getStringArray(R.array.query_suggestions));
         menu.findItem(R.id.action_logout).setVisible(false);
-        hideSearch();
+        //hideSearch();
         return true;
     }
 

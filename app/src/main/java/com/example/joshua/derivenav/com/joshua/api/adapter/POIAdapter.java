@@ -9,7 +9,7 @@
  *  all copies or substantial portions of the Software.
  */
 
-package com.example.joshua.derivenav.com.joshua.api.model.adapter;
+package com.example.joshua.derivenav.com.joshua.api.adapter;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -19,7 +19,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.joshua.derivenav.R;
-import com.example.joshua.derivenav.com.joshua.api.model.Facade.apiClient;
+import com.example.joshua.derivenav.com.joshua.api.Facade.apiClient;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;

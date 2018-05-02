@@ -9,9 +9,9 @@
  *  all copies or substantial portions of the Software.
  */
 
-package com.example.joshua.derivenav.com.joshua.api.model.service;
+package com.example.joshua.derivenav.com.joshua.api.service;
 
-import com.example.joshua.derivenav.com.joshua.api.model.Facade.apiClient;
+import com.example.joshua.derivenav.com.joshua.api.Facade.apiClient;
 
 import java.util.List;
 

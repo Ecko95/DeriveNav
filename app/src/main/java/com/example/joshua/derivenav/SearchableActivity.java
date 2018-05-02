@@ -70,6 +70,7 @@ public class SearchableActivity extends ListActivity implements ServiceListener{
                 dataBundle.putString("SelectedSearch", selectedSearch);
                 moreDetailsIntent.putExtras(dataBundle);
                 startActivity(moreDetailsIntent);
+//                finish();
             }
         });
 

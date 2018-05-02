@@ -34,9 +34,11 @@
                 app:ms_activeStepColor="#FFFFFF"
                 app:ms_inactiveStepColor="#006867"
                 app:ms_backButtonColor="@color/colorSecondaryText"
-                app:ms_nextButtonColor="@color/colorSecondaryText"
+                app:ms_nextButtonColor="@color/disabled_stepper_color"
                 app:ms_completeButtonColor="@color/colorSecondaryText"
-                app:ms_bottomNavigationBackground="@color/colorPrimary"/>
+                app:ms_bottomNavigationBackground="@color/colorPrimary"
+                app:ms_stepperFeedbackType="content_progress|content_overlay"
+                app:ms_stepperFeedback_contentOverlayBackground="@color/process_overlay"/>
 
             <FrameLayout
                 android:id="@+id/toolbar_container_new"

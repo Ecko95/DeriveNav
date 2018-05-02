@@ -9,7 +9,7 @@
  *  all copies or substantial portions of the Software.
  */
 
-package com.example.joshua.derivenav.com.joshua.api.model.Facade;
+package com.example.joshua.derivenav.com.joshua.api.Facade;
 
 import android.graphics.Bitmap;
 

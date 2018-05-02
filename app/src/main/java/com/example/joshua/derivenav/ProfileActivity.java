@@ -5,9 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
-import com.example.joshua.derivenav.com.joshua.api.model.Trip;
 import com.example.joshua.derivenav.com.joshua.api.model.User;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -24,7 +22,7 @@ import butterknife.ButterKnife;
 
 public class ProfileActivity extends AppCompatActivity {
 
-    private static final String TAG = "";
+    private static final String TAG = "Database Message: ";
     private FirebaseDatabase mFirebaseDatabase;
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
@@ -52,23 +50,22 @@ public class ProfileActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
 
-//        mRef = FirebaseDatabase
-//                .getInstance()
-//                .getReference("Trips")
-//                .child(userID);
-
         mRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
+                try{
+                    showData(dataSnapshot);
+                }catch (Exception e){
+                    Log.d(TAG,e.getMessage());
+                }
 
-                showData(dataSnapshot);
 
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-
+                Log.e(TAG,databaseError.getMessage());
             }
         });
 

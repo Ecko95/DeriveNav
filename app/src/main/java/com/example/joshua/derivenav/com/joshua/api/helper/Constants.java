@@ -1,4 +1,4 @@
-package com.example.joshua.derivenav.com.joshua.api.model.helper;
+package com.example.joshua.derivenav.com.joshua.api.helper;
 
 public class Constants {
 

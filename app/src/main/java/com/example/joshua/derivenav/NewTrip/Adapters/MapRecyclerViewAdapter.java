@@ -10,9 +10,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-import android.support.v7.widget.LinearLayoutManager;
-
-import com.example.joshua.derivenav.NewTrip.MapModel;
+import com.example.joshua.derivenav.NewTrip.Models.MapModel;
 import com.example.joshua.derivenav.R;
 
 

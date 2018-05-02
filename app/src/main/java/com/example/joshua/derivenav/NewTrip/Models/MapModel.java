@@ -1,4 +1,4 @@
-package com.example.joshua.derivenav.NewTrip;
+package com.example.joshua.derivenav.NewTrip.Models;
 
 import java.util.ArrayList;
 

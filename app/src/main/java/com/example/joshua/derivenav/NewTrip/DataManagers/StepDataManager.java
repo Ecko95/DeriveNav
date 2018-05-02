@@ -1,4 +1,4 @@
-package com.example.joshua.derivenav.NewTrip;
+package com.example.joshua.derivenav.NewTrip.DataManagers;
 
 /**
  * Created by Joshua on 26/04/2018.

@@ -2,35 +2,24 @@ package com.example.joshua.derivenav.NewTrip;
 
 
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.Context;
-import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-
-import android.util.Log;
 
 import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.example.joshua.derivenav.NewTrip.DataManagers.StepDataManager;
 import com.example.joshua.derivenav.R;
-import com.example.joshua.derivenav.com.joshua.api.controller.RestManager;
-import com.example.joshua.derivenav.com.joshua.api.model.City;
-import com.example.joshua.derivenav.com.joshua.api.model.Facade.apiClient;
-import com.example.joshua.derivenav.com.joshua.api.model.adapter.POIAdapter;
+import com.example.joshua.derivenav.com.joshua.api.adapter.POIAdapter;
 import com.stepstone.stepper.BlockingStep;
 import com.stepstone.stepper.Step;
 import com.stepstone.stepper.StepperLayout;
 import com.stepstone.stepper.VerificationError;
 
-import java.util.List;
-
 import butterknife.BindView;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -58,10 +47,6 @@ public class StepFragment2 extends ButterKnifeFragment implements BlockingStep {
     protected int getLayoutResId() {
         return R.layout.fragment_step_fragment2;
     }
-
-    private POIAdapter mPOIAdapter;
-    private ProgressDialog mDialog;
-    private RestManager mManager;
 
     public StepFragment2() {
         // Required empty public constructor
@@ -98,18 +83,19 @@ public class StepFragment2 extends ButterKnifeFragment implements BlockingStep {
 
     @Override
     public void onNextClicked(final StepperLayout.OnNextClickedCallback callback) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setView(R.layout.fui_phone_progress_dialog);
-        builder.setCancelable(false);
-        dialog = builder.show();
-
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                dialog.dismiss();
-                callback.goToNextStep();
-            }
-        }, 1000L);
+//        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+//        builder.setView(R.layout.fui_phone_progress_dialog);
+//        builder.setCancelable(false);
+//        builder.setTitle("Loading, Please wait...");
+//        dialog = builder.show();
+//
+//        new Handler().postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                dialog.dismiss();
+//                callback.goToNextStep();
+//            }
+//        }, 1000L);
     }
 
     @Override

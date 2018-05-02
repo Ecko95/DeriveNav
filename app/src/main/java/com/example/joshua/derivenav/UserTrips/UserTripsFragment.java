@@ -1,6 +1,8 @@
 package com.example.joshua.derivenav.UserTrips;
 
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.os.Bundle;
 
 import android.support.v7.widget.GridLayoutManager;
@@ -74,6 +76,7 @@ public class UserTripsFragment extends Fragment {
     private static FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference mRef;
     private String userID;
+    private Dialog dialog;
 
     public static FirebaseDatabase getDatabase() {
         if (mFirebaseDatabase == null) {
@@ -146,21 +149,37 @@ public class UserTripsFragment extends Fragment {
 
 
 
+
             @Override
             public void onDataChange(final DataSnapshot dataSnapshot) {
 
-                recyclerView.setAdapter(mAdapter);
-                //clears list for refresh
-                modelList.clear();
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setView(R.layout.fui_phone_progress_dialog);
+                builder.setCancelable(false);
+                builder.setTitle("Loading, Please wait...");
+                dialog = builder.show();
+
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        recyclerView.setAdapter(mAdapter);
+                        //clears list for refresh
+                        modelList.clear();
 
 
-                    final Iterator<DataSnapshot> items = dataSnapshot.getChildren().iterator();
-                    while (items.hasNext()){
+                        final Iterator<DataSnapshot> items = dataSnapshot.getChildren().iterator();
+                        while (items.hasNext()){
 
-                        DataSnapshot item = items.next();
-                        Trip userInfo = item.getValue(Trip.class);
-                        modelList.add(new UserTrips(userInfo.getName(), userInfo.getDesc(), userInfo.getPushID()));
+                            DataSnapshot item = items.next();
+                            Trip userInfo = item.getValue(Trip.class);
+                            modelList.add(new UserTrips(userInfo.getName(), userInfo.getDesc(), userInfo.getPushID()));
+                        }
+                        dialog.dismiss();
+
                     }
+                }, 1500L);
+
+
 
 
 
@@ -210,7 +229,7 @@ public class UserTripsFragment extends Fragment {
     private void setAdapter() {
 
         recyclerView.setHasFixedSize(true);
-        final GridLayoutManager layoutManager = new GridLayoutManager(getActivity(), 2);
+        final GridLayoutManager layoutManager = new GridLayoutManager(getActivity(), 1);
         recyclerView.addItemDecoration(new GridMarginDecoration(getActivity(), 2, 2, 2, 2));
         recyclerView.setLayoutManager(layoutManager);
 

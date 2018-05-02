@@ -1,35 +1,20 @@
 package com.example.joshua.derivenav;
 
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.joshua.derivenav.com.joshua.api.controller.RestManager;
-import com.example.joshua.derivenav.com.joshua.api.model.Facade.apiClient;
-import com.example.joshua.derivenav.com.joshua.api.model.adapter.POIAdapter;
-import com.example.joshua.derivenav.com.joshua.trips.NewTripFragment;
-import com.firebase.ui.auth.AuthUI;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
+import com.example.joshua.derivenav.com.joshua.api.Facade.apiClient;
+import com.example.joshua.derivenav.com.joshua.api.adapter.POIAdapter;
 
 import java.util.List;
 

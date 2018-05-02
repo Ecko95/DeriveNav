@@ -30,9 +30,8 @@ import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.joshua.derivenav.Destinations.Destinations;
 import com.example.joshua.derivenav.UserTrips.UserTripsFragment;
-import com.example.joshua.derivenav.com.joshua.api.model.adapter.POIAdapter;
+import com.example.joshua.derivenav.com.joshua.api.adapter.POIAdapter;
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -151,7 +150,7 @@ public class MainActivity extends AppCompatActivity {
                                 selectedFragment = UserTripsFragment.newInstance();
                                 break;
                             case R.id.navigation_notifications:
-                                selectedFragment = HomeFragment.newInstance();
+                                selectedFragment = TripsFragment.newInstance();
                                 break;
                         }
                         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
@@ -216,6 +215,11 @@ public class MainActivity extends AppCompatActivity {
         mNetworkReceiver = new NetworkChangeReceiver();
         registerNetworkBroadcastForNougat();
 
+
+
+    }
+    public void hideSearch(){
+        menu.findItem(R.id.action_search).setVisible(false);
     }
 
     private void registerNetworkBroadcastForNougat() {
@@ -347,6 +351,7 @@ public class MainActivity extends AppCompatActivity {
         MenuItem item = menu.findItem(R.id.action_search);
         searchView.setMenuItem(item);
         searchView.setSuggestions(getResources().getStringArray(R.array.query_suggestions));
+        hideSearch();
 
         return true;
     }
@@ -368,12 +373,6 @@ public class MainActivity extends AppCompatActivity {
 //    }
     @Override
     public void onBackPressed() {
-        //closes app
-        /*if (getFragmentManager().getBackStackEntryCount() > 0) {
-            getFragmentManager().popBackStack();
-        } else {
-            super.onBackPressed();
-        }*/
         if (searchView.isSearchOpen()) {
             searchView.closeSearch();
         } else {

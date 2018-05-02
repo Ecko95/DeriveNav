@@ -1,19 +1,16 @@
 package com.example.joshua.derivenav.NewTrip;
 
 
-import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -22,33 +19,25 @@ import java.util.ArrayList;
 
 import android.support.v4.widget.SwipeRefreshLayout;
 
-import com.example.joshua.derivenav.Manifest;
 import com.example.joshua.derivenav.NewTrip.Adapters.MapRecyclerViewAdapter;
-import com.example.joshua.derivenav.NewTripActivity;
+import com.example.joshua.derivenav.NewTrip.Models.MapModel;
 import com.example.joshua.derivenav.R;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
-import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.stepstone.stepper.BlockingStep;
-import com.stepstone.stepper.Step;
 import com.stepstone.stepper.StepperLayout;
 import com.stepstone.stepper.VerificationError;
 
 import android.widget.Toast;
-import android.os.Handler;
 
 
 import android.view.ViewGroup;
 
-import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -58,7 +47,7 @@ import butterknife.ButterKnife;
  */
 
 
-public class MapFragment extends Fragment implements BlockingStep{
+public class MapFragment extends Fragment implements BlockingStep, OnMapReadyCallback,GoogleMap.OnCameraMoveStartedListener{
 
     private RecyclerView recyclerView;
 
@@ -73,7 +62,7 @@ public class MapFragment extends Fragment implements BlockingStep{
     private MapRecyclerViewAdapter mAdapter;
 
     private ArrayList<MapModel> modelList = new ArrayList<>();
-    MapView mMapView;
+    private MapView mapView;
     private GoogleMap googleMap;
 
     private static final String FINE_LOCATION = android.Manifest.permission.ACCESS_FINE_LOCATION;
@@ -107,22 +96,12 @@ public class MapFragment extends Fragment implements BlockingStep{
         View view = inflater.inflate(R.layout.fragment_map, container, false);
         ButterKnife.bind(this, view);
         findViews(view);
-        getLocationPermission();
+
+
+
 
         return view;
 
-    }
-
-    public void initMap(){
-        SupportMapFragment mapFragment = (SupportMapFragment) getFragmentManager().findFragmentById(R.id.map);
-        mapFragment.getMapAsync(new OnMapReadyCallback() {
-            @Override
-            public void onMapReady(GoogleMap mMap) {
-                Toast.makeText(getActivity(), "Map Ready!", Toast.LENGTH_SHORT).show();
-                googleMap = mMap;
-                mMap.addMarker(new MarkerOptions().position(new LatLng(-3.6706871,40.415674 )).title("Marker"));
-            }
-        });
     }
 
     private void getLocationPermission(){
@@ -154,7 +133,6 @@ public class MapFragment extends Fragment implements BlockingStep{
                         }
                     }
                     mLocationPermissionGranted = true;
-                    initMap();
                 }
             }
         }
@@ -164,8 +142,19 @@ public class MapFragment extends Fragment implements BlockingStep{
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        initMap(view,savedInstanceState);
+
+        getLocationPermission();
+
         setAdapter();
 
+    }
+
+    private void initMap(View view, Bundle savedInstanceState) {
+        mapView = view.findViewById(R.id.map);
+        mapView.onCreate(savedInstanceState);
+        mapView.onResume();
+        mapView.getMapAsync(this);
     }
 
 
@@ -211,10 +200,17 @@ public class MapFragment extends Fragment implements BlockingStep{
             @Override
             public void onItemClick(View view, int position, MapModel model) {
 
+
+
                 //handle item click events here
                 Toast.makeText(getActivity(), "Hey " + model.getTitle(), Toast.LENGTH_SHORT).show();
 
+                LatLng coordinates = new LatLng(5 + position + .510357,-0.116773);
+                CameraUpdate location = CameraUpdateFactory.newLatLngZoom(coordinates,12);
 
+                googleMap.addMarker(new MarkerOptions().position(coordinates).title("Marker" + position));
+
+                googleMap.animateCamera(location);
             }
         });
 
@@ -251,5 +247,33 @@ public class MapFragment extends Fragment implements BlockingStep{
     @Override
     public void onBackClicked(StepperLayout.OnBackClickedCallback callback) {
         callback.goToPrevStep();
+    }
+
+    @Override
+    public void onMapReady(GoogleMap mMap) {
+        googleMap = mMap;
+        googleMap.setOnCameraMoveStartedListener(this);
+        googleMap.getUiSettings().setMapToolbarEnabled(true);
+        googleMap.getUiSettings().setMyLocationButtonEnabled(true);
+
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(-33.87365, 151.20689), 10));
+
+    }
+
+    @Override
+    public void onCameraMoveStarted(int camera) {
+        if (camera == GoogleMap.OnCameraMoveStartedListener.REASON_GESTURE) {
+            Toast.makeText(getActivity(), "The user gestured on the map.",
+                    Toast.LENGTH_SHORT).show();
+        } else if (camera == GoogleMap.OnCameraMoveStartedListener
+                .REASON_API_ANIMATION) {
+            Toast.makeText(getActivity(), "The user tapped something on the map.",
+                    Toast.LENGTH_SHORT).show();
+        } else if (camera == GoogleMap.OnCameraMoveStartedListener
+                .REASON_DEVELOPER_ANIMATION) {
+            Toast.makeText(getActivity(), "The app moved the camera.",
+                    Toast.LENGTH_SHORT).show();
+        }
+
     }
 }

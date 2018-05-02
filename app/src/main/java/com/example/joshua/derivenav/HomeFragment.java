@@ -12,6 +12,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -20,6 +22,7 @@ import android.widget.Toast;
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -29,6 +32,9 @@ import static com.firebase.ui.auth.AuthUI.getApplicationContext;
 
 
 public class HomeFragment extends Fragment {
+
+    private MaterialSearchView materialSearchView;
+    private Menu menu;
 
     public static HomeFragment newInstance() {
         HomeFragment fragment = new HomeFragment();
@@ -76,7 +82,7 @@ public class HomeFragment extends Fragment {
     @OnClick(R.id.action_card_add)
     public void setAction_card_add(View view){
         startActivity(new Intent(getActivity(), NewTripActivity.class));
-//        ActivityOptions.makeSceneTransitionAnimation(getActivity()).toBundle();
+        ActivityOptions.makeSceneTransitionAnimation(getActivity()).toBundle();
         Toast.makeText(getActivity(), "you clicked on action: add", Toast.LENGTH_SHORT).show();
 
     }
