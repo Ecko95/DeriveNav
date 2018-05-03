@@ -29,6 +29,7 @@ public class TripsFragment extends Fragment implements POIAdapter.POIClickListen
     private POIAdapter mPOIAdapter;
     private RestManager mManager;
     private ProgressDialog mDialog;
+    private String searchCityName;
 
     public static TripsFragment newInstance() {
         TripsFragment fragment = new TripsFragment();
@@ -43,7 +44,12 @@ public class TripsFragment extends Fragment implements POIAdapter.POIClickListen
         mDialog.setIndeterminate(true);
         mManager = new RestManager();
 
-        Call<List<apiClient>> listCall = mManager.getFlowerService().getAllPointsOfInterest();
+        Call<List<apiClient>> listCall = mManager.getFlowerService().getAllPointsOfInterest(
+                "",
+                searchCityName,
+                10
+
+        );
 
 
         listCall.enqueue(new Callback<List<apiClient>>() {

@@ -52,7 +52,18 @@ public class SearchableActivity extends ListActivity implements ServiceListener{
         if(intent.ACTION_SEARCH.equals(intent.getAction())){
             String query = intent.getStringExtra(SearchManager.QUERY);
             //send data to fragment
-            doSearch(query);
+
+//            doSearch(query);
+            String selectedSearch = query;
+
+
+            Intent moreDetailsIntent = new Intent(SearchableActivity.this,NewTripActivity.class);
+
+            Bundle dataBundle = new Bundle();
+            dataBundle.putString("SelectedSearch", selectedSearch);
+            moreDetailsIntent.putExtras(dataBundle);
+            startActivity(moreDetailsIntent);
+            finish();
         }
 
         ButterKnife.bind(this);
@@ -61,15 +72,15 @@ public class SearchableActivity extends ListActivity implements ServiceListener{
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
 //                Toast.makeText(SearchableActivity.this, "You clicked item: " + position, Toast.LENGTH_SHORT).show();
-                String selectedSearch = (String) getListAdapter().getItem(position);
-
-
-                Intent moreDetailsIntent = new Intent(SearchableActivity.this,NewTripActivity.class);
-
-                Bundle dataBundle = new Bundle();
-                dataBundle.putString("SelectedSearch", selectedSearch);
-                moreDetailsIntent.putExtras(dataBundle);
-                startActivity(moreDetailsIntent);
+//                String selectedSearch = (String) getListAdapter().getItem(position);
+//
+//
+//                Intent moreDetailsIntent = new Intent(SearchableActivity.this,NewTripActivity.class);
+//
+//                Bundle dataBundle = new Bundle();
+//                dataBundle.putString("SelectedSearch", selectedSearch);
+//                moreDetailsIntent.putExtras(dataBundle);
+//                startActivity(moreDetailsIntent);
 //                finish();
             }
         });
@@ -88,27 +99,27 @@ public class SearchableActivity extends ListActivity implements ServiceListener{
     private void handleIntent(Intent intent) {
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             String query = intent.getStringExtra(SearchManager.QUERY);
-            doSearch(query);
+//            doSearch(query);
         }
     }
 
-    public void doSearch(String query){
-        String[] result = new String[]{"Searching..."};
-
-        DestinationSearchService destinationSearchService = new DestinationSearchService(query);
-
-        destinationSearchService.addListener(this);
-
-        thread = new Thread(destinationSearchService);
-
-        thread.start();
-
-//        adapter = new ArrayAdapter<String>(this, R.layout.cities_list_cell, R.id.text, result);
-
-        setListAdapter(new ArrayAdapter<String>(this, R.layout.cities_list_cell, R.id.text, result));
-
-
-    }
+//    public void doSearch(String query){
+//        String[] result = new String[]{"Searching..."};
+//
+//        DestinationSearchService destinationSearchService = new DestinationSearchService(query);
+//
+//        destinationSearchService.addListener(this);
+//
+//        thread = new Thread(destinationSearchService);
+//
+//        thread.start();
+//
+////        adapter = new ArrayAdapter<String>(this, R.layout.cities_list_cell, R.id.text, result);
+//
+//        setListAdapter(new ArrayAdapter<String>(this, R.layout.cities_list_cell, R.id.text, result));
+//
+//
+//    }
 
 
     @Override

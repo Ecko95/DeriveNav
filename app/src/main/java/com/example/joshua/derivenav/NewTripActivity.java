@@ -15,9 +15,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 
+import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.example.joshua.derivenav.NewTrip.Adapters.StepperAdapter;
+import com.example.joshua.derivenav.NewTrip.CityDestinationsFragment;
 import com.example.joshua.derivenav.NewTrip.DataManagers.StepDataManager;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 import com.stepstone.stepper.StepperLayout;
@@ -98,10 +100,19 @@ public class NewTripActivity extends AppCompatActivity implements StepDataManage
         materialSearchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
+
+
                 Intent searchIntent = new Intent(getApplicationContext(), SearchableActivity.class);
                 searchIntent.putExtra(SearchManager.QUERY, query);
                 searchIntent.setAction(Intent.ACTION_SEARCH);
                 startActivity(searchIntent);
+
+//                String SelectedSearch = query;
+//                Toast.makeText(getApplicationContext(), SelectedSearch, Toast.LENGTH_SHORT).show();
+//                mChosenSearch = SelectedSearch;
+
+
+
                 return false;
             }
 
@@ -149,11 +160,23 @@ public class NewTripActivity extends AppCompatActivity implements StepDataManage
         }catch(Exception e){
             Log.d(TAG,"Error catch");
         }
+        try{
+            Bundle bundle = getIntent().getExtras(); // Getting the Bundle object that pass from another activity
+            if(bundle != null) {
+                String SelectedSearch = bundle.getString("SelectedSearch");
+                Toast.makeText(getApplicationContext(), SelectedSearch, Toast.LENGTH_SHORT).show();
+                mChosenSearch = SelectedSearch;
 
+            }else{
+                //disables next fragment button
+                stepperLayout.setNextButtonEnabled(false);
+                stepperLayout.setNextButtonVerificationFailed(true);
+//                Toast.makeText(this, "Null", Toast.LENGTH_SHORT).show();
+            }
 
-
-
-
+        }catch(Exception e){
+            Log.d(TAG,"Error catch");
+        }
 
     }
 

@@ -1,6 +1,5 @@
 package com.example.joshua.derivenav.Api.Facade;
 
-import com.example.joshua.derivenav.Api.Models.CityDestinationsModel;
 import com.example.joshua.derivenav.NewTrip.Models.DestinationModel;
 
 import java.util.List;

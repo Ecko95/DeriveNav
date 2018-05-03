@@ -66,7 +66,6 @@ public class StepFragment1 extends Fragment implements BlockingStep, StepperLayo
             String chosenSearch = getArguments().getString("chosenSearch");
             txt_selected_search.setText(chosenSearch);
 
-
             return view;
 
 

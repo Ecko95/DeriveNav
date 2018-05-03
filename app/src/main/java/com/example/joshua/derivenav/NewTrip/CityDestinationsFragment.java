@@ -9,26 +9,19 @@ import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
-
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import com.example.joshua.derivenav.Api.ApiController;
-import com.example.joshua.derivenav.Api.Facade.FacadeApiService;
-import com.example.joshua.derivenav.Api.Models.CityDestinationsModel;
 import com.example.joshua.derivenav.NewTrip.Adapters.DestinationsRecyclerViewAdapter;
 import com.example.joshua.derivenav.NewTrip.DataManagers.StepDataManager;
 import com.example.joshua.derivenav.NewTrip.Models.DestinationModel;
+import com.example.joshua.derivenav.NewTripActivity;
 import com.example.joshua.derivenav.R;
-import com.example.joshua.derivenav.com.joshua.api.Facade.apiClient;
-import com.example.joshua.derivenav.com.joshua.api.adapter.POIAdapter;
-import com.example.joshua.derivenav.com.joshua.api.controller.RestManager;
 import com.stepstone.stepper.BlockingStep;
 import com.stepstone.stepper.StepperLayout;
 import com.stepstone.stepper.VerificationError;
@@ -51,6 +44,7 @@ public class CityDestinationsFragment extends Fragment implements BlockingStep {
     private StepDataManager stepDataManager;
     private AlertDialog mDialog;
     private ApiController mControllerManager;
+    private String mChosenCitySearch;
 
     // @BindView(R.id.recycler_view)
     // RecyclerView recyclerView;
@@ -77,7 +71,10 @@ public class CityDestinationsFragment extends Fragment implements BlockingStep {
 
     }
 
-
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -87,6 +84,28 @@ public class CityDestinationsFragment extends Fragment implements BlockingStep {
 
         // ButterKnife.bind(this);
         findViews(view);
+
+        try{
+
+            NewTripActivity activity = (NewTripActivity) getActivity();
+            String myDataFromActivity = activity.getChosenSearch();
+            mChosenCitySearch = myDataFromActivity.toString();
+
+            String chosenSearch = getArguments().getString("chosenSearch");
+            Toast.makeText(activity, chosenSearch, Toast.LENGTH_SHORT).show();
+
+            mChosenCitySearch = getArguments().getString("Search");
+            Toast.makeText(getActivity(), mChosenCitySearch, Toast.LENGTH_SHORT).show();
+
+
+            return view;
+
+
+        }catch(Exception e){
+
+            Toast.makeText(getActivity(), "Nothing", Toast.LENGTH_SHORT).show();
+
+        }
 
         getFeed();
 

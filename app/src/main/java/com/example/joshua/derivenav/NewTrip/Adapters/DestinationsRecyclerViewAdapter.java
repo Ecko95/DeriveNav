@@ -7,21 +7,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import java.util.ArrayList;
-
-import com.example.joshua.derivenav.Api.Facade.FacadeApiService;
-import com.example.joshua.derivenav.Api.Models.CityDestinationsModel;
 import com.example.joshua.derivenav.NewTrip.Models.DestinationModel;
 import com.example.joshua.derivenav.R;
-import com.squareup.picasso.Picasso;
-
 import android.widget.CheckBox;
-
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
-
 import android.widget.CompoundButton;
 
 
@@ -34,21 +25,14 @@ public class DestinationsRecyclerViewAdapter extends RecyclerView.Adapter<Recycl
     private static final int TYPE_HEADER = 0;
     private static final int TYPE_ITEM = 1;
     private String mHeaderTitle;
-
     private OnHeaderClickListener mHeaderClickListener;
-
     private Context mContext;
     private ArrayList<DestinationModel> modelList;
-    private CityDestinationsModel cityDestinationsModel;
-
     private OnItemClickListener mItemClickListener;
-
     private OnCheckedListener mOnCheckedListener;
-
 
     private Set<Integer> checkSet = new HashSet<>();
 
-    private ArrayList<CityDestinationsModel> mDestinationList;
 
 
     public DestinationsRecyclerViewAdapter(Context context, ArrayList<DestinationModel> modelList, String headerTitle) {
