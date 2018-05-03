@@ -3,7 +3,7 @@
     <string name="title_home">Home</string>
     <string name="title_trips">Trips</string>
     <string name="title_notifications">Notifications</string>
-    <string name="search_hint">Search(#8230)</string>
+    <string name="search_hint">Search for a city...</string>
     <string name="app_intro">Welcome to DeriveNav</string>
     <string name="label_rv_simple">Simple RecyclerView</string>
 
@@ -15,7 +15,23 @@
         <item>Madrid</item>
         <item>New York</item>
         <item>Dubai</item>
-        <item>Tokio</item>
+        <item>Tokyo</item>
+        <item>Barcelona</item>
+        <item>Seville</item>
+        <item>Majorca</item>
+        <item>Paris</item>
+        <item>Amsterdam</item>
+        <item>Zagreb</item>
+        <item>Helsinki</item>
+        <item>Bucharest</item>
+        <item>Warsaw</item>
+        <item>Lisbon</item>
+        <item>Moscow</item>
+        <item>Stockholm</item>
+        <item>Dublin</item>
+        <item>Athens</item>
+        <item>Prague</item>
+
     </string-array>
     <string name="title_activity_results">ResultsActivity</string>
     <string name="title_activity_main2">UserTrips</string>

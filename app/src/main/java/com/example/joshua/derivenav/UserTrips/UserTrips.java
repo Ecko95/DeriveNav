@@ -1,5 +1,7 @@
 package com.example.joshua.derivenav.UserTrips;
 
+import android.net.Uri;
+
 import java.util.ArrayList;
 
 public class UserTrips {
@@ -10,6 +12,7 @@ public class UserTrips {
 
     private String key;
 
+
     public UserTrips() {
 
     }
@@ -19,6 +22,7 @@ public class UserTrips {
         this.description = description;
         this.key = key;
     }
+
 
     public String getKey() {
         return key;

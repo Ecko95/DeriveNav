@@ -83,7 +83,7 @@ public class HomeFragment extends Fragment {
     public void setAction_card_add(View view){
         startActivity(new Intent(getActivity(), NewTripActivity.class));
         ActivityOptions.makeSceneTransitionAnimation(getActivity()).toBundle();
-        Toast.makeText(getActivity(), "you clicked on action: add", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(getActivity(), "you clicked on action: add", Toast.LENGTH_SHORT).show();
 
     }
     @OnClick(R.id.action_card_profile)

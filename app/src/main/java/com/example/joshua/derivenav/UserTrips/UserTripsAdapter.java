@@ -15,6 +15,7 @@ import android.support.v7.widget.LinearLayoutManager;
 
 import com.ahamed.multiviewadapter.ItemViewHolder;
 import com.example.joshua.derivenav.R;
+import com.squareup.picasso.Picasso;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -89,7 +90,7 @@ public class UserTripsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
 
 
-        @BindView(R.id.img_user) ImageView imgUser;
+        @BindView(R.id.img_trip) ImageView imgTrip;
         @BindView(R.id.item_txt_title) TextView itemTxtTitle;
         @BindView(R.id.item_txt_message) TextView itemTxtMessage;
 
