@@ -10,12 +10,16 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import com.example.joshua.derivenav.Api.Facade.FacadeApiService;
+import com.example.joshua.derivenav.Api.Models.CityDestinationsModel;
 import com.example.joshua.derivenav.NewTrip.Models.DestinationModel;
 import com.example.joshua.derivenav.R;
+import com.squareup.picasso.Picasso;
 
 import android.widget.CheckBox;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import android.widget.CompoundButton;
@@ -35,6 +39,7 @@ public class DestinationsRecyclerViewAdapter extends RecyclerView.Adapter<Recycl
 
     private Context mContext;
     private ArrayList<DestinationModel> modelList;
+    private CityDestinationsModel cityDestinationsModel;
 
     private OnItemClickListener mItemClickListener;
 
@@ -42,6 +47,8 @@ public class DestinationsRecyclerViewAdapter extends RecyclerView.Adapter<Recycl
 
 
     private Set<Integer> checkSet = new HashSet<>();
+
+    private ArrayList<CityDestinationsModel> mDestinationList;
 
 
     public DestinationsRecyclerViewAdapter(Context context, ArrayList<DestinationModel> modelList, String headerTitle) {
@@ -70,6 +77,45 @@ public class DestinationsRecyclerViewAdapter extends RecyclerView.Adapter<Recycl
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
+
+//        if (holder instanceof HeaderViewHolder) {
+//            HeaderViewHolder headerHolder = (HeaderViewHolder) holder;
+//
+//            headerHolder.txtTitleHeader.setText(mHeaderTitle);
+//
+//        } else if (holder instanceof ViewHolder) {
+//            final DestinationModel model = getItem(position - 1);
+//            ViewHolder genericViewHolder = (ViewHolder) holder;
+//
+//
+//            genericViewHolder.itemTxtTitle.setText(cityDestinationsModel.getTitle());
+//            genericViewHolder.itemTxtMessage.setText(cityDestinationsModel.getId());
+//            Picasso.with(genericViewHolder.imgItem.getContext()).load(cityDestinationsModel.getThumbnailUrl()).into(genericViewHolder.imgItem);
+//
+//            //in some cases, it will prevent unwanted situations
+//            genericViewHolder.itemCheckList.setOnCheckedChangeListener(null);
+//
+//            //if true, your checkbox will be selected, else unselected
+//            genericViewHolder.itemCheckList.setChecked(checkSet.contains(position));
+//
+//            genericViewHolder.itemCheckList.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//                @Override
+//                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//
+//                    if (isChecked) {
+//                        checkSet.add(position);
+//                    } else {
+//                        checkSet.remove(position);
+//                    }
+//
+//                    mOnCheckedListener.onChecked(buttonView, isChecked, position, model);
+//
+//                }
+//            });
+//
+//
+//        }
+
         if (holder instanceof HeaderViewHolder) {
             HeaderViewHolder headerHolder = (HeaderViewHolder) holder;
 
@@ -78,6 +124,7 @@ public class DestinationsRecyclerViewAdapter extends RecyclerView.Adapter<Recycl
         } else if (holder instanceof ViewHolder) {
             final DestinationModel model = getItem(position - 1);
             ViewHolder genericViewHolder = (ViewHolder) holder;
+
             genericViewHolder.itemTxtTitle.setText(model.getTitle());
             genericViewHolder.itemTxtMessage.setText(model.getMessage());
 
@@ -143,6 +190,11 @@ public class DestinationsRecyclerViewAdapter extends RecyclerView.Adapter<Recycl
         return modelList.get(position);
     }
 
+    public void addDestinations(DestinationModel destinationModel) {
+        modelList.add(destinationModel);
+        notifyDataSetChanged();
+    }
+
     public interface OnItemClickListener {
         void onItemClick(View view, int position, DestinationModel model);
     }
@@ -177,7 +229,7 @@ public class DestinationsRecyclerViewAdapter extends RecyclerView.Adapter<Recycl
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        private ImageView imgUser;
+        private ImageView imgItem;
         private TextView itemTxtTitle;
         private TextView itemTxtMessage;
 
@@ -199,7 +251,7 @@ public class DestinationsRecyclerViewAdapter extends RecyclerView.Adapter<Recycl
 
             // ButterKnife.bind(this, itemView);
 
-            this.imgUser = (ImageView) itemView.findViewById(R.id.img_user);
+            this.imgItem = (ImageView) itemView.findViewById(R.id.img_item);
             this.itemTxtTitle = (TextView) itemView.findViewById(R.id.item_txt_title);
             this.itemTxtMessage = (TextView) itemView.findViewById(R.id.item_txt_message);
             this.itemCheckList = (CheckBox) itemView.findViewById(R.id.check_list);
@@ -217,6 +269,7 @@ public class DestinationsRecyclerViewAdapter extends RecyclerView.Adapter<Recycl
 
         }
     }
+
 
 }
 

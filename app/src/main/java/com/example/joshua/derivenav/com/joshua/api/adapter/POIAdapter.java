@@ -34,10 +34,10 @@ public class POIAdapter extends RecyclerView.Adapter<POIAdapter.Holder> {
 
     private static final String TAG = POIAdapter.class.getSimpleName();
     private final POIClickListener mListener;
-    private List<apiClient> mFlowers;
+    private List<apiClient> mCities;
 
     public POIAdapter(POIClickListener listener) {
-        mFlowers = new ArrayList<>();
+        mCities = new ArrayList<>();
         mListener = listener;
     }
 
@@ -50,16 +50,13 @@ public class POIAdapter extends RecyclerView.Adapter<POIAdapter.Holder> {
     @Override
     public void onBindViewHolder(Holder holder, int position) {
 
-        apiClient curlApi = mFlowers.get(position);
-
+        apiClient curlApi = mCities.get(position);
+//
         holder.mName.setText(curlApi.getTitle());
         holder.mPrice.setText(curlApi.getId().toString());
 
-//        holder.mName.setText(currFlower.getName());
-//        holder.mPrice.setText(String.format("$%.2f", currFlower.getPrice()));
-
         if (curlApi.isFromDatabase()) {
-            holder.mPhoto.setImageBitmap(curlApi.getPicture());
+//            holder.mPhoto.setImageBitmap(curlApi.getPicture());
         } else {
 //            Picasso.with(holder.itemView.getContext()).load(Constants.HTTP.BASE_URL + "/photos/" + currFlower.getPhoto()).into(holder.mPhoto);
             Picasso.with(holder.itemView.getContext()).load(curlApi.getThumbnailUrl()).into(holder.mPhoto);
@@ -68,11 +65,11 @@ public class POIAdapter extends RecyclerView.Adapter<POIAdapter.Holder> {
 
     @Override
     public int getItemCount() {
-        return mFlowers.size();
+        return mCities.size();
     }
 
     public void addFlower(apiClient apiClient) {
-        mFlowers.add(apiClient);
+        mCities.add(apiClient);
         notifyDataSetChanged();
     }
 
@@ -81,11 +78,11 @@ public class POIAdapter extends RecyclerView.Adapter<POIAdapter.Holder> {
      * @return
      */
     public apiClient getSelectedFlower(int position) {
-        return mFlowers.get(position);
+        return mCities.get(position);
     }
 
     public void reset() {
-        mFlowers.clear();
+        mCities.clear();
         notifyDataSetChanged();
     }
 

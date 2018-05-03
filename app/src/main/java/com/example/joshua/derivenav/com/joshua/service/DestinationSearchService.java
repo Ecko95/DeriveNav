@@ -42,8 +42,8 @@ public class DestinationSearchService extends AbstractService {
 
         try {
 //            url = new URL("https://api.sandbox.amadeus.com/v1.2/points-of-interest/yapq-search-text?apikey=nEhIPL2nYIWbA11ILzCQcgu0e3lHuAcA&city_name=" + query);
-//            url = new URL("https://api.sandbox.amadeus.com/v1.2/points-of-interest/yapq-search-text?apikey=OvKwWpIbnYjgvuGVRvs8WL31knaEhIIp&city_name=" + query + "&number_of_images=0&number_of_results=1");
-            url = new URL("http://api.yummly.com/v1/api/recipes?_app_id=1f545a55&_app_key=549fd45076d3ee50a91de7a766a9c5af&q=" + query);
+            url = new URL("https://api.sandbox.amadeus.com/v1.2/points-of-interest/yapq-search-text?apikey=UOJASf28IviDWrP4lFnEYGGJuLgrSxpH&city_name=" + query + "&number_of_results=10");
+//          url = new URL("http://api.yummly.com/v1/api/recipes?_app_id=1f545a55&_app_key=549fd45076d3ee50a91de7a766a9c5af&q=" + query);
             httpURLConnection = (HttpURLConnection)url.openConnection();
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(httpURLConnection.getInputStream()));
 
@@ -58,8 +58,8 @@ public class DestinationSearchService extends AbstractService {
                 error = true;
             }else{
                 //set parrent objects to look for
-//                results = jsonObject.getJSONArray("points_of_interest");
-                results = jsonObject.getJSONArray("matches");
+                results = jsonObject.getJSONArray("points_of_interest");
+//                results = jsonObject.getJSONArray("matches");
             }
         }catch (Exception ex){
             ex.printStackTrace();

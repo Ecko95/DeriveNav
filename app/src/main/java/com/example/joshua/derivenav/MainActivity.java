@@ -30,6 +30,7 @@ import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.joshua.derivenav.NewTrip.CityDestinationsFragment;
 import com.example.joshua.derivenav.UserTrips.UserTripsFragment;
 import com.example.joshua.derivenav.com.joshua.api.adapter.POIAdapter;
 import com.firebase.ui.auth.AuthUI;
@@ -150,7 +151,7 @@ public class MainActivity extends AppCompatActivity {
                                 selectedFragment = UserTripsFragment.newInstance();
                                 break;
                             case R.id.navigation_notifications:
-                                selectedFragment = TripsFragment.newInstance();
+                                selectedFragment = CityDestinationsFragment.newInstance();
                                 break;
                         }
                         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();

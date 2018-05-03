@@ -140,9 +140,10 @@ public class NewTripActivity extends AppCompatActivity implements StepDataManage
                 mChosenSearch = SelectedSearch;
 
             }else{
-                stepperLayout.setNextButtonEnabled(false);
-                stepperLayout.setNextButtonVerificationFailed(true);
-                Toast.makeText(this, "Null", Toast.LENGTH_SHORT).show();
+                //disables next fragment button
+//                stepperLayout.setNextButtonEnabled(false);
+//                stepperLayout.setNextButtonVerificationFailed(true);
+//                Toast.makeText(this, "Null", Toast.LENGTH_SHORT).show();
             }
 
         }catch(Exception e){

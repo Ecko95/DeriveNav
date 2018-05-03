@@ -121,8 +121,8 @@ public class SearchableActivity extends ListActivity implements ServiceListener{
                 try {
                     //search for the wanted object name, name, location, etc
 
-//                    result[i] = destinationSearchService.getResults().getJSONObject(i).getString("title");
-                    result[i] = destinationSearchService.getResults().getJSONObject(i).getString("recipeName");
+                    result[i] = destinationSearchService.getResults().getJSONObject(i).getString("title");
+                    //result[i] = destinationSearchService.getResults().getJSONObject(i).getString("recipeName");
                 }catch (JSONException ex){
                     result[i] = "error";
                 }

@@ -16,6 +16,7 @@ import android.graphics.Bitmap;
 import com.google.gson.annotations.Expose;
 
 import java.io.Serializable;
+import java.security.Identity;
 
 /**
  * @author Filippo Engidashet
@@ -29,9 +30,9 @@ public class apiClient implements Serializable {
 
     private static final long serialVersionUID = 111696345129311948L;
     public byte[] imageByteArray;
-
     private Bitmap picture;
     private boolean isFromDatabase;
+    private String desc;
 
     @Expose
     private Integer id;
@@ -39,6 +40,7 @@ public class apiClient implements Serializable {
     private String title;
     @Expose
     private String thumbnailUrl;
+
 
     public Integer getId() {
         return id;
@@ -79,4 +81,5 @@ public class apiClient implements Serializable {
     public void setFromDatabase(boolean fromDatabase) {
         isFromDatabase = fromDatabase;
     }
+
 }

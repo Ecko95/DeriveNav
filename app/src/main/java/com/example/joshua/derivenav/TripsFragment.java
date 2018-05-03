@@ -42,7 +42,10 @@ public class TripsFragment extends Fragment implements POIAdapter.POIClickListen
         mDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         mDialog.setIndeterminate(true);
         mManager = new RestManager();
+
         Call<List<apiClient>> listCall = mManager.getFlowerService().getAllPointsOfInterest();
+
+
         listCall.enqueue(new Callback<List<apiClient>>() {
             @Override
             public void onResponse(Call<List<apiClient>> call, Response<List<apiClient>> response) {
