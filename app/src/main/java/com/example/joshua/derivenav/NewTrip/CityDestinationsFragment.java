@@ -16,6 +16,7 @@ import android.view.LayoutInflater;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import com.example.joshua.derivenav.Api.ApiController;
 import com.example.joshua.derivenav.NewTrip.Adapters.DestinationsRecyclerViewAdapter;
@@ -101,14 +102,11 @@ public class CityDestinationsFragment extends Fragment implements BlockingStep {
             String myDataFromActivity = activity.getChosenSearch();
             mChosenCitySearch = myDataFromActivity.toString();
 
-            String chosenSearch = getArguments().getString("chosenSearch");
-            Toast.makeText(activity, chosenSearch, Toast.LENGTH_SHORT).show();
+            Toast.makeText(activity, mChosenCitySearch, Toast.LENGTH_SHORT).show();
 
-            mChosenCitySearch = getArguments().getString("Search");
-            Toast.makeText(getActivity(), mChosenCitySearch, Toast.LENGTH_SHORT).show();
-
-
-            return view;
+//            mChosenCitySearch = getArguments().getString("Search");
+//            Toast.makeText(getActivity(), mChosenCitySearch, Toast.LENGTH_SHORT).show();
+            getFeed();
 
 
         }catch(Exception e){
@@ -117,7 +115,7 @@ public class CityDestinationsFragment extends Fragment implements BlockingStep {
 
         }
 
-        getFeed();
+
 
         return view;
 
@@ -262,6 +260,8 @@ public class CityDestinationsFragment extends Fragment implements BlockingStep {
     }
 
     public void getFeed() {
+        mControllerManager = new ApiController();
+
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setView(R.layout.fui_phone_progress_dialog);
         builder.setCancelable(false);
@@ -274,50 +274,59 @@ public class CityDestinationsFragment extends Fragment implements BlockingStep {
                 mDialog.dismiss();
 
                 //run code here
+
+//                HashMap<String,String> hashMap = new HashMap<>();
+//                hashMap.put("search",mChosenCitySearch);
+
+                Call<List<DestinationModel>> listCall = mControllerManager.getDestinationsService()
+                        .getAllPointsOfInterest(mChosenCitySearch);
+
+                listCall.enqueue(new Callback<List<DestinationModel>>() {
+                    @Override
+                    public void onResponse(Call<List<DestinationModel>> call, Response<List<DestinationModel>> response) {
+                        if (response.isSuccessful()) {
+
+                            Toast.makeText(getContext(), "OnResponse Successfull", Toast.LENGTH_SHORT).show();
+                            List<DestinationModel> DestinationList = response.body();
+
+                            for (int i = 0; i < DestinationList.size(); i++) {
+                                DestinationModel destination = DestinationList.get(i);
+                                mAdapter.addDestinations(destination);
+                            }
+                        } else {
+                            int sc = response.code();
+                            switch (sc) {
+                                case 400:
+                                    Log.e("Error 400", "Bad Request");
+                                    break;
+                                case 404:
+                                    Log.e("Error 404", "Not Found");
+                                    break;
+                                default:
+                                    Log.e("Error", "Generic Error");
+                            }
+                        }
+                        mDialog.dismiss();
+                    }
+
+                    @Override
+                    public void onFailure(Call<List<DestinationModel>> call, Throwable t) {
+                        mDialog.dismiss();
+                        t.printStackTrace();
+                        Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+
             }
         }, 1000L);
 
-        mControllerManager = new ApiController();
 
-        Call<List<DestinationModel>> listCall = mControllerManager.getDestinationsService().getAllPointsOfInterest(
-                "UOJASf28IviDWrP4lFnEYGGJuLgrSxpH",
-                mChosenCitySearch,
-                10
-        );
+//        Call<List<DestinationModel>> listCall = mControllerManager.getDestinationsService().getAllPointsOfInterest(
+//                "UOJASf28IviDWrP4lFnEYGGJuLgrSxpH",
+//                mChosenCitySearch,
+//                10
+//        );
 
-        listCall.enqueue(new Callback<List<DestinationModel>>() {
-            @Override
-            public void onResponse(Call<List<DestinationModel>> call, Response<List<DestinationModel>> response) {
-                if (response.isSuccessful()) {
 
-                    List<DestinationModel> DestinationList = response.body();
-
-                    for (int i = 0; i < DestinationList.size(); i++) {
-                        DestinationModel destination = DestinationList.get(i);
-                        mAdapter.addDestinations(destination);
-                    }
-                } else {
-                    int sc = response.code();
-                    switch (sc) {
-                        case 400:
-                            Log.e("Error 400", "Bad Request");
-                            break;
-                        case 404:
-                            Log.e("Error 404", "Not Found");
-                            break;
-                        default:
-                            Log.e("Error", "Generic Error");
-                    }
-                }
-                mDialog.dismiss();
-            }
-
-            @Override
-            public void onFailure(Call<List<DestinationModel>> call, Throwable t) {
-                mDialog.dismiss();
-                t.printStackTrace();
-//                Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
     }
 }
