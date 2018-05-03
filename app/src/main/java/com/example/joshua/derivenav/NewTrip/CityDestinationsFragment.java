@@ -3,6 +3,7 @@ package com.example.joshua.derivenav.NewTrip;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.os.Bundle;
 
 import android.os.Handler;
@@ -69,6 +70,15 @@ public class CityDestinationsFragment extends Fragment implements BlockingStep {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
 
+    }
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof StepDataManager) {
+            stepDataManager = (StepDataManager) context;
+        } else {
+            throw new IllegalStateException("Activity must implement DataManager interface!");
+        }
     }
 
     @Override
@@ -232,6 +242,9 @@ public class CityDestinationsFragment extends Fragment implements BlockingStep {
 
     @Override
     public void onSelected() {
+        Toast.makeText(getContext(), stepDataManager.getData(), Toast.LENGTH_SHORT).show();
+
+        mChosenCitySearch = stepDataManager.getData();
 
     }
 
@@ -266,7 +279,11 @@ public class CityDestinationsFragment extends Fragment implements BlockingStep {
 
         mControllerManager = new ApiController();
 
-        Call<List<DestinationModel>> listCall = mControllerManager.getDestinationsService().getAllPointsOfInterest();
+        Call<List<DestinationModel>> listCall = mControllerManager.getDestinationsService().getAllPointsOfInterest(
+                "UOJASf28IviDWrP4lFnEYGGJuLgrSxpH",
+                mChosenCitySearch,
+                10
+        );
 
         listCall.enqueue(new Callback<List<DestinationModel>>() {
             @Override

@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.example.joshua.derivenav.com.joshua.api.controller.RestManager;
 import com.example.joshua.derivenav.com.joshua.api.Facade.apiClient;
 import com.example.joshua.derivenav.com.joshua.api.adapter.POIAdapter;
+import com.example.joshua.derivenav.com.joshua.api.helper.*;
 
 import java.util.List;
 
@@ -44,12 +45,7 @@ public class TripsFragment extends Fragment implements POIAdapter.POIClickListen
         mDialog.setIndeterminate(true);
         mManager = new RestManager();
 
-        Call<List<apiClient>> listCall = mManager.getFlowerService().getAllPointsOfInterest(
-                "",
-                searchCityName,
-                10
-
-        );
+        Call<List<apiClient>> listCall = mManager.getFlowerService().getAllPointsOfInterest();
 
 
         listCall.enqueue(new Callback<List<apiClient>>() {

@@ -50,8 +50,6 @@ public class StepFragment1 extends Fragment implements BlockingStep, StepperLayo
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
 
-
-
         View view = inflater.inflate(R.layout.fragment_step_fragment1, container, false);
         ButterKnife.bind(this,view);
 
@@ -110,12 +108,11 @@ public class StepFragment1 extends Fragment implements BlockingStep, StepperLayo
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    callback.goToNextStep();
-                    callback.getStepperLayout().hideProgress();
-
                     //saves data from search activity
                     String enteredText = txt_selected_search.getText().toString();
                     stepDataManager.saveStepData(enteredText);
+                    callback.goToNextStep();
+                    callback.getStepperLayout().hideProgress();
                 }
             }, 2000L);
 

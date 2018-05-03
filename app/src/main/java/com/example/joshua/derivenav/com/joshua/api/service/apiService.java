@@ -12,9 +12,5 @@ import retrofit2.http.Query;
 public interface apiService {
     //gets photos repository
     @GET("/photos")
-    Call<List<apiClient>> getAllPointsOfInterest(
-            @Query("apikey") String apiKey,
-            @Query("city_name") String cityName,
-            @Query("number_of_results") int numberOfResults
-    );
+    Call<List<apiClient>> getAllPointsOfInterest();
 }
