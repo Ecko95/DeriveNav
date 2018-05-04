@@ -47,6 +47,8 @@ public class CityDestinationsFragment extends Fragment implements BlockingStep {
     private AlertDialog mDialog;
     private ApiController mControllerManager;
     private String mChosenCitySearch;
+    private ArrayList<DestinationModel> mDestinationList = new ArrayList<>();
+    private DestinationModel mNewDestinationModel = new DestinationModel();
 
     // @BindView(R.id.recycler_view)
     // RecyclerView recyclerView;
@@ -217,6 +219,18 @@ public class CityDestinationsFragment extends Fragment implements BlockingStep {
             @Override
             public void run() {
                 mDialog.dismiss();
+
+//                mDestinationList.add(new DestinationModel("Android", "Hello Android"));
+//                mNewDestinationModel.setName(mChosenCitySearch);
+//                mNewDestinationModel.setAddress(););
+
+                //list
+//                stepDataManager.saveDestinationList(newDestinationList);
+                //string
+//                stepDataManager.saveStepData(mChosenCitySearch);
+                //object
+//                    stepDataManager.saveDestinationModel(mNewDestinationModel);
+
                 callback.goToNextStep();
             }
         }, 1000L);
@@ -268,57 +282,66 @@ public class CityDestinationsFragment extends Fragment implements BlockingStep {
         builder.setTitle("Loading, Please wait...");
         mDialog = builder.show();
 
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                mDialog.dismiss();
+        try {
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    mDialog.dismiss();
 
-                //run code here
+                    //run code here
 
 //                HashMap<String,String> hashMap = new HashMap<>();
 //                hashMap.put("search",mChosenCitySearch);
 
-                Call<List<DestinationModel>> listCall = mControllerManager.getDestinationsService()
-                        .getAllPointsOfInterest();//mChosenCitySearch
+                    Call<List<DestinationModel>> listCall = mControllerManager.getDestinationsService()
+                            .getAllPointsOfInterest(mChosenCitySearch);//mChosenCitySearch
 
-                listCall.enqueue(new Callback<List<DestinationModel>>() {
-                    @Override
-                    public void onResponse(Call<List<DestinationModel>> call, Response<List<DestinationModel>> response) {
-                        if (response.isSuccessful()) {
+                    listCall.enqueue(new Callback<List<DestinationModel>>() {
+                        @Override
+                        public void onResponse(Call<List<DestinationModel>> call, Response<List<DestinationModel>> response) {
+                            if (response.isSuccessful()) {
 
-                            Toast.makeText(getContext(), "OnResponse Successfull", Toast.LENGTH_SHORT).show();
-                            List<DestinationModel> DestinationList = response.body();
+                                Toast.makeText(getContext(), "OnResponse Successfull", Toast.LENGTH_SHORT).show();
+                                List<DestinationModel> DestinationList = response.body();
 
-                            for (int i = 0; i < DestinationList.size(); i++) {
-                                DestinationModel destination = DestinationList.get(i);
-                                mAdapter.addDestinations(destination);
+                                for (int i = 0; i < DestinationList.size(); i++) {
+                                    DestinationModel destination = DestinationList.get(i);
+                                    mAdapter.addDestinations(destination);
+
+                                    //add new objects
+                                    mDestinationList.add(new DestinationModel(destination.getTitle(), destination.getThumbnailUrl()));
+                                    stepDataManager.saveDestinationList(mDestinationList);
+                                }
+                            } else {
+                                int sc = response.code();
+                                switch (sc) {
+                                    case 400:
+                                        Log.e("Error 400", "Bad Request");
+                                        break;
+                                    case 404:
+                                        Log.e("Error 404", "Not Found");
+                                        break;
+                                    default:
+                                        Log.e("Error", "Generic Error");
+                                }
                             }
-                        } else {
-                            int sc = response.code();
-                            switch (sc) {
-                                case 400:
-                                    Log.e("Error 400", "Bad Request");
-                                    break;
-                                case 404:
-                                    Log.e("Error 404", "Not Found");
-                                    break;
-                                default:
-                                    Log.e("Error", "Generic Error");
-                            }
+                            mDialog.dismiss();
                         }
-                        mDialog.dismiss();
-                    }
 
-                    @Override
-                    public void onFailure(Call<List<DestinationModel>> call, Throwable t) {
-                        mDialog.dismiss();
-                        t.printStackTrace();
-                        Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                });
+                        @Override
+                        public void onFailure(Call<List<DestinationModel>> call, Throwable t) {
+                            mDialog.dismiss();
+                            t.printStackTrace();
+                            Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    });
 
-            }
-        }, 1000L);
+                }
+            }, 1000L);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
 
 
 //        Call<List<DestinationModel>> listCall = mControllerManager.getDestinationsService().getAllPointsOfInterest(
@@ -329,4 +352,5 @@ public class CityDestinationsFragment extends Fragment implements BlockingStep {
 
 
     }
+
 }

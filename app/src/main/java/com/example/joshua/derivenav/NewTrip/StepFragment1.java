@@ -217,7 +217,7 @@ public class StepFragment1 extends Fragment implements BlockingStep, StepperLayo
                     .setPoint(960f, 1970f) // position of the Target. setPoint(Point point), setPoint(View view) will work too.
                     .setRadius(90f) // radius of the Target
                     .setTitle("Click next") // title
-                    .setDescription("And see your search results") // description
+                    .setDescription("to see your search results") // description
                     .setOnSpotlightStartedListener(new OnTargetStateChangedListener<SimpleTarget>() {
                         @Override
                         public void onStarted(SimpleTarget target) {
@@ -240,13 +240,13 @@ public class StepFragment1 extends Fragment implements BlockingStep, StepperLayo
                     .setOnSpotlightStartedListener(new OnSpotlightStartedListener() { // callback when Spotlight starts
                         @Override
                         public void onStarted() {
-                            Toast.makeText(getContext(), "spotlight is started", Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(getContext(), "spotlight is started", Toast.LENGTH_SHORT).show();
                         }
                     })
                     .setOnSpotlightEndedListener(new OnSpotlightEndedListener() { // callback when Spotlight ends
                         @Override
                         public void onEnded() {
-                            Toast.makeText(getContext(), "spotlight is ended", Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(getContext(), "spotlight is ended", Toast.LENGTH_SHORT).show();
                         }
                     })
                     .start(); // start Spotlight

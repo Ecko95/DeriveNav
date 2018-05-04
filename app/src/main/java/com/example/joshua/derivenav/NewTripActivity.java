@@ -21,6 +21,7 @@ import android.widget.Toast;
 import com.example.joshua.derivenav.NewTrip.Adapters.StepperAdapter;
 import com.example.joshua.derivenav.NewTrip.CityDestinationsFragment;
 import com.example.joshua.derivenav.NewTrip.DataManagers.StepDataManager;
+import com.example.joshua.derivenav.NewTrip.Models.DestinationModel;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 import com.stepstone.stepper.StepperLayout;
 import com.stepstone.stepper.VerificationError;
@@ -65,6 +66,25 @@ public class NewTripActivity extends AppCompatActivity implements StepDataManage
         return mData;
     }
 
+    @Override
+    public void saveDestinationList(ArrayList<DestinationModel> newDestinationList) {
+        mNewDestinationList = newDestinationList;
+    }
+
+    @Override
+    public ArrayList<DestinationModel> getNewDestinationList() {
+        return mNewDestinationList;
+    }
+
+    @Override
+    public void saveDestinationModel(DestinationModel data) {
+        mNewDestinationModel = data;
+    }
+
+    @Override
+    public DestinationModel getDestinationModel() {
+        return mNewDestinationModel;
+    }
 
     private static final String TAG = "";
     private String mChosenSearch;
@@ -80,6 +100,8 @@ public class NewTripActivity extends AppCompatActivity implements StepDataManage
     private static final String CURRENT_STEP_POSITION_KEY = "position";
     private static final String DATA = "data";
     private String mData;
+    private ArrayList<DestinationModel> mNewDestinationList = new ArrayList<>();
+    private DestinationModel mNewDestinationModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -2,6 +2,7 @@ package com.example.joshua.derivenav.NewTrip.Adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,7 +13,9 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import com.example.joshua.derivenav.DestinationDetailsActivity;
+import com.example.joshua.derivenav.NewTrip.DataManagers.StepDataManager;
 import com.example.joshua.derivenav.NewTrip.Models.DestinationModel;
+import com.example.joshua.derivenav.NewTrip.Models.UserModel;
 import com.example.joshua.derivenav.R;
 import com.squareup.picasso.Picasso;
 
@@ -39,6 +42,7 @@ public class DestinationsRecyclerViewAdapter extends RecyclerView.Adapter<Recycl
     private ArrayList<DestinationModel> modelList;
     private OnItemClickListener mItemClickListener;
     private OnCheckedListener mOnCheckedListener;
+
 
     private Set<Integer> checkSet = new HashSet<>();
 
@@ -117,11 +121,18 @@ public class DestinationsRecyclerViewAdapter extends RecyclerView.Adapter<Recycl
 
         } else if (holder instanceof ViewHolder) {
             final DestinationModel model = getItem(position - 1);
+
             ViewHolder genericViewHolder = (ViewHolder) holder;
 
+            //PHOTOS MODEL
             genericViewHolder.itemTxtTitle.setText(model.getTitle());
-            genericViewHolder.itemTxtMessage.setText(model.getId().toString());
             Picasso.with(genericViewHolder.imgItem.getContext()).load(model.getThumbnailUrl()).into(genericViewHolder.imgItem);
+
+            //USERS MODEL
+//            genericViewHolder.itemTxtTitle.setText(model.getName());
+//            genericViewHolder.itemTxtMessage.setText(model.getAddress().getGeo().getLat());
+//            Picasso.with(genericViewHolder.imgItem.getContext()).load("https://picsum.photos/100/100/?random").into(genericViewHolder.imgItem);
+
 
             //in some cases, it will prevent unwanted situations
             genericViewHolder.itemCheckList.setOnCheckedChangeListener(null);
@@ -143,6 +154,12 @@ public class DestinationsRecyclerViewAdapter extends RecyclerView.Adapter<Recycl
 
                 }
             });
+
+            //send data to maps fragment
+
+
+
+
 
 
         }

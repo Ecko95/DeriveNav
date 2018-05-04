@@ -10,8 +10,10 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import com.example.joshua.derivenav.NewTrip.Models.DestinationModel;
 import com.example.joshua.derivenav.NewTrip.Models.MapModel;
 import com.example.joshua.derivenav.R;
+import com.squareup.picasso.Picasso;
 
 
 /**
@@ -20,17 +22,18 @@ import com.example.joshua.derivenav.R;
 public class MapRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private Context mContext;
-    private ArrayList<MapModel> modelList;
+    //    private ArrayList<MapModel> modelList;
+    private ArrayList<DestinationModel> modelList;
 
     private OnItemClickListener mItemClickListener;
 
 
-    public MapRecyclerViewAdapter(Context context, ArrayList<MapModel> modelList) {
+    public MapRecyclerViewAdapter(Context context, ArrayList<DestinationModel> modelList) { //MapModel
         this.mContext = context;
         this.modelList = modelList;
     }
 
-    public void updateList(ArrayList<MapModel> modelList) {
+    public void updateList(ArrayList<DestinationModel> modelList) { //MapModel
         this.modelList = modelList;
         notifyDataSetChanged();
 
@@ -49,11 +52,12 @@ public class MapRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
         //Here you can fill your row view
         if (holder instanceof ViewHolder) {
-            final MapModel model = getItem(position);
+            final DestinationModel model = getItem(position); //MapModel
             ViewHolder genericViewHolder = (ViewHolder) holder;
 
             genericViewHolder.itemTxtTitle.setText(model.getTitle());
-            genericViewHolder.itemTxtMessage.setText(model.getMessage());
+            Picasso.with(genericViewHolder.imgUser.getContext()).load(model.getThumbnailUrl()).into(genericViewHolder.imgUser);
+
 
 
         }
@@ -70,13 +74,13 @@ public class MapRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         this.mItemClickListener = mItemClickListener;
     }
 
-    private MapModel getItem(int position) {
+    private DestinationModel getItem(int position) {
         return modelList.get(position);
-    }
+    } //MapModel
 
 
     public interface OnItemClickListener {
-        void onItemClick(View view, int position, MapModel model);
+        void onItemClick(View view, int position, DestinationModel model); //MapModel
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -116,6 +120,11 @@ public class MapRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             });
 
         }
+    }
+
+    public void addDestinations(DestinationModel destinationModel) {
+        modelList.add(destinationModel);
+        notifyDataSetChanged();
     }
 
 }

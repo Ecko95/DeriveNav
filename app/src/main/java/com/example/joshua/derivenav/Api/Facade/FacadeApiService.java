@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
 import retrofit2.http.QueryMap;
@@ -26,12 +27,13 @@ public interface FacadeApiService {
 //        );
 //        @GET("/users")
 //        Call<List<DestinationModel>> getAllPointsOfInterest(
-//                @Query("name") String cityName
+//                @Query("name") String Name
 //        );
 
+        //gets all photos
         @GET("/photos")
         Call<List<DestinationModel>> getAllPointsOfInterest(
-//                @Query("title") String title
+                @Query("title") String title
         );
 
 

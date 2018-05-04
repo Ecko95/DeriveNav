@@ -1,6 +1,7 @@
 package com.example.joshua.derivenav.NewTrip;
 
 
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 
@@ -11,6 +12,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -20,6 +22,8 @@ import java.util.ArrayList;
 import android.support.v4.widget.SwipeRefreshLayout;
 
 import com.example.joshua.derivenav.NewTrip.Adapters.MapRecyclerViewAdapter;
+import com.example.joshua.derivenav.NewTrip.DataManagers.StepDataManager;
+import com.example.joshua.derivenav.NewTrip.Models.DestinationModel;
 import com.example.joshua.derivenav.NewTrip.Models.MapModel;
 import com.example.joshua.derivenav.R;
 import com.google.android.gms.maps.CameraUpdate;
@@ -62,6 +66,7 @@ public class MapFragment extends Fragment implements BlockingStep, OnMapReadyCal
     private MapRecyclerViewAdapter mAdapter;
 
     private ArrayList<MapModel> modelList = new ArrayList<>();
+    private ArrayList<DestinationModel> destinationModelList = new ArrayList<>();
     private MapView mapView;
     private GoogleMap googleMap;
 
@@ -69,10 +74,21 @@ public class MapFragment extends Fragment implements BlockingStep, OnMapReadyCal
     private static final String COARSE_LOCATION = android.Manifest.permission.ACCESS_COARSE_LOCATION;
     private boolean mLocationPermissionGranted = false;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1234;
-
+    private StepDataManager stepDataManager;
+    private static final String TAG = "MapFragment";
 
     public MapFragment() {
         // Required empty public constructor
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof StepDataManager) {
+            stepDataManager = (StepDataManager) context;
+        } else {
+            throw new IllegalStateException("Activity must implement DataManager interface!");
+        }
     }
 
     public static MapFragment newInstance() {
@@ -146,7 +162,7 @@ public class MapFragment extends Fragment implements BlockingStep, OnMapReadyCal
 
         getLocationPermission();
 
-        setAdapter();
+//        setAdapter();
 
     }
 
@@ -166,25 +182,33 @@ public class MapFragment extends Fragment implements BlockingStep, OnMapReadyCal
 
     private void setAdapter() {
 
-
-        modelList.add(new MapModel("Android", "Hello " + " Android"));
-        modelList.add(new MapModel("Beta", "Hello " + " Beta"));
-        modelList.add(new MapModel("Cupcake", "Hello " + " Cupcake"));
-        modelList.add(new MapModel("Donut", "Hello " + " Donut"));
-        modelList.add(new MapModel("Eclair", "Hello " + " Eclair"));
-        modelList.add(new MapModel("Froyo", "Hello " + " Froyo"));
-        modelList.add(new MapModel("Gingerbread", "Hello " + " Gingerbread"));
-        modelList.add(new MapModel("Honeycomb", "Hello " + " Honeycomb"));
-        modelList.add(new MapModel("Ice Cream Sandwich", "Hello " + " Ice Cream Sandwich"));
-        modelList.add(new MapModel("Jelly Bean", "Hello " + " Jelly Bean"));
-        modelList.add(new MapModel("KitKat", "Hello " + " KitKat"));
-        modelList.add(new MapModel("Lollipop", "Hello " + " Lollipop"));
-        modelList.add(new MapModel("Marshmallow", "Hello " + " Marshmallow"));
-        modelList.add(new MapModel("Nougat", "Hello " + " Nougat"));
-        modelList.add(new MapModel("Android O", "Hello " + " Android O"));
+        destinationModelList = stepDataManager.getNewDestinationList();
+        Log.d(TAG, destinationModelList.toString());
+//        for (int i = 0; i < destinationModelList.size(); i++) {
+//            DestinationModel destination = destinationModelList.get(i);
+//            mAdapter.addDestinations(destination);
+//
+//        }
 
 
-        mAdapter = new MapRecyclerViewAdapter(getActivity(), modelList);
+        //destinationModelList.add(new DestinationModel(name, "Hello " + " Android"));
+//        modelList.add(new MapModel("Beta", "Hello " + " Beta"));
+//        modelList.add(new MapModel("Cupcake", "Hello " + " Cupcake"));
+//        modelList.add(new MapModel("Donut", "Hello " + " Donut"));
+//        modelList.add(new MapModel("Eclair", "Hello " + " Eclair"));
+//        modelList.add(new MapModel("Froyo", "Hello " + " Froyo"));
+//        modelList.add(new MapModel("Gingerbread", "Hello " + " Gingerbread"));
+//        modelList.add(new MapModel("Honeycomb", "Hello " + " Honeycomb"));
+//        modelList.add(new MapModel("Ice Cream Sandwich", "Hello " + " Ice Cream Sandwich"));
+//        modelList.add(new MapModel("Jelly Bean", "Hello " + " Jelly Bean"));
+//        modelList.add(new MapModel("KitKat", "Hello " + " KitKat"));
+//        modelList.add(new MapModel("Lollipop", "Hello " + " Lollipop"));
+//        modelList.add(new MapModel("Marshmallow", "Hello " + " Marshmallow"));
+//        modelList.add(new MapModel("Nougat", "Hello " + " Nougat"));
+//        modelList.add(new MapModel("Android O", "Hello " + " Android O"));
+
+
+        mAdapter = new MapRecyclerViewAdapter(getActivity(), destinationModelList);//modelList
 
         recyclerView.setHasFixedSize(true);
 
@@ -198,7 +222,7 @@ public class MapFragment extends Fragment implements BlockingStep, OnMapReadyCal
 
         mAdapter.SetOnItemClickListener(new MapRecyclerViewAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(View view, int position, MapModel model) {
+            public void onItemClick(View view, int position, DestinationModel model) { //MapModel model
 
 
 
@@ -225,7 +249,8 @@ public class MapFragment extends Fragment implements BlockingStep, OnMapReadyCal
 
     @Override
     public void onSelected() {
-
+        setAdapter();
+        //Toast.makeText(getContext(), stepDataManager.getDestinationModel().getName(), Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -276,4 +301,5 @@ public class MapFragment extends Fragment implements BlockingStep, OnMapReadyCal
         }
 
     }
+
 }
