@@ -213,12 +213,29 @@ public class StepFragment1 extends Fragment implements BlockingStep, StepperLayo
                         }
                     })
                     .build();
+            SimpleTarget secondTarget = new SimpleTarget.Builder(getActivity())
+                    .setPoint(960f, 1970f) // position of the Target. setPoint(Point point), setPoint(View view) will work too.
+                    .setRadius(90f) // radius of the Target
+                    .setTitle("Click next") // title
+                    .setDescription("And see your search results") // description
+                    .setOnSpotlightStartedListener(new OnTargetStateChangedListener<SimpleTarget>() {
+                        @Override
+                        public void onStarted(SimpleTarget target) {
+                            // do something
+                        }
+
+                        @Override
+                        public void onEnded(SimpleTarget target) {
+                            // do something
+                        }
+                    })
+                    .build();
 
             Spotlight.with(getActivity())
                     .setOverlayColor(ContextCompat.getColor(getActivity(), R.color.background)) // background overlay color
                     .setDuration(1000L) // duration of Spotlight emerging and disappearing in ms
                     .setAnimation(new DecelerateInterpolator(2f)) // animation of Spotlight
-                    .setTargets(simpleTarget) // set targets. see below for more info
+                    .setTargets(simpleTarget, secondTarget) // set targets. see below for more info
                     .setClosedOnTouchedOutside(true) // set if target is closed when touched outside
                     .setOnSpotlightStartedListener(new OnSpotlightStartedListener() { // callback when Spotlight starts
                         @Override
