@@ -29,9 +29,9 @@ public interface FacadeApiService {
 //                @Query("name") String cityName
 //        );
 
-        @GET("todos")
+        @GET("/photos")
         Call<List<DestinationModel>> getAllPointsOfInterest(
-                @Query("title") String title
+//                @Query("title") String title
         );
 
 

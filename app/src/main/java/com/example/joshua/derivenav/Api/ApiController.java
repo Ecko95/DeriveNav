@@ -1,7 +1,6 @@
 package com.example.joshua.derivenav.Api;
 
 import com.example.joshua.derivenav.Api.Facade.FacadeApiService;
-import com.example.joshua.derivenav.com.joshua.api.helper.Constants;
 
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;

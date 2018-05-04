@@ -12,18 +12,9 @@
 package com.example.joshua.derivenav.com.joshua.api.controller;
 
 
-import android.support.v7.widget.RecyclerView;
-
 import com.example.joshua.derivenav.com.joshua.api.service.apiService;
-import com.example.joshua.derivenav.com.joshua.api.helper.Constants;
+import com.example.joshua.derivenav.Api.Constants;
 
-import java.io.IOException;
-
-import okhttp3.HttpUrl;
-import okhttp3.Interceptor;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 

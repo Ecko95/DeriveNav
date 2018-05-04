@@ -39,7 +39,7 @@ public class StepperAdapter extends AbstractFragmentStepAdapter {
           case 1:
               return CityDestinationsFragment.newInstance();
           case 2:
-              return StepFragment3.newInstance();
+              return MapFragment.newInstance();
           default:
               throw new IllegalArgumentException("Unsupported position: " + position);
       }

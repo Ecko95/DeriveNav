@@ -249,12 +249,12 @@ public class NewTripActivity extends AppCompatActivity implements StepDataManage
         }
     }
 
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        outState.putInt(CURRENT_STEP_POSITION_KEY, stepperLayout.getCurrentStepPosition());
-        outState.putString(DATA, mData);
-        super.onSaveInstanceState(outState);
-    }
+//    @Override
+//    protected void onSaveInstanceState(Bundle outState) {
+//        outState.putInt(CURRENT_STEP_POSITION_KEY, stepperLayout.getCurrentStepPosition());
+//        outState.putString(DATA, mData);
+//        super.onSaveInstanceState(outState);
+//    }
 
     public void hideSearch(){
         menu.findItem(R.id.action_search).setVisible(false);

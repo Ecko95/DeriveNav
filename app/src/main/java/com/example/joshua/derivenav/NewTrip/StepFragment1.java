@@ -8,12 +8,15 @@ import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,11 +30,18 @@ import com.stepstone.stepper.Step;
 import com.stepstone.stepper.StepperLayout;
 import com.stepstone.stepper.VerificationError;
 import com.stepstone.stepper.adapter.StepAdapter;
+import com.takusemba.spotlight.OnSpotlightEndedListener;
+import com.takusemba.spotlight.OnSpotlightStartedListener;
+import com.takusemba.spotlight.OnTargetStateChangedListener;
+import com.takusemba.spotlight.SimpleTarget;
+import com.takusemba.spotlight.Spotlight;
 
 import net.steamcrafted.materialiconlib.MaterialMenuInflater;
 
+import butterknife.BindFloat;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -139,14 +149,11 @@ public class StepFragment1 extends Fragment implements BlockingStep, StepperLayo
     }
 
 
-
-
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        outState.putInt(CURRENT_STEP_POSITION_KEY, mStepperLayout.getCurrentStepPosition());
-        super.onSaveInstanceState(outState);
-    }
+//    @Override
+//    public void onSaveInstanceState(Bundle outState) {
+//        outState.putInt(CURRENT_STEP_POSITION_KEY, mStepperLayout.getCurrentStepPosition());
+//        super.onSaveInstanceState(outState);
+//    }
 
     @Nullable
     @Override
@@ -184,6 +191,52 @@ public class StepFragment1 extends Fragment implements BlockingStep, StepperLayo
 
     public static Step newInstance() {
         return new StepFragment1();
+    }
+
+    @OnClick(R.id.action_card_help)
+    public void setAction_card_help(View view) {
+        try {
+            SimpleTarget simpleTarget = new SimpleTarget.Builder(getActivity())
+                    .setPoint(1000f, 135f) // position of the Target. setPoint(Point point), setPoint(View view) will work too.
+                    .setRadius(70f) // radius of the Target
+                    .setTitle("Search for a city") // title
+                    .setDescription("Try me out!") // description
+                    .setOnSpotlightStartedListener(new OnTargetStateChangedListener<SimpleTarget>() {
+                        @Override
+                        public void onStarted(SimpleTarget target) {
+                            // do something
+                        }
+
+                        @Override
+                        public void onEnded(SimpleTarget target) {
+                            // do something
+                        }
+                    })
+                    .build();
+
+            Spotlight.with(getActivity())
+                    .setOverlayColor(ContextCompat.getColor(getActivity(), R.color.background)) // background overlay color
+                    .setDuration(1000L) // duration of Spotlight emerging and disappearing in ms
+                    .setAnimation(new DecelerateInterpolator(2f)) // animation of Spotlight
+                    .setTargets(simpleTarget) // set targets. see below for more info
+                    .setClosedOnTouchedOutside(true) // set if target is closed when touched outside
+                    .setOnSpotlightStartedListener(new OnSpotlightStartedListener() { // callback when Spotlight starts
+                        @Override
+                        public void onStarted() {
+                            Toast.makeText(getContext(), "spotlight is started", Toast.LENGTH_SHORT).show();
+                        }
+                    })
+                    .setOnSpotlightEndedListener(new OnSpotlightEndedListener() { // callback when Spotlight ends
+                        @Override
+                        public void onEnded() {
+                            Toast.makeText(getContext(), "spotlight is ended", Toast.LENGTH_SHORT).show();
+                        }
+                    })
+                    .start(); // start Spotlight
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
 }

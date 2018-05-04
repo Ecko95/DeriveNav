@@ -1,19 +1,28 @@
 package com.example.joshua.derivenav.NewTrip.Adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import java.util.ArrayList;
+
+import com.example.joshua.derivenav.DestinationDetailsActivity;
 import com.example.joshua.derivenav.NewTrip.Models.DestinationModel;
 import com.example.joshua.derivenav.R;
+import com.squareup.picasso.Picasso;
+
 import android.widget.CheckBox;
 import java.util.HashSet;
 import java.util.Set;
 import android.widget.CompoundButton;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 
 /**
@@ -21,7 +30,7 @@ import android.widget.CompoundButton;
  */
 public class DestinationsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-
+    private static final String TAG = "DestinationsRecyclerVie";
     private static final int TYPE_HEADER = 0;
     private static final int TYPE_ITEM = 1;
     private String mHeaderTitle;
@@ -100,6 +109,7 @@ public class DestinationsRecyclerViewAdapter extends RecyclerView.Adapter<Recycl
 //
 //        }
 
+
         if (holder instanceof HeaderViewHolder) {
             HeaderViewHolder headerHolder = (HeaderViewHolder) holder;
 
@@ -110,8 +120,8 @@ public class DestinationsRecyclerViewAdapter extends RecyclerView.Adapter<Recycl
             ViewHolder genericViewHolder = (ViewHolder) holder;
 
             genericViewHolder.itemTxtTitle.setText(model.getTitle());
-            genericViewHolder.itemTxtMessage.setText(model.getMessage());
-
+            genericViewHolder.itemTxtMessage.setText(model.getId().toString());
+            Picasso.with(genericViewHolder.imgItem.getContext()).load(model.getThumbnailUrl()).into(genericViewHolder.imgItem);
 
             //in some cases, it will prevent unwanted situations
             genericViewHolder.itemCheckList.setOnCheckedChangeListener(null);
@@ -194,6 +204,7 @@ public class DestinationsRecyclerViewAdapter extends RecyclerView.Adapter<Recycl
 
     class HeaderViewHolder extends RecyclerView.ViewHolder {
         TextView txtTitleHeader;
+        ImageView imageView;
 
         public HeaderViewHolder(final View itemView) {
             super(itemView);
@@ -205,6 +216,7 @@ public class DestinationsRecyclerViewAdapter extends RecyclerView.Adapter<Recycl
                 public void onClick(View view) {
 
                     mHeaderClickListener.onHeaderClick(itemView, mHeaderTitle);
+
                 }
             });
 
@@ -213,40 +225,46 @@ public class DestinationsRecyclerViewAdapter extends RecyclerView.Adapter<Recycl
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        private ImageView imgItem;
-        private TextView itemTxtTitle;
-        private TextView itemTxtMessage;
+//        private ImageView imgItem;
+//        private TextView itemTxtTitle;
+//        private TextView itemTxtMessage;
+//
+//
+//        private CheckBox itemCheckList;
 
+        @BindView(R.id.img_item)
+        ImageView imgItem;
+        @BindView(R.id.item_txt_title)
+        TextView itemTxtTitle;
+        @BindView(R.id.item_txt_message)
+        TextView itemTxtMessage;
+        @BindView(R.id.check_list)
+        CheckBox itemCheckList;
 
-        private CheckBox itemCheckList;
-
-        // @BindView(R.id.img_user)
-        // ImageView imgUser;
-        // @BindView(R.id.item_txt_title)
-        // TextView itemTxtTitle;
-        // @BindView(R.id.item_txt_message)
-        // TextView itemTxtMessage;
-        // @BindView(R.id.radio_list)
-        // RadioButton itemTxtMessage;
-        // @BindView(R.id.check_list)
-        // CheckBox itemCheckList;
         public ViewHolder(final View itemView) {
             super(itemView);
 
-            // ButterKnife.bind(this, itemView);
+            ButterKnife.bind(this, itemView);
 
-            this.imgItem = (ImageView) itemView.findViewById(R.id.img_item);
-            this.itemTxtTitle = (TextView) itemView.findViewById(R.id.item_txt_title);
-            this.itemTxtMessage = (TextView) itemView.findViewById(R.id.item_txt_message);
-            this.itemCheckList = (CheckBox) itemView.findViewById(R.id.check_list);
+//            this.imgItem = (ImageView) itemView.findViewById(R.id.img_item);
+//            this.itemTxtTitle = (TextView) itemView.findViewById(R.id.item_txt_title);
+//            this.itemTxtMessage = (TextView) itemView.findViewById(R.id.item_txt_message);
+//            this.itemCheckList = (CheckBox) itemView.findViewById(R.id.check_list);
 
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
+                    int itemPosition = getAdapterPosition();
+                    final DestinationModel model = getItem(itemPosition - 1);
                     mItemClickListener.onItemClick(itemView, getAdapterPosition(), modelList.get(getAdapterPosition() - 1));
+                    Intent intent = new Intent(mContext, DestinationDetailsActivity.class);
+                    intent.putExtra("img_url", model.getThumbnailUrl());
+                    intent.putExtra("destination_title", model.getTitle());
+                    Log.d(TAG, model.getTitle());
+                    Log.d(TAG, model.getThumbnailUrl());
 
+                    mContext.startActivity(intent);
 
                 }
             });

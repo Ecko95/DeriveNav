@@ -279,7 +279,7 @@ public class CityDestinationsFragment extends Fragment implements BlockingStep {
 //                hashMap.put("search",mChosenCitySearch);
 
                 Call<List<DestinationModel>> listCall = mControllerManager.getDestinationsService()
-                        .getAllPointsOfInterest(mChosenCitySearch);
+                        .getAllPointsOfInterest();//mChosenCitySearch
 
                 listCall.enqueue(new Callback<List<DestinationModel>>() {
                     @Override
