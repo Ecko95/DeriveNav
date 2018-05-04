@@ -33,7 +33,7 @@ public interface FacadeApiService {
         //gets all photos
         @GET("/photos")
         Call<List<DestinationModel>> getAllPointsOfInterest(
-                @Query("title") String title
+//                @Query("title") String title
         );
 
 

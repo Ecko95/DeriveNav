@@ -2,7 +2,6 @@ package com.example.joshua.derivenav.NewTrip;
 
 
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
 
@@ -16,7 +15,6 @@ import android.view.LayoutInflater;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import com.example.joshua.derivenav.Api.ApiController;
 import com.example.joshua.derivenav.NewTrip.Adapters.DestinationsRecyclerViewAdapter;
@@ -48,7 +46,10 @@ public class CityDestinationsFragment extends Fragment implements BlockingStep {
     private ApiController mControllerManager;
     private String mChosenCitySearch;
     private ArrayList<DestinationModel> mDestinationList = new ArrayList<>();
+    private ArrayList<DestinationModel> mCheckedDestinationList = new ArrayList<>();
     private DestinationModel mNewDestinationModel = new DestinationModel();
+
+    private boolean isItemsChecked = false;
 
     // @BindView(R.id.recycler_view)
     // RecyclerView recyclerView;
@@ -189,6 +190,20 @@ public class CityDestinationsFragment extends Fragment implements BlockingStep {
 
             @Override
             public void onChecked(View view, boolean isChecked, int position, DestinationModel model) {
+
+                //only pass list if users check items
+
+                if (isChecked) {
+                    isItemsChecked = true;
+                    mCheckedDestinationList.add(model);
+                    //Toast.makeText(getContext(), "list will not be cleared", Toast.LENGTH_SHORT).show();
+                } else {
+
+                    //mDestinationList.clear();
+
+                }
+
+
                 Toast.makeText(getActivity(), (isChecked ? "Checked " : "Unchecked ") + model.getTitle(), Toast.LENGTH_SHORT).show();
             }
         });
@@ -230,6 +245,16 @@ public class CityDestinationsFragment extends Fragment implements BlockingStep {
 //                stepDataManager.saveStepData(mChosenCitySearch);
                 //object
 //                    stepDataManager.saveDestinationModel(mNewDestinationModel);
+                if (isItemsChecked) {
+                    //proceed with all the list of destinations
+                    mAdapter.updateList(mCheckedDestinationList);
+                    stepDataManager.saveDestinationList(mCheckedDestinationList);
+
+                } else {
+                    //clear the destination list when users dont select at least one value
+                    mDestinationList.clear();
+                }
+
 
                 callback.goToNextStep();
             }
@@ -294,7 +319,7 @@ public class CityDestinationsFragment extends Fragment implements BlockingStep {
 //                hashMap.put("search",mChosenCitySearch);
 
                     Call<List<DestinationModel>> listCall = mControllerManager.getDestinationsService()
-                            .getAllPointsOfInterest(mChosenCitySearch);//mChosenCitySearch
+                            .getAllPointsOfInterest();//mChosenCitySearch
 
                     listCall.enqueue(new Callback<List<DestinationModel>>() {
                         @Override

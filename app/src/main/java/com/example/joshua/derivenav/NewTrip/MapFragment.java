@@ -21,6 +21,7 @@ import java.util.ArrayList;
 
 import android.support.v4.widget.SwipeRefreshLayout;
 
+import com.example.joshua.derivenav.NewTrip.Adapters.DestinationsRecyclerViewAdapter;
 import com.example.joshua.derivenav.NewTrip.Adapters.MapRecyclerViewAdapter;
 import com.example.joshua.derivenav.NewTrip.DataManagers.StepDataManager;
 import com.example.joshua.derivenav.NewTrip.Models.DestinationModel;
@@ -64,6 +65,7 @@ public class MapFragment extends Fragment implements BlockingStep, OnMapReadyCal
 
     private SwipeRefreshLayout swipeRefreshRecyclerList;
     private MapRecyclerViewAdapter mAdapter;
+    private DestinationsRecyclerViewAdapter mDestinationAdapter;
 
     private ArrayList<MapModel> modelList = new ArrayList<>();
     private ArrayList<DestinationModel> destinationModelList = new ArrayList<>();
@@ -116,6 +118,7 @@ public class MapFragment extends Fragment implements BlockingStep, OnMapReadyCal
 
 
 
+
         return view;
 
     }
@@ -162,6 +165,7 @@ public class MapFragment extends Fragment implements BlockingStep, OnMapReadyCal
 
         getLocationPermission();
 
+
 //        setAdapter();
 
     }
@@ -182,7 +186,10 @@ public class MapFragment extends Fragment implements BlockingStep, OnMapReadyCal
 
     private void setAdapter() {
 
+        //set list to mapFragmentAdapter RecyclerViews
         destinationModelList = stepDataManager.getNewDestinationList();
+
+
         Log.d(TAG, destinationModelList.toString());
 //        for (int i = 0; i < destinationModelList.size(); i++) {
 //            DestinationModel destination = destinationModelList.get(i);
@@ -237,6 +244,8 @@ public class MapFragment extends Fragment implements BlockingStep, OnMapReadyCal
                 googleMap.animateCamera(location);
             }
         });
+
+        //mAdapter.updateList(destinationModelList);
 
 
     }

@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -14,6 +15,9 @@ import com.example.joshua.derivenav.NewTrip.Models.DestinationModel;
 import com.example.joshua.derivenav.NewTrip.Models.MapModel;
 import com.example.joshua.derivenav.R;
 import com.squareup.picasso.Picasso;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 
 /**
@@ -56,7 +60,7 @@ public class MapRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             ViewHolder genericViewHolder = (ViewHolder) holder;
 
             genericViewHolder.itemTxtTitle.setText(model.getTitle());
-            Picasso.with(genericViewHolder.imgUser.getContext()).load(model.getThumbnailUrl()).into(genericViewHolder.imgUser);
+            Picasso.with(genericViewHolder.imgItem.getContext()).load(model.getThumbnailUrl()).into(genericViewHolder.imgItem);
 
 
 
@@ -85,29 +89,25 @@ public class MapRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        private ImageView imgUser;
-        private TextView itemTxtTitle;
-        private TextView itemTxtMessage;
+//        private ImageView imgItem;
+//        private TextView itemTxtTitle;
+//        private TextView itemTxtMessage;
 
 
-        // @BindView(R.id.img_user)
-        // ImageView imgUser;
-        // @BindView(R.id.item_txt_title)
-        // TextView itemTxtTitle;
-        // @BindView(R.id.item_txt_message)
-        // TextView itemTxtMessage;
-        // @BindView(R.id.radio_list)
-        // RadioButton itemTxtMessage;
-        // @BindView(R.id.check_list)
-        // CheckBox itemCheckList;
+        @BindView(R.id.img_item)
+        ImageView imgItem;
+        @BindView(R.id.item_txt_title)
+        TextView itemTxtTitle;
+        @BindView(R.id.item_txt_message)
+        TextView itemTxtMessage;
         public ViewHolder(final View itemView) {
             super(itemView);
 
-            // ButterKnife.bind(this, itemView);
+            ButterKnife.bind(this, itemView);
 
-            this.imgUser = (ImageView) itemView.findViewById(R.id.img_user);
-            this.itemTxtTitle = (TextView) itemView.findViewById(R.id.item_txt_title);
-            this.itemTxtMessage = (TextView) itemView.findViewById(R.id.item_txt_message);
+//            this.imgItem = (ImageView) itemView.findViewById(R.id.img_user);
+//            this.itemTxtTitle = (TextView) itemView.findViewById(R.id.item_txt_title);
+//            this.itemTxtMessage = (TextView) itemView.findViewById(R.id.item_txt_message);
 
 
             itemView.setOnClickListener(new View.OnClickListener() {
