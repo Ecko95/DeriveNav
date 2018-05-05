@@ -16,12 +16,14 @@ import butterknife.ButterKnife;
 
 public class DestinationDetailsActivity extends AppCompatActivity {
 
-    @BindView(R.id.iv_destination_detail)
-    ImageView iv_destination_detail;
-    @BindView(R.id.txt_destination_detail)
-    TextView txt_destination_detail;
+    @BindView(R.id.iv_destination_img)
+    ImageView iv_destination_img;
+    @BindView(R.id.txt_destination_title)
+    TextView txt_destination_title;
     @BindView(R.id.toolbar_details)
     Toolbar toolbar_details;
+    @BindView(R.id.txt_destination_desc)
+    TextView txt_destination_desc;
 
     private static final String TAG = "DestinationDetailsActiv";
 
@@ -44,14 +46,15 @@ public class DestinationDetailsActivity extends AppCompatActivity {
         if (getIntent().hasExtra("img_url") && getIntent().hasExtra("destination_title")) {
             String imgUrl = getIntent().getStringExtra("img_url");
             String destinationTitle = getIntent().getStringExtra("destination_title");
-
-            updateView(imgUrl, destinationTitle);
+            String destinationDesc = getIntent().getStringExtra("destination_desc");
+            updateView(imgUrl, destinationTitle, destinationDesc);
         }
     }
 
-    private void updateView(String imgUrl, String destinationTitle) {
-        txt_destination_detail.setText(destinationTitle);
-        Picasso.with(getApplicationContext()).load(imgUrl).into(iv_destination_detail);
+    private void updateView(String imgUrl, String destinationTitle, String destinationDesc) {
+        txt_destination_title.setText(destinationTitle);
+        txt_destination_desc.setText(destinationDesc);
+        Picasso.with(getApplicationContext()).load(imgUrl).into(iv_destination_img);
 
     }
 

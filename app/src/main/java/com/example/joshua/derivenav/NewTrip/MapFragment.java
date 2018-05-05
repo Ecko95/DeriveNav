@@ -52,7 +52,7 @@ import butterknife.ButterKnife;
  */
 
 
-public class MapFragment extends Fragment implements BlockingStep, OnMapReadyCallback,GoogleMap.OnCameraMoveStartedListener{
+public class MapFragment extends Fragment implements BlockingStep, OnMapReadyCallback, GoogleMap.OnCameraMoveStartedListener {
 
     private RecyclerView recyclerView;
 
@@ -107,6 +107,7 @@ public class MapFragment extends Fragment implements BlockingStep, OnMapReadyCal
 
         }
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -116,23 +117,20 @@ public class MapFragment extends Fragment implements BlockingStep, OnMapReadyCal
         findViews(view);
 
 
-
-
-
         return view;
 
     }
 
-    private void getLocationPermission(){
+    private void getLocationPermission() {
         String[] permissions = {android.Manifest.permission.ACCESS_FINE_LOCATION,
-                                android.Manifest.permission.ACCESS_COARSE_LOCATION};
-        if(ContextCompat.checkSelfPermission(getActivity().getApplicationContext(),
-                FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
-            if(ContextCompat.checkSelfPermission(getActivity().getApplicationContext(),
-                    COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED){
-                    mLocationPermissionGranted = true;
-            }else{
-                ActivityCompat.requestPermissions(getActivity(),permissions,LOCATION_PERMISSION_REQUEST_CODE);
+                android.Manifest.permission.ACCESS_COARSE_LOCATION};
+        if (ContextCompat.checkSelfPermission(getActivity().getApplicationContext(),
+                FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            if (ContextCompat.checkSelfPermission(getActivity().getApplicationContext(),
+                    COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                mLocationPermissionGranted = true;
+            } else {
+                ActivityCompat.requestPermissions(getActivity(), permissions, LOCATION_PERMISSION_REQUEST_CODE);
             }
         }
     }
@@ -142,11 +140,11 @@ public class MapFragment extends Fragment implements BlockingStep, OnMapReadyCal
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         mLocationPermissionGranted = false;
 
-        switch (requestCode){
-            case LOCATION_PERMISSION_REQUEST_CODE:{
-                if(grantResults.length > 0){
-                    for (int i = 0; i < grantResults.length; i++){
-                        if(grantResults[i] != PackageManager.PERMISSION_GRANTED) {
+        switch (requestCode) {
+            case LOCATION_PERMISSION_REQUEST_CODE: {
+                if (grantResults.length > 0) {
+                    for (int i = 0; i < grantResults.length; i++) {
+                        if (grantResults[i] != PackageManager.PERMISSION_GRANTED) {
                             mLocationPermissionGranted = false;
                             return;
                         }
@@ -161,7 +159,7 @@ public class MapFragment extends Fragment implements BlockingStep, OnMapReadyCal
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        initMap(view,savedInstanceState);
+        initMap(view, savedInstanceState);
 
         getLocationPermission();
 
@@ -198,23 +196,6 @@ public class MapFragment extends Fragment implements BlockingStep, OnMapReadyCal
 //        }
 
 
-        //destinationModelList.add(new DestinationModel(name, "Hello " + " Android"));
-//        modelList.add(new MapModel("Beta", "Hello " + " Beta"));
-//        modelList.add(new MapModel("Cupcake", "Hello " + " Cupcake"));
-//        modelList.add(new MapModel("Donut", "Hello " + " Donut"));
-//        modelList.add(new MapModel("Eclair", "Hello " + " Eclair"));
-//        modelList.add(new MapModel("Froyo", "Hello " + " Froyo"));
-//        modelList.add(new MapModel("Gingerbread", "Hello " + " Gingerbread"));
-//        modelList.add(new MapModel("Honeycomb", "Hello " + " Honeycomb"));
-//        modelList.add(new MapModel("Ice Cream Sandwich", "Hello " + " Ice Cream Sandwich"));
-//        modelList.add(new MapModel("Jelly Bean", "Hello " + " Jelly Bean"));
-//        modelList.add(new MapModel("KitKat", "Hello " + " KitKat"));
-//        modelList.add(new MapModel("Lollipop", "Hello " + " Lollipop"));
-//        modelList.add(new MapModel("Marshmallow", "Hello " + " Marshmallow"));
-//        modelList.add(new MapModel("Nougat", "Hello " + " Nougat"));
-//        modelList.add(new MapModel("Android O", "Hello " + " Android O"));
-
-
         mAdapter = new MapRecyclerViewAdapter(getActivity(), destinationModelList);//modelList
 
         recyclerView.setHasFixedSize(true);
@@ -232,15 +213,13 @@ public class MapFragment extends Fragment implements BlockingStep, OnMapReadyCal
             public void onItemClick(View view, int position, DestinationModel model) { //MapModel model
 
 
-
                 //handle item click events here
-                Toast.makeText(getActivity(), "Hey " + model.getTitle(), Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getActivity(), "Hey " + model.getTitle(), Toast.LENGTH_SHORT).show();
+                LatLng coordinates = new LatLng(model.getPoints_of_interest().get(position).getLocation().getLatitude(), model.getPoints_of_interest().get(position).getLocation().getLongitude());
+                CameraUpdate location = CameraUpdateFactory.newLatLngZoom(coordinates, 12);
 
-                LatLng coordinates = new LatLng(5 + position + .510357,-0.116773);
-                CameraUpdate location = CameraUpdateFactory.newLatLngZoom(coordinates,12);
-
-                googleMap.addMarker(new MarkerOptions().position(coordinates).title("Marker" + position));
-
+                //get model gps coordinates and 1- add marker 2- move camera to model coordinates
+                googleMap.addMarker(new MarkerOptions().position(coordinates).title(model.getPoints_of_interest().get(position).getTitle()));
                 googleMap.animateCamera(location);
             }
         });
@@ -290,23 +269,20 @@ public class MapFragment extends Fragment implements BlockingStep, OnMapReadyCal
         googleMap.getUiSettings().setMapToolbarEnabled(true);
         googleMap.getUiSettings().setMyLocationButtonEnabled(true);
 
-        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(-33.87365, 151.20689), 10));
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(52.594688, -2.0337076), 10));
 
     }
 
     @Override
     public void onCameraMoveStarted(int camera) {
         if (camera == GoogleMap.OnCameraMoveStartedListener.REASON_GESTURE) {
-            Toast.makeText(getActivity(), "The user gestured on the map.",
-                    Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getActivity(), "The user gestured on the map.", Toast.LENGTH_SHORT).show();
         } else if (camera == GoogleMap.OnCameraMoveStartedListener
                 .REASON_API_ANIMATION) {
-            Toast.makeText(getActivity(), "The user tapped something on the map.",
-                    Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getActivity(), "The user tapped something on the map.", Toast.LENGTH_SHORT).show();
         } else if (camera == GoogleMap.OnCameraMoveStartedListener
                 .REASON_DEVELOPER_ANIMATION) {
-            Toast.makeText(getActivity(), "The app moved the camera.",
-                    Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getActivity(), "The app moved the camera.", Toast.LENGTH_SHORT).show();
         }
 
     }

@@ -26,6 +26,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import android.widget.CompoundButton;
+import android.widget.Toast;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -127,38 +128,23 @@ public class DestinationsRecyclerViewAdapter extends RecyclerView.Adapter<Recycl
 
             ViewHolder genericViewHolder = (ViewHolder) holder;
 
-            //PHOTOS MODEL
+            //TEST MODEL
 //            genericViewHolder.itemTxtTitle.setText(model.getTitle());
-//            Picasso.with(genericViewHolder.imgItem.getContext()).load(model.getThumbnailUrl()).into(genericViewHolder.imgItem);
+//            genericViewHolder.itemTxtMessage.setText(model.getMessage());
 
 //            //USERS MODEL
 //            genericViewHolder.itemTxtTitle.setText(model.getName());
 //            genericViewHolder.itemTxtMessage.setText(model.getAddress().getGeo().getLat());
 //            Picasso.with(genericViewHolder.imgItem.getContext()).load("https://picsum.photos/100/100/?random").into(genericViewHolder.imgItem);
 
-            //POINTS OF INTEREST MODEL
-//            List<DestinationModel.Points_of_interest> PointOfInterest = model.getPoints_of_interest();
-//            for(int i = 0; i < model.getPoints_of_interest().size(); i++){
-//                DestinationModel.Points_of_interest points_of_interest = PointOfInterest.get(i);
-//                genericViewHolder.itemTxtTitle.setText(points_of_interest.getTitle());
-//                genericViewHolder.itemTxtMessage.setText(points_of_interest.getDetails().getDescription());
-//            }
-
-//            List<DestinationModel.Points_of_interest> pointsOfInterest = model.getPoints_of_interest();
-//            for(int i = 0; i < pointsOfInterest.size(); i++){
-//                genericViewHolder.itemTxtTitle.setText(model.getPoints_of_interest().get(i).getTitle());
-//                genericViewHolder.itemTxtMessage.setText(model.getPoints_of_interest().get(i).getDetails().getShort_description());
-//            }
-
-//
-//            for (int i = 0; i < model.getPoints_of_interest().size(); i++) {
+            //For Points of Interests
             genericViewHolder.itemTxtTitle.setText(model.getPoints_of_interest().get(position - 1).getTitle());
             genericViewHolder.itemTxtMessage.setText(model.getPoints_of_interest().get(position - 1).getDetails().getShort_description());
-//            }
-//            genericViewHolder.itemTxtTitle.setText(model.getPoints_of_interest().get(0).getTitle());
-//            genericViewHolder.itemTxtMessage.setText(model.getPoints_of_interest().get(0).getDetails().getShort_description());
-
-
+            Picasso.with(genericViewHolder.imgItem.getContext())
+                    .load(model.getPoints_of_interest().get(position - 1).getMain_image())
+                    .resize(50, 50)
+                    .centerCrop()
+                    .into(genericViewHolder.imgItem);
 
             //in some cases, it will prevent unwanted situations
             genericViewHolder.itemCheckList.setOnCheckedChangeListener(null);
@@ -251,7 +237,7 @@ public class DestinationsRecyclerViewAdapter extends RecyclerView.Adapter<Recycl
                 @Override
                 public void onClick(View view) {
 
-                    mHeaderClickListener.onHeaderClick(itemView, mHeaderTitle);
+                    //mHeaderClickListener.onHeaderClick(itemView, mHeaderTitle);
 
                 }
             });
@@ -282,14 +268,16 @@ public class DestinationsRecyclerViewAdapter extends RecyclerView.Adapter<Recycl
                 public void onClick(View view) {
                     int itemPosition = getAdapterPosition();
                     final DestinationModel model = getItem(itemPosition - 1);
-                    mItemClickListener.onItemClick(itemView, getAdapterPosition(), modelList.get(getAdapterPosition() - 1));
-                    Intent intent = new Intent(mContext, DestinationDetailsActivity.class);
-                    intent.putExtra("img_url", model.getThumbnailUrl());
-                    intent.putExtra("destination_title", model.getTitle());
-                    Log.d(TAG, model.getTitle());
-                    Log.d(TAG, model.getThumbnailUrl());
-
-                    mContext.startActivity(intent);
+                    Toast.makeText(mContext, "clicked:" + (itemPosition - 1), Toast.LENGTH_SHORT).show();
+//                    mItemClickListener.onItemClick(itemView, getAdapterPosition(), modelList.get(getAdapterPosition() - 1));
+//                    Intent intent = new Intent(mContext, DestinationDetailsActivity.class);
+//
+//                    intent.putExtra("img_url", model.getPoints_of_interest().get(itemPosition - 1).getMain_image());
+//                    intent.putExtra("destination_title", model.getPoints_of_interest().get(itemPosition - 1).getTitle());
+//                    intent.putExtra("destination_desc", model.getPoints_of_interest().get(itemPosition - 1).getDetails().getDescription());
+//                    //intent.putExtra("destination_google_maps_link", model.getPoints_of_interest().get(itemPosition - 1).getLocation().getGoogle_maps_link());
+//
+//                    mContext.startActivity(intent);
 
                 }
             });

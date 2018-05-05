@@ -113,6 +113,7 @@ public class NewTripActivity extends AppCompatActivity implements StepDataManage
         setSupportActionBar(toolbar_newtrip);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         int startingStepPosition = savedInstanceState != null ? savedInstanceState.getInt(CURRENT_STEP_POSITION_KEY) : 0;
         mData = savedInstanceState != null ? savedInstanceState.getString(DATA) : null;
@@ -128,12 +129,6 @@ public class NewTripActivity extends AppCompatActivity implements StepDataManage
                 searchIntent.putExtra(SearchManager.QUERY, query);
                 searchIntent.setAction(Intent.ACTION_SEARCH);
                 startActivity(searchIntent);
-
-//                String SelectedSearch = query;
-//                Toast.makeText(getApplicationContext(), SelectedSearch, Toast.LENGTH_SHORT).show();
-//                mChosenSearch = SelectedSearch;
-
-
 
                 return false;
             }
@@ -174,8 +169,8 @@ public class NewTripActivity extends AppCompatActivity implements StepDataManage
 
             }else{
                 //disables next fragment button
-//                stepperLayout.setNextButtonEnabled(false);
-//                stepperLayout.setNextButtonVerificationFailed(true);
+                stepperLayout.setNextButtonEnabled(false);
+                stepperLayout.setNextButtonVerificationFailed(true);
 //                Toast.makeText(this, "Null", Toast.LENGTH_SHORT).show();
             }
 
@@ -191,7 +186,7 @@ public class NewTripActivity extends AppCompatActivity implements StepDataManage
 
             }else{
                 //disables next fragment button
-                stepperLayout.setNextButtonEnabled(false);
+                stepperLayout.setNextButtonEnabled(true);
                 stepperLayout.setNextButtonVerificationFailed(true);
 //                Toast.makeText(this, "Null", Toast.LENGTH_SHORT).show();
             }

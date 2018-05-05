@@ -53,7 +53,6 @@ public class StepFragment1 extends Fragment implements BlockingStep, StepperLayo
 
     private static final String CURRENT_STEP_POSITION_KEY = "position";
     private StepDataManager stepDataManager;
-    private StepperLayout mStepperLayout;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -111,7 +110,8 @@ public class StepFragment1 extends Fragment implements BlockingStep, StepperLayo
     public void onNextClicked(final StepperLayout.OnNextClickedCallback callback) {
         if (txt_selected_search.getText() == ""){
             Toast.makeText(getContext(), "search null", Toast.LENGTH_SHORT).show();
-            callback.getStepperLayout().setNextButtonEnabled(false);
+            //disables next button
+            callback.getStepperLayout().setNextButtonEnabled(true);
         }
         else{
             callback.getStepperLayout().showProgress("Operation in progress, please wait...");

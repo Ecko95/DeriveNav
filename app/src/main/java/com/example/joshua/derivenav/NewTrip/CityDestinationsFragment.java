@@ -31,6 +31,8 @@ import android.widget.Toast;
 
 import android.view.ViewGroup;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -38,9 +40,6 @@ import retrofit2.Response;
 
 public class CityDestinationsFragment extends Fragment implements BlockingStep {
 
-
-
-    private RecyclerView recyclerView;
     private StepDataManager stepDataManager;
     private AlertDialog mDialog;
     private ApiController mControllerManager;
@@ -54,7 +53,8 @@ public class CityDestinationsFragment extends Fragment implements BlockingStep {
 
     // @BindView(R.id.recycler_view)
     // RecyclerView recyclerView;
-
+    @BindView(R.id.recycler_view)
+    RecyclerView recyclerView;
 
     private DestinationsRecyclerViewAdapter mAdapter;
 
@@ -97,8 +97,8 @@ public class CityDestinationsFragment extends Fragment implements BlockingStep {
 
         View view = inflater.inflate(R.layout.fragment_city_destinations, container, false);
 
-        // ButterKnife.bind(this);
-        findViews(view);
+        ButterKnife.bind(this, view);
+        //findViews(view);
 
         try{
 
@@ -111,6 +111,7 @@ public class CityDestinationsFragment extends Fragment implements BlockingStep {
 //            mChosenCitySearch = getArguments().getString("Search");
 //            Toast.makeText(getActivity(), mChosenCitySearch, Toast.LENGTH_SHORT).show();
             getFeed();
+
 
 
         }catch(Exception e){
@@ -136,15 +137,16 @@ public class CityDestinationsFragment extends Fragment implements BlockingStep {
     }
 
 
-    private void findViews(View view) {
-
-        recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
-    }
+//    private void findViews(View view) {
+//
+//        recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
+//    }
 
 
     private void setAdapter() {
 
 
+        //add test data
 //        modelList.add(new DestinationModel("Android", "Hello " + " Android"));
 //        modelList.add(new DestinationModel("Beta", "Hello " + " Beta"));
 //        modelList.add(new DestinationModel("Cupcake", "Hello " + " Cupcake"));
@@ -162,7 +164,7 @@ public class CityDestinationsFragment extends Fragment implements BlockingStep {
 //        modelList.add(new DestinationModel("Android O", "Hello " + " Android O"));
 
 
-        mAdapter = new DestinationsRecyclerViewAdapter(getActivity(), modelList, "Header");
+        mAdapter = new DestinationsRecyclerViewAdapter(getActivity(), modelList, "Points of Interests");
 
 
         recyclerView.setHasFixedSize(true);
@@ -199,6 +201,7 @@ public class CityDestinationsFragment extends Fragment implements BlockingStep {
                     mCheckedDestinationList.add(model);
                     //Toast.makeText(getContext(), "list will not be cleared", Toast.LENGTH_SHORT).show();
                 } else {
+
 
                     //mDestinationList.clear();
 
@@ -321,7 +324,7 @@ public class CityDestinationsFragment extends Fragment implements BlockingStep {
 
                     Call<DestinationModel> listCall = mControllerManager.getDestinationsService()
                             .getAllPointsOfInterest(
-                                    "t6UEKv6YlQGM32tunEqo9oXNX91hGTsi",
+                                    "s4beFzBDafeBP1KjVQUWoNnMPoGID9w7", //enter API KEY HERE!
                                     mChosenCitySearch);//mChosenCitySearch
 
                     listCall.enqueue(new Callback<DestinationModel>() {
@@ -335,8 +338,8 @@ public class CityDestinationsFragment extends Fragment implements BlockingStep {
                                 //pass object as points of interest are nested.
                                 mAdapter.addDestinations(DestinationList);
 
-                                //loop if request its already a arrayList
-                                for (int i = 0; i < DestinationList.getPoints_of_interest().size(); i++) {
+                                //loop if request its already a arrayList note* we remove 1 from index as it will conflict with header on RecyclerView
+                                for (int i = 0; i < DestinationList.getPoints_of_interest().size() - 1; i++) {
 
                                     Log.e(TAG, response.message());
 
@@ -355,6 +358,10 @@ public class CityDestinationsFragment extends Fragment implements BlockingStep {
                                 switch (sc) {
                                     case 400:
                                         Log.e("Error 400", "Bad Request");
+                                        break;
+                                    case 429:
+                                        Log.e("Error 429", "Monthly Quota Exceeded ");
+                                        Toast.makeText(getContext(), "Monthly Quota Exceeded ", Toast.LENGTH_LONG).show();
                                         break;
                                     case 404:
                                         Log.e("Error 404", "Not Found");

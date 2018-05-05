@@ -65,7 +65,7 @@ public class MapRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
             genericViewHolder.itemTxtTitle.setText(model.getPoints_of_interest().get(position).getTitle());
             genericViewHolder.itemTxtMessage.setText(model.getPoints_of_interest().get(position).getDetails().getShort_description());
-
+            Picasso.with(genericViewHolder.imgItem.getContext()).load(model.getPoints_of_interest().get(position).getMain_image()).into(genericViewHolder.imgItem);
 
 
         }
