@@ -1,4 +1,4 @@
-package com.example.joshua.derivenav.UserTrips;
+package com.example.joshua.derivenav.UserTrips.Models;
 
 import android.net.Uri;
 

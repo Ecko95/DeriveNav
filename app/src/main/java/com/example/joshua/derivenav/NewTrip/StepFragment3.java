@@ -16,9 +16,9 @@ import android.widget.Toast;
 
 
 import com.example.joshua.derivenav.NewTrip.DataManagers.StepDataManager;
+import com.example.joshua.derivenav.NewTrip.Models.TripModel;
 import com.example.joshua.derivenav.R;
 
-import com.example.joshua.derivenav.com.joshua.api.model.Trip;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -84,7 +84,7 @@ public class StepFragment3 extends ButterKnifeFragment implements BlockingStep {
         //populate data with API
         if(name != "" && desc != ""){
 
-            Trip newTrip = new Trip(name,desc,key);
+            TripModel newTrip = new TripModel(name, desc, key);
             dbRef.child("Trips").child(userID).child(key).setValue(newTrip);
             getActivity().finish();
 

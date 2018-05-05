@@ -10,6 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import com.example.joshua.derivenav.DestinationDetailsActivity;
@@ -21,6 +23,7 @@ import com.squareup.picasso.Picasso;
 
 import android.widget.CheckBox;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import android.widget.CompoundButton;
 
@@ -125,13 +128,36 @@ public class DestinationsRecyclerViewAdapter extends RecyclerView.Adapter<Recycl
             ViewHolder genericViewHolder = (ViewHolder) holder;
 
             //PHOTOS MODEL
-            genericViewHolder.itemTxtTitle.setText(model.getTitle());
-            Picasso.with(genericViewHolder.imgItem.getContext()).load(model.getThumbnailUrl()).into(genericViewHolder.imgItem);
+//            genericViewHolder.itemTxtTitle.setText(model.getTitle());
+//            Picasso.with(genericViewHolder.imgItem.getContext()).load(model.getThumbnailUrl()).into(genericViewHolder.imgItem);
 
-            //USERS MODEL
+//            //USERS MODEL
 //            genericViewHolder.itemTxtTitle.setText(model.getName());
 //            genericViewHolder.itemTxtMessage.setText(model.getAddress().getGeo().getLat());
 //            Picasso.with(genericViewHolder.imgItem.getContext()).load("https://picsum.photos/100/100/?random").into(genericViewHolder.imgItem);
+
+            //POINTS OF INTEREST MODEL
+//            List<DestinationModel.Points_of_interest> PointOfInterest = model.getPoints_of_interest();
+//            for(int i = 0; i < model.getPoints_of_interest().size(); i++){
+//                DestinationModel.Points_of_interest points_of_interest = PointOfInterest.get(i);
+//                genericViewHolder.itemTxtTitle.setText(points_of_interest.getTitle());
+//                genericViewHolder.itemTxtMessage.setText(points_of_interest.getDetails().getDescription());
+//            }
+
+//            List<DestinationModel.Points_of_interest> pointsOfInterest = model.getPoints_of_interest();
+//            for(int i = 0; i < pointsOfInterest.size(); i++){
+//                genericViewHolder.itemTxtTitle.setText(model.getPoints_of_interest().get(i).getTitle());
+//                genericViewHolder.itemTxtMessage.setText(model.getPoints_of_interest().get(i).getDetails().getShort_description());
+//            }
+
+//
+//            for (int i = 0; i < model.getPoints_of_interest().size(); i++) {
+            genericViewHolder.itemTxtTitle.setText(model.getPoints_of_interest().get(position - 1).getTitle());
+            genericViewHolder.itemTxtMessage.setText(model.getPoints_of_interest().get(position - 1).getDetails().getShort_description());
+//            }
+//            genericViewHolder.itemTxtTitle.setText(model.getPoints_of_interest().get(0).getTitle());
+//            genericViewHolder.itemTxtMessage.setText(model.getPoints_of_interest().get(0).getDetails().getShort_description());
+
 
 
             //in some cases, it will prevent unwanted situations
@@ -154,13 +180,6 @@ public class DestinationsRecyclerViewAdapter extends RecyclerView.Adapter<Recycl
 
                 }
             });
-
-            //send data to maps fragment
-
-
-
-
-
 
         }
     }
@@ -242,12 +261,6 @@ public class DestinationsRecyclerViewAdapter extends RecyclerView.Adapter<Recycl
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-//        private ImageView imgItem;
-//        private TextView itemTxtTitle;
-//        private TextView itemTxtMessage;
-//
-//
-//        private CheckBox itemCheckList;
 
         @BindView(R.id.img_item)
         ImageView imgItem;
@@ -262,11 +275,6 @@ public class DestinationsRecyclerViewAdapter extends RecyclerView.Adapter<Recycl
             super(itemView);
 
             ButterKnife.bind(this, itemView);
-
-//            this.imgItem = (ImageView) itemView.findViewById(R.id.img_item);
-//            this.itemTxtTitle = (TextView) itemView.findViewById(R.id.item_txt_title);
-//            this.itemTxtMessage = (TextView) itemView.findViewById(R.id.item_txt_message);
-//            this.itemCheckList = (CheckBox) itemView.findViewById(R.id.check_list);
 
 
             itemView.setOnClickListener(new View.OnClickListener() {

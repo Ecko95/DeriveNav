@@ -8,7 +8,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 
-import com.example.joshua.derivenav.com.joshua.api.model.User;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserInfo;
@@ -106,21 +105,21 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
 
-    private void showData(DataSnapshot dataSnapshot) {
-        for(DataSnapshot ds : dataSnapshot.getChildren()){
-            User userInfo = new User();
-            userInfo.setName(ds.child(userID).getValue(User.class).getName()); //sets User name
-            userInfo.setEmail(ds.child(userID).getValue(User.class).getEmail()); //sets User name
-            Log.d(TAG,"Data : name " + userInfo.getName());
-            Log.d(TAG,"Data : email " + userInfo.getEmail());
-
-            ArrayList<String> arrayList = new ArrayList<>();
-            //adds data to arrayList Adapter
-            arrayList.add(userInfo.getName());
-            arrayList.add(userInfo.getEmail());
-            ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1,arrayList);
-            mListView.setAdapter(adapter);
-
-        }
-    }
+//    private void showData(DataSnapshot dataSnapshot) {
+//        for(DataSnapshot ds : dataSnapshot.getChildren()){
+//            User userInfo = new User();
+//            userInfo.setName(ds.child(userID).getValue(User.class).getName()); //sets User name
+//            userInfo.setEmail(ds.child(userID).getValue(User.class).getEmail()); //sets User name
+//            Log.d(TAG,"Data : name " + userInfo.getName());
+//            Log.d(TAG,"Data : email " + userInfo.getEmail());
+//
+//            ArrayList<String> arrayList = new ArrayList<>();
+//            //adds data to arrayList Adapter
+//            arrayList.add(userInfo.getName());
+//            arrayList.add(userInfo.getEmail());
+//            ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1,arrayList);
+//            mListView.setAdapter(adapter);
+//
+//        }
+//    }
 }

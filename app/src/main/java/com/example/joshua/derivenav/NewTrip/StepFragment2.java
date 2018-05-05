@@ -13,7 +13,6 @@ import android.widget.Toast;
 
 import com.example.joshua.derivenav.NewTrip.DataManagers.StepDataManager;
 import com.example.joshua.derivenav.R;
-import com.example.joshua.derivenav.com.joshua.api.adapter.POIAdapter;
 import com.stepstone.stepper.BlockingStep;
 import com.stepstone.stepper.Step;
 import com.stepstone.stepper.StepperLayout;

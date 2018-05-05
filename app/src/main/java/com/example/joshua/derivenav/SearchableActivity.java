@@ -20,9 +20,9 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.example.joshua.derivenav.com.joshua.service.AbstractService;
-import com.example.joshua.derivenav.com.joshua.service.DestinationSearchService;
-import com.example.joshua.derivenav.com.joshua.service.ServiceListener;
+import com.example.joshua.derivenav.Search.AbstractService;
+import com.example.joshua.derivenav.Search.DestinationSearchService;
+import com.example.joshua.derivenav.Search.ServiceListener;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
 import net.steamcrafted.materialiconlib.MaterialMenuInflater;
@@ -35,11 +35,12 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class SearchableActivity extends ListActivity implements ServiceListener{
+public class SearchableActivity extends ListActivity implements ServiceListener {
 
     private Thread thread;
     private Menu menu;
-    @BindView(android.R.id.list) ListView list;
+    @BindView(android.R.id.list)
+    ListView list;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +50,7 @@ public class SearchableActivity extends ListActivity implements ServiceListener{
         handleIntent(getIntent());
 
         Intent intent = getIntent();
-        if(intent.ACTION_SEARCH.equals(intent.getAction())){
+        if (intent.ACTION_SEARCH.equals(intent.getAction())) {
             String query = intent.getStringExtra(SearchManager.QUERY);
             //send data to fragment
 
@@ -57,7 +58,7 @@ public class SearchableActivity extends ListActivity implements ServiceListener{
             String selectedSearch = query;
 
 
-            Intent moreDetailsIntent = new Intent(SearchableActivity.this,NewTripActivity.class);
+            Intent moreDetailsIntent = new Intent(SearchableActivity.this, NewTripActivity.class);
 
             Bundle dataBundle = new Bundle();
             dataBundle.putString("SelectedSearch", selectedSearch);
@@ -84,8 +85,6 @@ public class SearchableActivity extends ListActivity implements ServiceListener{
 //                finish();
             }
         });
-
-
 
 
     }
@@ -125,30 +124,31 @@ public class SearchableActivity extends ListActivity implements ServiceListener{
     @Override
     public void serviceComplete(AbstractService abstractService) {
 
-        if(!abstractService.hasError()){
+        if (!abstractService.hasError()) {
             DestinationSearchService destinationSearchService = (DestinationSearchService) abstractService;
             String[] result = new String[destinationSearchService.getResults().length()];
-            for(int i = 0; i < destinationSearchService.getResults().length(); i++){
+            for (int i = 0; i < destinationSearchService.getResults().length(); i++) {
                 try {
                     //search for the wanted object name, name, location, etc
 
                     result[i] = destinationSearchService.getResults().getJSONObject(i).getString("title");
                     //result[i] = destinationSearchService.getResults().getJSONObject(i).getString("recipeName");
-                }catch (JSONException ex){
+                } catch (JSONException ex) {
                     result[i] = "error";
                 }
             }
 
             setListAdapter(new ArrayAdapter<String>(this, R.layout.cities_list_cell, R.id.text, result));
 
-        }else{
+        } else {
             String[] result = new String[]{"No Results"};
             setListAdapter(new ArrayAdapter<String>(this, R.layout.cities_list_cell, R.id.text, result));
         }
 
     }
+
     @OnClick(R.id.icon_search_close)
-    public void closeSearch (View view){
+    public void closeSearch(View view) {
         finish();
     }
 }

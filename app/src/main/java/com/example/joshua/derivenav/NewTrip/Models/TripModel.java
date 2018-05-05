@@ -1,24 +1,26 @@
-package com.example.joshua.derivenav.com.joshua.api.model;
+package com.example.joshua.derivenav.NewTrip.Models;
 
 import android.support.annotation.Nullable;
 
 /**
- * Created by Joshua on 25/04/2018.
+ * Created by Joshua on 04/05/2018.
  */
 
-public class Trip {
+public class TripModel {
+
 
     private String name;
     private String desc;
-    @Nullable private String pushID;
+    @Nullable
+    private String pushID;
 
-    public Trip(String name, String desc,String pushID) {
+    public TripModel(String name, String desc, String pushID) {
         this.name = name;
         this.desc = desc;
         this.pushID = pushID;
     }
 
-    public Trip() {
+    public TripModel() {
 
     }
 
@@ -45,4 +47,5 @@ public class Trip {
     public void setDesc(String desc) {
         this.desc = desc;
     }
+
 }

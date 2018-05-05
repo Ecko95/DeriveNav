@@ -48,6 +48,7 @@ public class CityDestinationsFragment extends Fragment implements BlockingStep {
     private ArrayList<DestinationModel> mDestinationList = new ArrayList<>();
     private ArrayList<DestinationModel> mCheckedDestinationList = new ArrayList<>();
     private DestinationModel mNewDestinationModel = new DestinationModel();
+    private static final String TAG = "CityDestinationsFragmen";
 
     private boolean isItemsChecked = false;
 
@@ -318,23 +319,35 @@ public class CityDestinationsFragment extends Fragment implements BlockingStep {
 //                HashMap<String,String> hashMap = new HashMap<>();
 //                hashMap.put("search",mChosenCitySearch);
 
-                    Call<List<DestinationModel>> listCall = mControllerManager.getDestinationsService()
-                            .getAllPointsOfInterest();//mChosenCitySearch
+                    Call<DestinationModel> listCall = mControllerManager.getDestinationsService()
+                            .getAllPointsOfInterest(
+                                    "t6UEKv6YlQGM32tunEqo9oXNX91hGTsi",
+                                    mChosenCitySearch);//mChosenCitySearch
 
-                    listCall.enqueue(new Callback<List<DestinationModel>>() {
+                    listCall.enqueue(new Callback<DestinationModel>() {
                         @Override
-                        public void onResponse(Call<List<DestinationModel>> call, Response<List<DestinationModel>> response) {
+                        public void onResponse(Call<DestinationModel> call, Response<DestinationModel> response) {
                             if (response.isSuccessful()) {
 
                                 Toast.makeText(getContext(), "OnResponse Successfull", Toast.LENGTH_SHORT).show();
-                                List<DestinationModel> DestinationList = response.body();
+                                DestinationModel DestinationList = response.body();
 
-                                for (int i = 0; i < DestinationList.size(); i++) {
-                                    DestinationModel destination = DestinationList.get(i);
-                                    mAdapter.addDestinations(destination);
+                                //pass object as points of interest are nested.
+                                mAdapter.addDestinations(DestinationList);
 
+                                //loop if request its already a arrayList
+                                for (int i = 0; i < DestinationList.getPoints_of_interest().size(); i++) {
+
+                                    Log.e(TAG, response.message());
+
+                                    mAdapter.addDestinations(DestinationList);
+//                                    DestinationModel destination = DestinationList.get(i);
+//                                    mAdapter.addDestinations(destination);
+//
                                     //add new objects
-                                    mDestinationList.add(new DestinationModel(destination.getTitle(), destination.getThumbnailUrl()));
+//                                    mDestinationList.add(new DestinationModel(destination.getTitle(), destination.getThumbnailUrl()));
+//                                    stepDataManager.saveDestinationList(mDestinationList);
+                                    mDestinationList.add(DestinationList);
                                     stepDataManager.saveDestinationList(mDestinationList);
                                 }
                             } else {
@@ -354,7 +367,7 @@ public class CityDestinationsFragment extends Fragment implements BlockingStep {
                         }
 
                         @Override
-                        public void onFailure(Call<List<DestinationModel>> call, Throwable t) {
+                        public void onFailure(Call<DestinationModel> call, Throwable t) {
                             mDialog.dismiss();
                             t.printStackTrace();
                             Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
@@ -366,6 +379,70 @@ public class CityDestinationsFragment extends Fragment implements BlockingStep {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+//        try {
+//            new Handler().postDelayed(new Runnable() {
+//                @Override
+//                public void run() {
+//                    mDialog.dismiss();
+//
+//                    //run code here
+//
+////                HashMap<String,String> hashMap = new HashMap<>();
+////                hashMap.put("search",mChosenCitySearch);
+//
+//                    Call<List<DestinationModel>> listCall = mControllerManager.getDestinationsService()
+//                            .getAllPointsOfInterest(
+//                                    "t6UEKv6YlQGM32tunEqo9oXNX91hGTsi",
+//                                    mChosenCitySearch);//mChosenCitySearch
+//
+//                    listCall.enqueue(new Callback<List<DestinationModel>>() {
+//                        @Override
+//                        public void onResponse(Call<List<DestinationModel>> call, Response<List<DestinationModel>> response) {
+//                            if (response.isSuccessful()) {
+//
+//                                Toast.makeText(getContext(), "OnResponse Successfull", Toast.LENGTH_SHORT).show();
+//                                List<DestinationModel> DestinationList = response.body();
+//
+//                                for (int i = 0; i < DestinationList.size(); i++) {
+//                                    DestinationModel destination = DestinationList.get(i);
+//                                    mAdapter.addDestinations(destination);
+//
+//                                    //add new objects
+////                                    mDestinationList.add(new DestinationModel(destination.getTitle(), destination.getThumbnailUrl()));
+////                                    stepDataManager.saveDestinationList(mDestinationList);
+//                                      mDestinationList.add(new DestinationModel(destination.getCurrent_city().getName(),destination.getCurrent_city().getLocation().getGoogle_maps_link()));
+//                                      stepDataManager.saveDestinationList(mDestinationList);
+//                                }
+//                            } else {
+//                                int sc = response.code();
+//                                switch (sc) {
+//                                    case 400:
+//                                        Log.e("Error 400", "Bad Request");
+//                                        break;
+//                                    case 404:
+//                                        Log.e("Error 404", "Not Found");
+//                                        break;
+//                                    default:
+//                                        Log.e("Error", "Generic Error");
+//                                }
+//                            }
+//                            mDialog.dismiss();
+//                        }
+//
+//                        @Override
+//                        public void onFailure(Call<List<DestinationModel>> call, Throwable t) {
+//                            mDialog.dismiss();
+//                            t.printStackTrace();
+//                            Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+//                        }
+//                    });
+//
+//                }
+//            }, 1000L);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
 
 
 

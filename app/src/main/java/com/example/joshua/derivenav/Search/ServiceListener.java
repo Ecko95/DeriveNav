@@ -1,10 +1,10 @@
-package com.example.joshua.derivenav.com.joshua.service;
+package com.example.joshua.derivenav.Search;
 
 /**
- * Created by Joshua on 10/12/2017.
+ * Created by Joshua on 04/05/2018.
  */
 
 public interface ServiceListener {
+
     void serviceComplete(AbstractService abstractService);
 }
-

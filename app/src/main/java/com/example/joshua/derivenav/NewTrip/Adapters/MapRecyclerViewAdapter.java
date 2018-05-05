@@ -59,8 +59,12 @@ public class MapRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             final DestinationModel model = getItem(position); //MapModel
             ViewHolder genericViewHolder = (ViewHolder) holder;
 
-            genericViewHolder.itemTxtTitle.setText(model.getTitle());
-            Picasso.with(genericViewHolder.imgItem.getContext()).load(model.getThumbnailUrl()).into(genericViewHolder.imgItem);
+            //bind DestinationList of Locations to Horizontal View
+//            genericViewHolder.itemTxtTitle.setText(model.getTitle());
+//            Picasso.with(genericViewHolder.imgItem.getContext()).load(model.getThumbnailUrl()).into(genericViewHolder.imgItem);
+
+            genericViewHolder.itemTxtTitle.setText(model.getPoints_of_interest().get(position).getTitle());
+            genericViewHolder.itemTxtMessage.setText(model.getPoints_of_interest().get(position).getDetails().getShort_description());
 
 
 

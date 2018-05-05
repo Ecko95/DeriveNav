@@ -8,10 +8,7 @@ import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
@@ -20,25 +17,22 @@ import java.util.Iterator;
 
 import android.support.v4.widget.SwipeRefreshLayout;
 
+import com.example.joshua.derivenav.NewTrip.Models.TripModel;
 import com.example.joshua.derivenav.R;
-import com.example.joshua.derivenav.com.joshua.api.model.Trip;
-import com.example.joshua.derivenav.com.joshua.api.model.User;
+import com.example.joshua.derivenav.UserTrips.Models.UserTrips;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import android.widget.ArrayAdapter;
 import android.widget.Toast;
 import android.os.Handler;
 
 
 import android.view.ViewGroup;
-import android.view.MenuInflater;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -171,7 +165,7 @@ public class UserTripsFragment extends Fragment {
                         while (items.hasNext()){
 
                             DataSnapshot item = items.next();
-                            Trip userInfo = item.getValue(Trip.class);
+                            TripModel userInfo = item.getValue(TripModel.class);
                             modelList.add(new UserTrips(userInfo.getName(), userInfo.getDesc(), userInfo.getPushID()));
                         }
                         dialog.dismiss();

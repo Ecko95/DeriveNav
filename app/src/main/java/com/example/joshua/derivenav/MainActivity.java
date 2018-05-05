@@ -1,6 +1,7 @@
 package com.example.joshua.derivenav;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.SearchManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -11,6 +12,7 @@ import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.speech.RecognizerIntent;
 import android.support.annotation.NonNull;
@@ -21,6 +23,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -30,10 +33,11 @@ import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.joshua.derivenav.Api.ApiController;
 import com.example.joshua.derivenav.NewTrip.CityDestinationsFragment;
 import com.example.joshua.derivenav.NewTrip.MapFragment;
+import com.example.joshua.derivenav.NewTrip.Models.DestinationModel;
 import com.example.joshua.derivenav.UserTrips.UserTripsFragment;
-import com.example.joshua.derivenav.com.joshua.api.adapter.POIAdapter;
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -45,25 +49,19 @@ import com.tapadoo.alerter.Alerter;
 import net.steamcrafted.materialiconlib.MaterialMenuInflater;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
 
-    private SearchView mSearchView;
-    private TextView mTextMessage;
     private MaterialSearchView searchView;
     //defines a menu so we can hide it or diplay it according to fragments
     private Menu menu;
-    private ListView lvDestinations;
-
     private BroadcastReceiver mNetworkReceiver;
-    static TextView tv_check_connection;
-    private POIAdapter mPOIAdapter;
-    private RecyclerView mRecyclerView;
 
-
- private static final String[] CELLS = new String[]{
-         ""
- };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -127,9 +125,6 @@ public class MainActivity extends AppCompatActivity {
         // Start the thread
         t.start();
 
-//        lvDestinations = findViewById(R.id.main_destination_list_view);
-//        lvDestinations.setAdapter(new ArrayAdapter<String>(this,R.layout.cities_list_cell,R.id.text, CELLS));
-
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -152,7 +147,8 @@ public class MainActivity extends AppCompatActivity {
                                 selectedFragment = UserTripsFragment.newInstance();
                                 break;
                             case R.id.navigation_notifications:
-                                selectedFragment = MapFragment.newInstance();
+                                selectedFragment = HomeFragment.newInstance();
+//                                selectedFragment = MapFragment.newInstance();
                                 break;
                         }
                         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
@@ -247,7 +243,6 @@ public class MainActivity extends AppCompatActivity {
         unregisterNetworkChanges();
     }
 
-
     public static void dialog(boolean value, Context context){
         Activity activity = (Activity) context;
         if(!value){
@@ -265,8 +260,6 @@ public class MainActivity extends AppCompatActivity {
                     .show();
         }
     }
-
-
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -292,26 +285,6 @@ public class MainActivity extends AppCompatActivity {
     public void hideUpButton() {
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
     }
-
-
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//
-//        //gets searchView data
-//        if (requestCode == MaterialSearchView.REQUEST_VOICE && resultCode == RESULT_OK) {
-//            ArrayList<String> matches = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
-//            if (matches != null && matches.size() > 0) {
-//                String searchWrd = matches.get(0);
-//                if (!TextUtils.isEmpty(searchWrd)) {
-//                    searchView.setQuery(searchWrd, false);
-//                }
-//            }
-//            return;
-//        }
-//
-//        super.onActivityResult(requestCode, resultCode, data);
-//
-//    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -339,7 +312,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MaterialMenuInflater
@@ -358,21 +330,6 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-
-
-
-
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        getMenuInflater().inflate(R.menu.search, menu);
-//        this.menu = menu;
-//        MenuItem item = menu.findItem(R.id.action_search);
-////
-//
-//        searchView.setMenuItem(item);
-//        searchView.setSuggestions(getResources().getStringArray(R.array.query_suggestions));
-//        return super .onCreateOptionsMenu(menu);
-//    }
     @Override
     public void onBackPressed() {
         if (searchView.isSearchOpen()) {
@@ -381,5 +338,6 @@ public class MainActivity extends AppCompatActivity {
             super.onBackPressed();
         }
     }
+
 
 }

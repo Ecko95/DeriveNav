@@ -18,23 +18,29 @@ import retrofit2.http.QueryMap;
 public interface FacadeApiService {
 
         // Use Integer instead of int so it can become nullable
-        //gets photos repository
+        //gets points of interest repository
 //        @GET("/v1.2/points-of-interest/yapq-search-text/")
 //        Call<List<DestinationModel>> getAllPointsOfInterest(
 //                @Query("apikey") String apikey,
-//                @Query("city_name") String cityName,
-//                @Query("number_of_results") Integer numberOfResults
+//                @Query("city_name") String cityName
 //        );
+
+        //V 2.0
+        @GET("/v1.2/points-of-interest/yapq-search-text/")
+        Call<DestinationModel> getAllPointsOfInterest(
+                @Query("apikey") String apikey,
+                @Query("city_name") String cityName
+        );
 //        @GET("/users")
 //        Call<List<DestinationModel>> getAllPointsOfInterest(
 //                @Query("name") String Name
 //        );
 
         //gets all photos
-        @GET("/photos")
-        Call<List<DestinationModel>> getAllPointsOfInterest(
-//                @Query("title") String title
-        );
+//        @GET("/photos")
+//        Call<List<DestinationModel>> getAllPointsOfInterest(
+////                @Query("title") String title
+//        );
 
 
 }
