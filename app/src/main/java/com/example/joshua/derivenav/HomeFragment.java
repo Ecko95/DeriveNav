@@ -23,6 +23,7 @@ import android.widget.Toast;
 
 import com.example.joshua.derivenav.Api.ApiController;
 import com.example.joshua.derivenav.NewTrip.Models.DestinationModel;
+import com.example.joshua.derivenav.UserTripDetails.UserTripDetails;
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -102,7 +103,8 @@ public class HomeFragment extends Fragment {
     }
     @OnClick(R.id.action_card_help)
     public void setAction_card_help(View view) {
-        getFeed();
+        startActivity(new Intent(getActivity(), UserTripDetails.class));
+        //getFeed();
         //Toast.makeText(getActivity(), "you clicked on action: help", Toast.LENGTH_SHORT).show();
     }
 

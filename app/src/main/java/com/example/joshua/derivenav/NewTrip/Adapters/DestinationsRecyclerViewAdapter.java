@@ -129,8 +129,8 @@ public class DestinationsRecyclerViewAdapter extends RecyclerView.Adapter<Recycl
             ViewHolder genericViewHolder = (ViewHolder) holder;
 
             //TEST MODEL
-//            genericViewHolder.itemTxtTitle.setText(model.getTitle());
-//            genericViewHolder.itemTxtMessage.setText(model.getMessage());
+            genericViewHolder.itemTxtTitle.setText(model.getTitle());
+            genericViewHolder.itemTxtMessage.setText(model.getMessage());
 
 //            //USERS MODEL
 //            genericViewHolder.itemTxtTitle.setText(model.getName());
@@ -138,13 +138,13 @@ public class DestinationsRecyclerViewAdapter extends RecyclerView.Adapter<Recycl
 //            Picasso.with(genericViewHolder.imgItem.getContext()).load("https://picsum.photos/100/100/?random").into(genericViewHolder.imgItem);
 
             //For Points of Interests
-            genericViewHolder.itemTxtTitle.setText(model.getPoints_of_interest().get(position - 1).getTitle());
-            genericViewHolder.itemTxtMessage.setText(model.getPoints_of_interest().get(position - 1).getDetails().getShort_description());
-            Picasso.with(genericViewHolder.imgItem.getContext())
-                    .load(model.getPoints_of_interest().get(position - 1).getMain_image())
-                    .resize(50, 50)
-                    .centerCrop()
-                    .into(genericViewHolder.imgItem);
+//            genericViewHolder.itemTxtTitle.setText(model.getPoints_of_interest().get(position - 1).getTitle());
+//            genericViewHolder.itemTxtMessage.setText(model.getPoints_of_interest().get(position - 1).getDetails().getShort_description());
+//            Picasso.with(genericViewHolder.imgItem.getContext())
+//                    .load(model.getPoints_of_interest().get(position - 1).getMain_image())
+//                    .resize(50, 50)
+//                    .centerCrop()
+//                    .into(genericViewHolder.imgItem);
 
             //in some cases, it will prevent unwanted situations
             genericViewHolder.itemCheckList.setOnCheckedChangeListener(null);

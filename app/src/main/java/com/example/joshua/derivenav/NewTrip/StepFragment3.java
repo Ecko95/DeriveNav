@@ -84,9 +84,9 @@ public class StepFragment3 extends ButterKnifeFragment implements BlockingStep {
         //populate data with API
         if(name != "" && desc != ""){
 
-            TripModel newTrip = new TripModel(name, desc, key);
-            dbRef.child("Trips").child(userID).child(key).setValue(newTrip);
-            getActivity().finish();
+//            TripModel newTrip = new TripModel(name, desc, key);
+//            dbRef.child("Trips").child(userID).child(key).setValue(newTrip);
+//            getActivity().finish();
 
         }else{
             Toast.makeText(getContext(), "Please fill in the fields", Toast.LENGTH_SHORT).show();

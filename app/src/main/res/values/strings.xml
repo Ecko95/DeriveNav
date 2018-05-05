@@ -37,5 +37,6 @@
     <string name="title_activity_main2">UserTrips</string>
 
     <string name="hello_world">Hello world!</string>
+    <string name="title_activity_user_trip_details">UserTripDetailsActivity</string>
 
 </resources>

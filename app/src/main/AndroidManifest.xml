@@ -59,7 +59,15 @@
             android:name=".NewTripActivity"
             android:theme="@style/AppTheme" />
         <activity android:name=".ProfileActivity" />
-        <activity android:name=".DestinationDetailsActivity"></activity>
+        <activity android:name=".DestinationDetailsActivity" />
+        <activity
+            android:name=".UserTripDetails.UserTripDetailsActivity"
+            android:label="@string/title_activity_user_trip_details"
+            android:theme="@style/AppTheme.Template.Base" />
+        <activity
+            android:name=".UserTripDetails.UserTripDetails"
+            android:label="@string/title_activity_user_trip_details"
+            android:theme="@style/AppTheme.Template.Base"></activity>
     </application>
 
 </manifest>
