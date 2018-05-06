@@ -132,7 +132,7 @@ public class HomeFragment extends Fragment {
         //if fields are entered, then create new Trip
         //populate data with API
 
-        TripModel newTrip = new TripModel(name, desc, Tripkey);
+        TripModel newTrip = new TripModel(name, desc, Tripkey, "https://picsum.photos/200/300/?random");
         Map newLocationData = new HashMap();
         newLocationData.put("cityName", "Madrid");
         newLocationData.put("key", Tripkey);

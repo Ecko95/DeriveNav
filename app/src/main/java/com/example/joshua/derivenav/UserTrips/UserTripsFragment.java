@@ -3,6 +3,7 @@ package com.example.joshua.derivenav.UserTrips;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.os.Bundle;
 
 import android.support.v7.widget.GridLayoutManager;
@@ -129,7 +130,8 @@ public class UserTripsFragment extends Fragment {
             @Override
             public void onDataChange(final DataSnapshot dataSnapshot) {
 
-                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                Context mContext = getActivity();
+                AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
                 builder.setView(R.layout.fui_phone_progress_dialog);
                 builder.setCancelable(false);
                 builder.setTitle("Loading, Please wait...");
@@ -143,10 +145,8 @@ public class UserTripsFragment extends Fragment {
                         modelList.clear();
 
 
-                        final Iterator<DataSnapshot> items = dataSnapshot.getChildren().iterator();
-                        while (items.hasNext()){
+                        for (DataSnapshot item : dataSnapshot.getChildren()) {
 
-                            DataSnapshot item = items.next();
                             TripModel userInfo = item.getValue(TripModel.class);
                             modelList.add(new UserTrips(userInfo.getName(), userInfo.getDesc(), userInfo.getPushID(), userInfo.getTripImg()));
 
