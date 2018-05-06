@@ -253,6 +253,21 @@ public class UserTripDetails extends AppCompatActivity {
 
                     public void onClick(DialogInterface dialog, int whichButton) {
                         mRef.child("Trips").child(userID).child(key).removeValue();
+                        Query query = FirebaseDatabase.getInstance().getReference("Destinations").orderByChild("key").equalTo(key);
+                        query.addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                for (DataSnapshot item : dataSnapshot.getChildren()) {
+                                    item.getRef().removeValue();
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
+
                         mAdapter.updateList(modelList);
                         onBackPressed();
                         Toast.makeText(UserTripDetails.this, "deleted", Toast.LENGTH_SHORT).show();
