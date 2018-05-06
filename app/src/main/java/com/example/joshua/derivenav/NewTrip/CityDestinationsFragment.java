@@ -3,6 +3,7 @@ package com.example.joshua.derivenav.NewTrip;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
 
 import android.os.Handler;
@@ -110,7 +111,7 @@ public class CityDestinationsFragment extends Fragment implements BlockingStep {
 
             //disable for test only
             //get feed from AMADEUS API
-            getFeed();
+
 
 
 
@@ -285,8 +286,8 @@ public class CityDestinationsFragment extends Fragment implements BlockingStep {
     @Override
     public void onSelected() {
         Toast.makeText(getContext(), stepDataManager.getData(), Toast.LENGTH_SHORT).show();
-
         mChosenCitySearch = stepDataManager.getData();
+        getFeed();
 
     }
 
@@ -304,6 +305,7 @@ public class CityDestinationsFragment extends Fragment implements BlockingStep {
     }
 
     public void getFeed() {
+
         mControllerManager = new ApiController();
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -316,77 +318,79 @@ public class CityDestinationsFragment extends Fragment implements BlockingStep {
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    mDialog.dismiss();
 
-                    //run code here
 
-//                HashMap<String,String> hashMap = new HashMap<>();
-//                hashMap.put("search",mChosenCitySearch);
-
-                    Call<DestinationModel> listCall = mControllerManager.getDestinationsService()
-                            .getAllPointsOfInterest(
-                                    "s4beFzBDafeBP1KjVQUWoNnMPoGID9w7", //enter API KEY HERE!
-                                    mChosenCitySearch);//mChosenCitySearch
-
-                    listCall.enqueue(new Callback<DestinationModel>() {
+                    AsyncTask.execute(new Runnable() {
                         @Override
-                        public void onResponse(Call<DestinationModel> call, Response<DestinationModel> response) {
-                            if (response.isSuccessful()) {
+                        public void run() {
+                            Call<DestinationModel> listCall = mControllerManager.getDestinationsService()
+                                    .getAllPointsOfInterest(
+                                            "s4beFzBDafeBP1KjVQUWoNnMPoGID9w7", //enter API KEY HERE!
+                                            mChosenCitySearch);//mChosenCitySearch
 
-                                Toast.makeText(getContext(), "OnResponse Successfull", Toast.LENGTH_SHORT).show();
-                                DestinationModel DestinationList = response.body();
+                            listCall.enqueue(new Callback<DestinationModel>() {
+                                @Override
+                                public void onResponse(Call<DestinationModel> call, Response<DestinationModel> response) {
+                                    if (response.isSuccessful()) {
 
-                                //pass object as points of interest are nested.
-                                mAdapter.addDestinations(DestinationList);
+                                        Toast.makeText(getContext(), "OnResponse Successfull", Toast.LENGTH_SHORT).show();
+                                        DestinationModel DestinationList = response.body();
 
-                                //loop if request its already a arrayList note* we remove 1 from index as it will conflict with header on RecyclerView
-                                for (int i = 0; i < DestinationList.getPoints_of_interest().size() - 1; i++) {
+                                        //pass object as points of interest are nested.
+                                        mAdapter.addDestinations(DestinationList);
 
-                                    Log.e(TAG, response.message());
+                                        //loop if request its already a arrayList note* we remove 1 from index as it will conflict with header on RecyclerView
+                                        for (int i = 0; i < DestinationList.getPoints_of_interest().size() - 1; i++) {
 
-                                    mAdapter.addDestinations(DestinationList);
-//                                    DestinationModel destination = DestinationList.get(i);
-//                                    mAdapter.addDestinations(destination);
-//
-                                    //add new objects
-//                                    mDestinationList.add(new DestinationModel(destination.getTitle(), destination.getThumbnailUrl()));
-//                                    stepDataManager.saveDestinationList(mDestinationList);
-                                    mDestinationList.add(DestinationList);
-                                    stepDataManager.saveDestinationList(mDestinationList);
+                                            Log.e(TAG, response.message());
+
+                                            mAdapter.addDestinations(DestinationList);
+                                            //                                    DestinationModel destination = DestinationList.get(i);
+                                            //                                    mAdapter.addDestinations(destination);
+                                            //
+                                            //add new objects
+                                            //                                    mDestinationList.add(new DestinationModel(destination.getTitle(), destination.getThumbnailUrl()));
+                                            //                                    stepDataManager.saveDestinationList(mDestinationList);
+                                            mDestinationList.add(DestinationList);
+                                            stepDataManager.saveDestinationList(mDestinationList);
+                                        }
+                                    } else {
+                                        int sc = response.code();
+                                        switch (sc) {
+                                            case 400:
+                                                Log.e("Error 400", "Bad Request");
+                                                break;
+                                            case 429:
+                                                Log.e("Error 429", "Monthly Quota Exceeded ");
+                                                Toast.makeText(getContext(), "Monthly Quota Exceeded ", Toast.LENGTH_LONG).show();
+                                                break;
+                                            case 404:
+                                                Log.e("Error 404", "Not Found");
+                                                break;
+                                            default:
+                                                Log.e("Error", "Generic Error");
+                                        }
+                                    }
+                                    mDialog.dismiss();
                                 }
-                            } else {
-                                int sc = response.code();
-                                switch (sc) {
-                                    case 400:
-                                        Log.e("Error 400", "Bad Request");
-                                        break;
-                                    case 429:
-                                        Log.e("Error 429", "Monthly Quota Exceeded ");
-                                        Toast.makeText(getContext(), "Monthly Quota Exceeded ", Toast.LENGTH_LONG).show();
-                                        break;
-                                    case 404:
-                                        Log.e("Error 404", "Not Found");
-                                        break;
-                                    default:
-                                        Log.e("Error", "Generic Error");
-                                }
-                            }
-                            mDialog.dismiss();
-                        }
 
-                        @Override
-                        public void onFailure(Call<DestinationModel> call, Throwable t) {
-                            mDialog.dismiss();
-                            t.printStackTrace();
-                            Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+                                @Override
+                                public void onFailure(Call<DestinationModel> call, Throwable t) {
+                                    mDialog.dismiss();
+                                    t.printStackTrace();
+                                    Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+                                }
+                            });
                         }
                     });
 
+                    mDialog.dismiss();
                 }
-            }, 1000L);
+            }, 2000L);
         } catch (Exception e) {
             e.printStackTrace();
         }
+
 
 //        try {
 //            new Handler().postDelayed(new Runnable() {

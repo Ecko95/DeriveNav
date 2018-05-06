@@ -12,6 +12,10 @@ import java.util.ArrayList;
 
 import com.example.joshua.derivenav.R;
 import com.example.joshua.derivenav.UserTripDetails.Models.UserTripDetailsModel;
+import com.squareup.picasso.Picasso;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 
 /**
@@ -71,7 +75,8 @@ public class UserTripDetailsRecyclerViewAdapter extends RecyclerView.Adapter<Rec
 //            genericViewHolder.itemTxtTitle.setText(model.getTitle());
 //            genericViewHolder.itemTxtMessage.setText(model.getMessage());
             genericViewHolder.itemTxtTitle.setText(model.getCityName());
-            genericViewHolder.itemTxtTitle.setText(model.getKey());
+            genericViewHolder.itemTxtMessage.setText(model.getDescription());
+            Picasso.with(genericViewHolder.imgItem.getContext()).load(model.getImg()).into(genericViewHolder.imgItem);
 
 
         }
@@ -136,29 +141,18 @@ public class UserTripDetailsRecyclerViewAdapter extends RecyclerView.Adapter<Rec
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        private ImageView imgUser;
-        private TextView itemTxtTitle;
-        private TextView itemTxtMessage;
 
+        @BindView(R.id.img_item)
+        ImageView imgItem;
+        @BindView(R.id.item_txt_title)
+        TextView itemTxtTitle;
+        @BindView(R.id.item_txt_message)
+        TextView itemTxtMessage;
 
-        // @BindView(R.id.img_user)
-        // ImageView imgUser;
-        // @BindView(R.id.item_txt_title)
-        // TextView itemTxtTitle;
-        // @BindView(R.id.item_txt_message)
-        // TextView itemTxtMessage;
-        // @BindView(R.id.radio_list)
-        // RadioButton itemTxtMessage;
-        // @BindView(R.id.check_list)
-        // CheckBox itemCheckList;
         public ViewHolder(final View itemView) {
             super(itemView);
 
-            // ButterKnife.bind(this, itemView);
-
-            this.imgUser = (ImageView) itemView.findViewById(R.id.img_user);
-            this.itemTxtTitle = (TextView) itemView.findViewById(R.id.item_txt_title);
-            this.itemTxtMessage = (TextView) itemView.findViewById(R.id.item_txt_message);
+            ButterKnife.bind(this, itemView);
 
 
             itemView.setOnClickListener(new View.OnClickListener() {

@@ -4,10 +4,12 @@ package com.example.joshua.derivenav.NewTrip;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TextInputEditText;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
@@ -18,6 +20,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.DecelerateInterpolator;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -46,6 +49,8 @@ import com.takusemba.spotlight.Spotlight;
 
 import net.steamcrafted.materialiconlib.MaterialMenuInflater;
 
+import org.w3c.dom.Text;
+
 import butterknife.BindFloat;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -60,6 +65,14 @@ public class StepFragment1 extends Fragment implements BlockingStep, StepperLayo
     TextView txt_selected_search;
     @BindView(R.id.sp_category_trip)
     Spinner spinner_categories;
+    @BindView(R.id.txt_title_trip)
+    TextInputEditText txt_title_trip;
+    @BindView(R.id.txt_desc_trip)
+    TextInputEditText txt_desc_trip;
+
+    private String mTripTitle;
+    private String mTripDesc;
+    private String mTripCategory;
 
     private static final String CURRENT_STEP_POSITION_KEY = "position";
     private StepDataManager stepDataManager;
@@ -75,10 +88,23 @@ public class StepFragment1 extends Fragment implements BlockingStep, StepperLayo
         int startingStepPosition = savedInstanceState != null ? savedInstanceState.getInt(CURRENT_STEP_POSITION_KEY) : 0;
 
 
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
-                R.array.category_options, android.R.layout.simple_spinner_item);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(), R.array.category_options, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner_categories.setAdapter(adapter);
+        //spinner actions
+        spinner_categories.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                mTripCategory = spinner_categories.getItemAtPosition(i).toString();
+                Toast.makeText(getContext(), mTripCategory, Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
 
         try{
 
@@ -136,8 +162,20 @@ public class StepFragment1 extends Fragment implements BlockingStep, StepperLayo
                 @Override
                 public void run() {
                     //saves data from search activity
+                    //saves city search
+
                     String enteredText = txt_selected_search.getText().toString();
                     stepDataManager.saveStepData(enteredText);
+
+                    mTripTitle = txt_title_trip.getText().toString();
+                    mTripDesc = txt_desc_trip.getText().toString();
+                    // spinner gets text on listener
+
+                    stepDataManager.saveStepData(enteredText);
+                    stepDataManager.saveTripTitle(mTripTitle);
+                    stepDataManager.saveTripDesc(mTripDesc);
+                    stepDataManager.saveTripCategory(mTripCategory);
+
                     callback.goToNextStep();
                     callback.getStepperLayout().hideProgress();
                 }
@@ -209,7 +247,5 @@ public class StepFragment1 extends Fragment implements BlockingStep, StepperLayo
     public static Step newInstance() {
         return new StepFragment1();
     }
-
-
 
 }

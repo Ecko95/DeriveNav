@@ -20,6 +20,7 @@ public class TripModel {
     private String desc;
     private String pushID;
     private String tripImg;
+    private String category;
 
     public TripModel(String name, String desc, String pushID, String tripImg) {
         this.name = name;
@@ -34,6 +35,21 @@ public class TripModel {
         this.pushID = pushID;
     }
 
+    public TripModel(String name, String desc, String pushID, String tripImg, String category) {
+        this.name = name;
+        this.desc = desc;
+        this.pushID = pushID;
+        this.tripImg = tripImg;
+        this.category = category;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
 
     public TripModel() {
     }

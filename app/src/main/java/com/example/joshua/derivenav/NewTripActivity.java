@@ -90,7 +90,7 @@ public class NewTripActivity extends AppCompatActivity implements StepDataManage
     }
 
     @Override
-    public String getDes() {
+    public String getDesc() {
         return mTripDesc;
     }
 
@@ -194,8 +194,7 @@ public class NewTripActivity extends AppCompatActivity implements StepDataManage
         materialSearchView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(NewTripActivity.this, "you selected the following City:" + position, Toast.LENGTH_SHORT).show();
-
+                //Toast.makeText(NewTripActivity.this, "you selected the following City:" + position, Toast.LENGTH_SHORT).show();
             }
         });
 

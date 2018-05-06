@@ -17,7 +17,14 @@
         app:titleTextColor="@android:color/white" />
 
 
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="vertical" />
+
     <TextView
+        android:id="@+id/txt_title_trip"
         android:layout_width="match_parent"
         android:layout_height="115dp"
         android:padding="8dp"
@@ -26,16 +33,11 @@
         android:textColor="@color/colorPrimaryText" />
 
     <TextView
+        android:id="@+id/txt_desc_trip"
         android:layout_width="match_parent"
-        android:layout_height="174dp"
+        android:layout_height="58dp"
         android:padding="8dp"
         android:text="TextView" />
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recycler_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:scrollbars="vertical" />
 
 
 </LinearLayout>

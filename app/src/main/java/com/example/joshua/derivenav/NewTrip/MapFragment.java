@@ -281,26 +281,31 @@ public class MapFragment extends Fragment implements BlockingStep, OnMapReadyCal
             public void run() {
                 try {
                     destinationModelList = stepDataManager.getNewDestinationList();
-                    DestinationModel destinationModel = new DestinationModel();
-                    final String Tripkey = dbRef.child("Locations").child(userID).push().getKey();
+                    final String key = dbRef.child("Trips").child(userID).push().getKey();
 
-                    String tripName;
-                    String desc;
-                    String destinationName;
+                    String title = stepDataManager.getTripTitle();
+                    String desc = stepDataManager.getDesc();
+                    String category = stepDataManager.getCategory();
+
+                    //PointsOfInterests Init Variables
+
                     Map newLocationData = new HashMap();
-                    double destinationLat;
-                    double destinationLng;
+                    String destinationName;
                     String tripImage;
                     String destinationImage;
                     String destinationDesc;
                     String destinationWikiPage;
                     String destinationGoogleMaps;
+                    double destinationLat;
+                    double destinationLng;
+
+                    //gets Image for Trip Model second picture of Points of Interest is selected
                     DestinationModel destinationMainImg = destinationModelList.get(1);
                     tripImage = destinationMainImg.getPoints_of_interest().get(1).getMain_image();
 
                     //creates new trip object
-                    TripModel newTrip = new TripModel("USER INPUT TITLE", "USER INPUT DESCRIPTION", Tripkey, tripImage);
-                    dbRef.child("Trips").child(userID).child(Tripkey).setValue(newTrip);
+                    TripModel newTrip = new TripModel(title, desc, key, tripImage, category);
+                    dbRef.child("Trips").child(userID).child(key).setValue(newTrip);
 
 
                     //iterates through points of interests
@@ -320,7 +325,7 @@ public class MapFragment extends Fragment implements BlockingStep, OnMapReadyCal
                         newLocationData.put("cityName", destinationName);
                         newLocationData.put("description", destinationDesc);
                         newLocationData.put("userID", userID);
-                        newLocationData.put("key", Tripkey);
+                        newLocationData.put("key", key);
                         newLocationData.put("lat", destinationLat);
                         newLocationData.put("lng", destinationLng);
                         newLocationData.put("img", destinationImage);

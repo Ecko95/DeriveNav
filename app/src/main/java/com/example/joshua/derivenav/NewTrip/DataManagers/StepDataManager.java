@@ -20,7 +20,7 @@ public interface StepDataManager {
 
     void saveTripDesc(String description);
 
-    String getDes();
+    String getDesc();
 
     void saveTripCategory(String category);
 

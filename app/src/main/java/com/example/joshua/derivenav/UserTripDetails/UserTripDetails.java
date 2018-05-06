@@ -40,6 +40,7 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
+import android.widget.TextView;
 import android.widget.Toast;
 import android.support.v7.widget.Toolbar;
 
@@ -60,6 +61,12 @@ public class UserTripDetails extends AppCompatActivity {
     @BindView(R.id.toolbar)
     Toolbar toolbar;
 
+    @BindView(R.id.txt_title_trip)
+    TextView tripTitle;
+
+    @BindView(R.id.txt_desc_trip)
+    TextView tripDesc;
+
     private UserTripDetailsRecyclerViewAdapter mAdapter;
     private ArrayList<UserTripDetailsModel> modelList = new ArrayList<>();
     private Dialog mDialog;
@@ -72,6 +79,7 @@ public class UserTripDetails extends AppCompatActivity {
 
     String city_title;
     String key;
+    String desc;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,7 +87,6 @@ public class UserTripDetails extends AppCompatActivity {
 
         ButterKnife.bind(this);
         initToolbar("Trip Details");
-
 
         getDetails();
 
@@ -162,7 +169,8 @@ public class UserTripDetails extends AppCompatActivity {
 
                     UserTripDetailsModel userInfo = item.getValue(UserTripDetailsModel.class);
                     if (userInfo != null) {
-                        modelList.add(new UserTripDetailsModel(userInfo.getCityName(), userInfo.getKey(), userInfo.getUserID()));
+                        modelList.add(new UserTripDetailsModel(userInfo.getCityName(), userInfo.getKey(), userInfo.getUserID(), userInfo.getDescription(),
+                                userInfo.getGoogleMaps(), userInfo.getWikiPage(), userInfo.getImg(), userInfo.getLat(), userInfo.getLng()));
                     }
                 }
                 mAdapter = new UserTripDetailsRecyclerViewAdapter(UserTripDetails.this, modelList, city_title);
@@ -202,7 +210,10 @@ public class UserTripDetails extends AppCompatActivity {
 
             city_title = getIntent().getStringExtra("title");
             key = getIntent().getStringExtra("key");
+            desc = getIntent().getStringExtra("description");
 
+            tripTitle.setText(city_title);
+            tripDesc.setText(desc);
 
             loadFirebaseData();
 

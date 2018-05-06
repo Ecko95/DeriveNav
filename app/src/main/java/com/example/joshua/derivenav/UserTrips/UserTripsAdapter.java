@@ -114,6 +114,7 @@ public class UserTripsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
                     intent.putExtra("title", model.getTitle());
                     intent.putExtra("key", model.getKey());
+                    intent.putExtra("description", model.getDescription());
 
                     mContext.startActivity(intent);
 

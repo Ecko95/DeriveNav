@@ -57,13 +57,10 @@
         <activity android:name=".LoginActivity" />
         <activity
             android:name=".NewTripActivity"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="adjustPan" />
         <activity android:name=".ProfileActivity" />
         <activity android:name=".DestinationDetailsActivity" />
-        <activity
-            android:name=".UserTripDetails.UserTripDetailsActivity"
-            android:label="@string/title_activity_user_trip_details"
-            android:theme="@style/AppTheme.Template.Base" />
         <activity
             android:name=".UserTripDetails.UserTripDetails"
             android:label="@string/title_activity_user_trip_details"
