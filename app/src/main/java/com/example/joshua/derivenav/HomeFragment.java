@@ -23,13 +23,20 @@ import android.widget.Toast;
 
 import com.example.joshua.derivenav.Api.ApiController;
 import com.example.joshua.derivenav.NewTrip.Models.DestinationModel;
+import com.example.joshua.derivenav.NewTrip.Models.TripModel;
 import com.example.joshua.derivenav.UserTripDetails.UserTripDetails;
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -45,6 +52,13 @@ public class HomeFragment extends Fragment {
 
     private MaterialSearchView materialSearchView;
     private Menu menu;
+
+
+    private FirebaseAuth mAuth;
+    private FirebaseAuth.AuthStateListener mAuthListener;
+    private FirebaseDatabase mFirebaseDatabase;
+    private DatabaseReference dbRef;
+    private String userID;
 
     public static HomeFragment newInstance() {
         HomeFragment fragment = new HomeFragment();
@@ -103,9 +117,46 @@ public class HomeFragment extends Fragment {
     }
     @OnClick(R.id.action_card_help)
     public void setAction_card_help(View view) {
-        startActivity(new Intent(getActivity(), UserTripDetails.class));
-        //getFeed();
-        //Toast.makeText(getActivity(), "you clicked on action: help", Toast.LENGTH_SHORT).show();
+
+        mAuth = FirebaseAuth.getInstance();
+        mFirebaseDatabase = FirebaseDatabase.getInstance();
+        dbRef = mFirebaseDatabase.getReference();
+        FirebaseUser user = mAuth.getCurrentUser();
+        userID = user.getUid();
+
+        String name = "Trip Name";
+        String desc = "Description";
+        final String Tripkey = dbRef.child("Locations").child(userID).push().getKey();
+
+
+        //if fields are entered, then create new Trip
+        //populate data with API
+
+        TripModel newTrip = new TripModel(name, desc, Tripkey);
+        Map newLocationData = new HashMap();
+        newLocationData.put("cityName", "Madrid");
+        newLocationData.put("key", Tripkey);
+        newLocationData.put("userID", userID);
+        Map newLocationData2 = new HashMap();
+        newLocationData2.put("cityName", "Barcelona");
+        newLocationData2.put("key", Tripkey);
+        newLocationData2.put("userID", userID);
+
+        dbRef.child("Trips").child(userID).child(Tripkey).setValue(newTrip);
+//            for (int i = 0; i < newLocationData.size(); i++){
+//                dbRef.child("Destinations").push().setValue(newLocationData);
+//            }
+//            for (int i = 0; i < newLocationData.size(); i++){
+//                dbRef.child("Destinations").push().setValue(newLocationData2);
+//            }
+
+        dbRef.child("Trips").child(userID).child(Tripkey).setValue(newTrip);
+        dbRef.child("Destinations").push().setValue(newLocationData);
+        dbRef.child("Destinations").push().setValue(newLocationData2);
+
+
+//                   dbRef.child("Trips").child(userID).child(key).child("locations").child(key2).setValue(newLocationData);
+//                   getActivity().finish();
     }
 
     //AMADEUS API TEST

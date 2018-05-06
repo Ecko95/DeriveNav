@@ -38,9 +38,6 @@ public class UserTripDetailsRecyclerViewAdapter extends RecyclerView.Adapter<Rec
         this.mHeaderTitle = headerTitle;
     }
 
-    public UserTripDetailsRecyclerViewAdapter(String headerTitle) {
-        this.mHeaderTitle = headerTitle;
-    }
 
     public void updateList(ArrayList<UserTripDetailsModel> modelList) {
         this.modelList = modelList;
@@ -91,7 +88,6 @@ public class UserTripDetailsRecyclerViewAdapter extends RecyclerView.Adapter<Rec
     private boolean isPositionHeader(int position) {
         return position == 0;
     }
-
 
     @Override
     public int getItemCount() {

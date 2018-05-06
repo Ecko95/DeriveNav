@@ -12,17 +12,27 @@ public class UserTrips {
 
     private String key;
 
+    private String img;
+
 
     public UserTrips() {
 
     }
 
-    public UserTrips(String title, String description, String key) {
+    public UserTrips(String title, String description, String key, String img) {
         this.title = title;
         this.description = description;
         this.key = key;
+        this.img = img;
     }
 
+    public String getImg() {
+        return img;
+    }
+
+    public void setImg(String img) {
+        this.img = img;
+    }
 
     public String getKey() {
         return key;

@@ -169,7 +169,7 @@ public class NewTripActivity extends AppCompatActivity implements StepDataManage
 
             }else{
                 //disables next fragment button
-                stepperLayout.setNextButtonEnabled(true);
+                stepperLayout.setNextButtonEnabled(false);
                 stepperLayout.setNextButtonVerificationFailed(true);
 //                Toast.makeText(this, "Null", Toast.LENGTH_SHORT).show();
             }

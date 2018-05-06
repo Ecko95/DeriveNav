@@ -108,9 +108,9 @@ public class CityDestinationsFragment extends Fragment implements BlockingStep {
 
             Toast.makeText(activity, mChosenCitySearch, Toast.LENGTH_SHORT).show();
 
-//            mChosenCitySearch = getArguments().getString("Search");
-//            Toast.makeText(getActivity(), mChosenCitySearch, Toast.LENGTH_SHORT).show();
-            //getFeed();
+            //disable for test only
+            //get feed from AMADEUS API
+            getFeed();
 
 
 
@@ -147,21 +147,22 @@ public class CityDestinationsFragment extends Fragment implements BlockingStep {
 
 
         //add test data
-        modelList.add(new DestinationModel("Android", "Hello " + " Android"));
-        modelList.add(new DestinationModel("Beta", "Hello " + " Beta"));
-        modelList.add(new DestinationModel("Cupcake", "Hello " + " Cupcake"));
-        modelList.add(new DestinationModel("Donut", "Hello " + " Donut"));
-        modelList.add(new DestinationModel("Eclair", "Hello " + " Eclair"));
-        modelList.add(new DestinationModel("Froyo", "Hello " + " Froyo"));
-        modelList.add(new DestinationModel("Gingerbread", "Hello " + " Gingerbread"));
-        modelList.add(new DestinationModel("Honeycomb", "Hello " + " Honeycomb"));
-        modelList.add(new DestinationModel("Ice Cream Sandwich", "Hello " + " Ice Cream Sandwich"));
-        modelList.add(new DestinationModel("Jelly Bean", "Hello " + " Jelly Bean"));
-        modelList.add(new DestinationModel("KitKat", "Hello " + " KitKat"));
-        modelList.add(new DestinationModel("Lollipop", "Hello " + " Lollipop"));
-        modelList.add(new DestinationModel("Marshmallow", "Hello " + " Marshmallow"));
-        modelList.add(new DestinationModel("Nougat", "Hello " + " Nougat"));
-        modelList.add(new DestinationModel("Android O", "Hello " + " Android O"));
+        //enable for test only
+//        modelList.add(new DestinationModel("Android", "Hello " + " Android"));
+//        modelList.add(new DestinationModel("Beta", "Hello " + " Beta"));
+//        modelList.add(new DestinationModel("Cupcake", "Hello " + " Cupcake"));
+//        modelList.add(new DestinationModel("Donut", "Hello " + " Donut"));
+//        modelList.add(new DestinationModel("Eclair", "Hello " + " Eclair"));
+//        modelList.add(new DestinationModel("Froyo", "Hello " + " Froyo"));
+//        modelList.add(new DestinationModel("Gingerbread", "Hello " + " Gingerbread"));
+//        modelList.add(new DestinationModel("Honeycomb", "Hello " + " Honeycomb"));
+//        modelList.add(new DestinationModel("Ice Cream Sandwich", "Hello " + " Ice Cream Sandwich"));
+//        modelList.add(new DestinationModel("Jelly Bean", "Hello " + " Jelly Bean"));
+//        modelList.add(new DestinationModel("KitKat", "Hello " + " KitKat"));
+//        modelList.add(new DestinationModel("Lollipop", "Hello " + " Lollipop"));
+//        modelList.add(new DestinationModel("Marshmallow", "Hello " + " Marshmallow"));
+//        modelList.add(new DestinationModel("Nougat", "Hello " + " Nougat"));
+//        modelList.add(new DestinationModel("Android O", "Hello " + " Android O"));
 
 
         mAdapter = new DestinationsRecyclerViewAdapter(getActivity(), modelList, "Points of Interests");

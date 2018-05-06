@@ -16,6 +16,7 @@ import com.example.joshua.derivenav.NewTrip.Models.TripModel;
 import com.example.joshua.derivenav.R;
 import com.example.joshua.derivenav.UserTripDetails.UserTripDetails;
 import com.example.joshua.derivenav.UserTrips.Models.UserTrips;
+import com.squareup.picasso.Picasso;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -61,6 +62,7 @@ public class UserTripsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
             genericViewHolder.itemTxtTitle.setText(model.getTitle());
             genericViewHolder.itemTxtMessage.setText(model.getDescription());
+            Picasso.with(mContext).load(model.getImg()).into(genericViewHolder.itemImgTrip);
 
         }
     }
@@ -88,11 +90,10 @@ public class UserTripsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-
-
-        @BindView(R.id.img_trip) ImageView imgTrip;
         @BindView(R.id.item_txt_title) TextView itemTxtTitle;
         @BindView(R.id.item_txt_message) TextView itemTxtMessage;
+        @BindView(R.id.img_main_trip)
+        ImageView itemImgTrip;
 
         public ViewHolder(final View itemView) {
             super(itemView);

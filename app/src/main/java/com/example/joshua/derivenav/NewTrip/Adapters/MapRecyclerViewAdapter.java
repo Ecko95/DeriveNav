@@ -62,13 +62,15 @@ public class MapRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             //bind DestinationList of Locations to Horizontal View
 
             //TEST
-            genericViewHolder.itemTxtTitle.setText(model.getTitle());
-            genericViewHolder.itemTxtMessage.setText(model.getMessage());
+            //genericViewHolder.itemTxtTitle.setText(model.getTitle());
+            //genericViewHolder.itemTxtMessage.setText(model.getMessage());
 
+
+            //Uncomment for real data
             //Places of Interest Model
-//            genericViewHolder.itemTxtTitle.setText(model.getPoints_of_interest().get(position).getTitle());
-//            genericViewHolder.itemTxtMessage.setText(model.getPoints_of_interest().get(position).getDetails().getShort_description());
-//            Picasso.with(genericViewHolder.imgItem.getContext()).load(model.getPoints_of_interest().get(position).getMain_image()).into(genericViewHolder.imgItem);
+            genericViewHolder.itemTxtTitle.setText(model.getPoints_of_interest().get(position).getTitle());
+            genericViewHolder.itemTxtMessage.setText(model.getPoints_of_interest().get(position).getDetails().getShort_description());
+            Picasso.with(genericViewHolder.imgItem.getContext()).load(model.getPoints_of_interest().get(position).getMain_image()).into(genericViewHolder.imgItem);
 
 
         }

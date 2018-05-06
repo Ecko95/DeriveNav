@@ -33,11 +33,13 @@ import com.example.joshua.derivenav.NewTrip.Models.DestinationModel;
 import com.example.joshua.derivenav.NewTrip.Models.MapModel;
 import com.example.joshua.derivenav.NewTrip.Models.TripModel;
 import com.example.joshua.derivenav.R;
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
@@ -185,8 +187,7 @@ public class MapFragment extends Fragment implements BlockingStep, OnMapReadyCal
 
         getLocationPermission();
 
-
-//        setAdapter();
+        //setAdapter();
 
     }
 
@@ -223,25 +224,25 @@ public class MapFragment extends Fragment implements BlockingStep, OnMapReadyCal
         // use a linear layout manager
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
         recyclerView.setLayoutManager(layoutManager);
-
-
         recyclerView.setAdapter(mAdapter);
 
+
         //disable for tests only
-//        mAdapter.SetOnItemClickListener(new MapRecyclerViewAdapter.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(View view, int position, DestinationModel model) { //MapModel model
-//
-//
-//                //handle item click events here
-//                LatLng coordinates = new LatLng(model.getPoints_of_interest().get(position).getLocation().getLatitude(), model.getPoints_of_interest().get(position).getLocation().getLongitude());
-//                CameraUpdate location = CameraUpdateFactory.newLatLngZoom(coordinates, 12);
-//
-//                //get model gps coordinates and 1- add marker 2- move camera to model coordinates
-//                googleMap.addMarker(new MarkerOptions().position(coordinates).title(model.getPoints_of_interest().get(position).getTitle()));
-//                googleMap.animateCamera(location);
-//            }
-//        });
+        //gets generated coordinates per model item
+        mAdapter.SetOnItemClickListener(new MapRecyclerViewAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position, DestinationModel model) { //MapModel model
+
+
+                //handle item click events here
+                LatLng coordinates = new LatLng(model.getPoints_of_interest().get(position).getLocation().getLatitude(), model.getPoints_of_interest().get(position).getLocation().getLongitude());
+                CameraUpdate location = CameraUpdateFactory.newLatLngZoom(coordinates, 12);
+
+                //get model gps coordinates and 1- add marker 2- move camera to model coordinates
+                googleMap.addMarker(new MarkerOptions().position(coordinates).title(model.getPoints_of_interest().get(position).getTitle()));
+                googleMap.animateCamera(location);
+            }
+        });
 
         //mAdapter.updateList(destinationModelList);
 
@@ -274,56 +275,51 @@ public class MapFragment extends Fragment implements BlockingStep, OnMapReadyCal
     @Override
     public void onCompleteClicked(StepperLayout.OnCompleteClickedCallback callback) {
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setView(R.layout.fui_phone_progress_dialog);
-        builder.setCancelable(false);
-        mDialog = builder.show();
+        try {
+            destinationModelList = stepDataManager.getNewDestinationList();
+            DestinationModel destinationModel = new DestinationModel();
+            final String Tripkey = dbRef.child("Locations").child(userID).push().getKey();
 
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                mDialog.dismiss();
-                getCheckedDestinationTrips();
-                String name = "Trip Name";
-                String desc = "Description";
-                final String Tripkey = dbRef.child("Locations").child(userID).push().getKey();
-                final String Destinationkey = dbRef.child("Destinations").push().getKey();
-                final String Destinationkey2 = dbRef.child("Destinations").push().getKey();
+            String tripName;
+            String desc;
+            String destinationName;
+            Map newLocationData = new HashMap();
+            double destinationLat;
+            double destinationLng;
+            String tripImage;
 
-                //if fields are entered, then create new Trip
-                //populate data with API
-                try {
+            DestinationModel destinationMainImg = destinationModelList.get(1);
+            tripImage = destinationMainImg.getPoints_of_interest().get(1).getMain_image();
 
-                    TripModel newTrip = new TripModel(name, desc, Tripkey);
-                    Map newLocationData = new HashMap();
-                    newLocationData.put("cityName", "Madrid");
-                    newLocationData.put("key", Tripkey);
-                    newLocationData.put("userID", userID);
-                    Map newLocationData2 = new HashMap();
-                    newLocationData2.put("cityName", "Barcelona");
-                    newLocationData2.put("key", Tripkey);
-                    newLocationData2.put("userID", userID);
+            //creates new trip object
+            TripModel newTrip = new TripModel("USER INPUT TITLE", "USER INPUT DESCRIPTION", Tripkey, tripImage);
+            dbRef.child("Trips").child(userID).child(Tripkey).setValue(newTrip);
 
 
-                    dbRef.child("Trips").child(userID).child(Tripkey).setValue(newTrip);
-                    dbRef.child("Destinations").child(Destinationkey).setValue(newLocationData);
-                    dbRef.child("Destinations").child(Destinationkey2).setValue(newLocationData2);
+            //iterates through points of interests
+            for (int i = 0; i < destinationModelList.size(); i++) {
+
+                DestinationModel destinationInfo = destinationModelList.get(i);
+                destinationName = destinationInfo.getPoints_of_interest().get(i).getTitle();
+                destinationLat = destinationInfo.getPoints_of_interest().get(i).getLocation().getLatitude();
+                destinationLng = destinationInfo.getPoints_of_interest().get(i).getLocation().getLongitude();
+
+                //adds locations data objects
+
+                newLocationData.put("cityName", destinationName);
+                newLocationData.put("lat", destinationLat);
+                newLocationData.put("lng", destinationLng);
+                newLocationData.put("key", Tripkey);
+                newLocationData.put("userID", userID);
 
 
-//                   dbRef.child("Trips").child(userID).child(key).child("locations").child(key2).setValue(newLocationData);
-//                   getActivity().finish();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
+                dbRef.child("Destinations").push().setValue(newLocationData);
             }
-        }, 1000L);
-
-        callback.complete();
-
-
-//        callback.complete();
-//        getActivity().finish();
+            callback.complete();
+            getActivity().finish();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void getCheckedDestinationTrips() {

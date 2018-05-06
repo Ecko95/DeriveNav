@@ -19,36 +19,13 @@ public class TripModel {
     private String name;
     private String desc;
     private String pushID;
-    private DestinationModel destinationModel;
-    private Map newDestinationData;
-    private String city_name;
+    private String tripImg;
 
-    public TripModel(String city_name) {
-        this.city_name = city_name;
-    }
-
-    public String getCity_name() {
-        return city_name;
-    }
-
-    public void setCity_name(String city_name) {
-        this.city_name = city_name;
-    }
-
-    public Map getNewDestinationData() {
-        return newDestinationData;
-    }
-
-    public void setNewDestinationData(Map newDestinationData) {
-        this.newDestinationData = newDestinationData;
-    }
-
-    public DestinationModel getDestinationModel() {
-        return destinationModel;
-    }
-
-    public void setDestinationModel(DestinationModel destinationModel) {
-        this.destinationModel = destinationModel;
+    public TripModel(String name, String desc, String pushID, String tripImg) {
+        this.name = name;
+        this.desc = desc;
+        this.pushID = pushID;
+        this.tripImg = tripImg;
     }
 
     public TripModel(String name, String desc, String pushID) {
@@ -57,11 +34,16 @@ public class TripModel {
         this.pushID = pushID;
     }
 
-    public TripModel(Map newDestinationData) {
-        this.newDestinationData = newDestinationData;
-    }
 
     public TripModel() {
+    }
+
+    public String getTripImg() {
+        return tripImg;
+    }
+
+    public void setTripImg(String tripImg) {
+        this.tripImg = tripImg;
     }
 
     public String getPushID() {

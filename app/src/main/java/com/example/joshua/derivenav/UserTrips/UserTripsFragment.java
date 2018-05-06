@@ -27,7 +27,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
+import android.widget.ImageView;
 import android.widget.Toast;
 import android.os.Handler;
 
@@ -85,24 +87,6 @@ public class UserTripsFragment extends Fragment {
     }
 
 
-//    /**
-//     * Use this factory method to create a new instance of
-//     * this fragment using the provided parameters.
-//     *
-//     * @param param1 Parameter 1.
-//     * @param param2 Parameter 2.
-//     * @return A new instance of fragment UserTripsFragment.
-//     */
-//    // TODO: Rename and change types and number of parameters
-//    public static UserTripsFragment newInstance(String param1, String param2) {
-//        UserTripsFragment fragment = new UserTripsFragment();
-//        Bundle args = new Bundle();
-//        args.putString(ARG_PARAM1, param1);
-//        args.putString(ARG_PARAM2, param2);
-//        fragment.setArguments(args);
-//        return fragment;
-//    }
-
     public static UserTripsFragment newInstance() {
         UserTripsFragment fragment = new UserTripsFragment();
         return fragment;
@@ -125,11 +109,9 @@ public class UserTripsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-
-
-
-
         View view = inflater.inflate(R.layout.fragment_user_trips, container, false);
+
+        ButterKnife.bind(this, view);
 
         mAuth = FirebaseAuth.getInstance();
         mFirebaseDatabase = FirebaseDatabase.getInstance();
@@ -147,7 +129,7 @@ public class UserTripsFragment extends Fragment {
             @Override
             public void onDataChange(final DataSnapshot dataSnapshot) {
 
-                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
                 builder.setView(R.layout.fui_phone_progress_dialog);
                 builder.setCancelable(false);
                 builder.setTitle("Loading, Please wait...");
@@ -166,7 +148,8 @@ public class UserTripsFragment extends Fragment {
 
                             DataSnapshot item = items.next();
                             TripModel userInfo = item.getValue(TripModel.class);
-                            modelList.add(new UserTrips(userInfo.getName(), userInfo.getDesc(), userInfo.getPushID()));
+                            modelList.add(new UserTrips(userInfo.getName(), userInfo.getDesc(), userInfo.getPushID(), userInfo.getTripImg()));
+
                         }
                         dialog.dismiss();
 

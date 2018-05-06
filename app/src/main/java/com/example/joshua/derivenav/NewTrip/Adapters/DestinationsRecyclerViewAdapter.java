@@ -129,8 +129,8 @@ public class DestinationsRecyclerViewAdapter extends RecyclerView.Adapter<Recycl
             ViewHolder genericViewHolder = (ViewHolder) holder;
 
             //TEST MODEL
-            genericViewHolder.itemTxtTitle.setText(model.getTitle());
-            genericViewHolder.itemTxtMessage.setText(model.getMessage());
+            //genericViewHolder.itemTxtTitle.setText(model.getTitle());
+            //genericViewHolder.itemTxtMessage.setText(model.getMessage());
 
 //            //USERS MODEL
 //            genericViewHolder.itemTxtTitle.setText(model.getName());
@@ -138,13 +138,13 @@ public class DestinationsRecyclerViewAdapter extends RecyclerView.Adapter<Recycl
 //            Picasso.with(genericViewHolder.imgItem.getContext()).load("https://picsum.photos/100/100/?random").into(genericViewHolder.imgItem);
 
             //For Points of Interests
-//            genericViewHolder.itemTxtTitle.setText(model.getPoints_of_interest().get(position - 1).getTitle());
-//            genericViewHolder.itemTxtMessage.setText(model.getPoints_of_interest().get(position - 1).getDetails().getShort_description());
-//            Picasso.with(genericViewHolder.imgItem.getContext())
-//                    .load(model.getPoints_of_interest().get(position - 1).getMain_image())
-//                    .resize(50, 50)
-//                    .centerCrop()
-//                    .into(genericViewHolder.imgItem);
+            genericViewHolder.itemTxtTitle.setText(model.getPoints_of_interest().get(position - 1).getTitle());
+            genericViewHolder.itemTxtMessage.setText(model.getPoints_of_interest().get(position - 1).getDetails().getShort_description());
+            Picasso.with(genericViewHolder.imgItem.getContext())
+                    .load(model.getPoints_of_interest().get(position - 1).getMain_image())
+                    .resize(50, 50)
+                    .centerCrop()
+                    .into(genericViewHolder.imgItem);
 
             //in some cases, it will prevent unwanted situations
             genericViewHolder.itemCheckList.setOnCheckedChangeListener(null);
@@ -269,15 +269,15 @@ public class DestinationsRecyclerViewAdapter extends RecyclerView.Adapter<Recycl
                     int itemPosition = getAdapterPosition();
                     final DestinationModel model = getItem(itemPosition - 1);
                     Toast.makeText(mContext, "clicked:" + (itemPosition - 1), Toast.LENGTH_SHORT).show();
-//                    mItemClickListener.onItemClick(itemView, getAdapterPosition(), modelList.get(getAdapterPosition() - 1));
-//                    Intent intent = new Intent(mContext, DestinationDetailsActivity.class);
-//
-//                    intent.putExtra("img_url", model.getPoints_of_interest().get(itemPosition - 1).getMain_image());
-//                    intent.putExtra("destination_title", model.getPoints_of_interest().get(itemPosition - 1).getTitle());
-//                    intent.putExtra("destination_desc", model.getPoints_of_interest().get(itemPosition - 1).getDetails().getDescription());
-//                    //intent.putExtra("destination_google_maps_link", model.getPoints_of_interest().get(itemPosition - 1).getLocation().getGoogle_maps_link());
-//
-//                    mContext.startActivity(intent);
+                    mItemClickListener.onItemClick(itemView, getAdapterPosition(), modelList.get(getAdapterPosition() - 1));
+                    Intent intent = new Intent(mContext, DestinationDetailsActivity.class);
+
+                    intent.putExtra("img_url", model.getPoints_of_interest().get(itemPosition - 1).getMain_image());
+                    intent.putExtra("destination_title", model.getPoints_of_interest().get(itemPosition - 1).getTitle());
+                    intent.putExtra("destination_desc", model.getPoints_of_interest().get(itemPosition - 1).getDetails().getDescription());
+                    //intent.putExtra("destination_google_maps_link", model.getPoints_of_interest().get(itemPosition - 1).getLocation().getGoogle_maps_link());
+
+                    mContext.startActivity(intent);
 
                 }
             });
