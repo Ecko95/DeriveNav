@@ -30,6 +30,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.Toast;
 import android.os.Handler;
@@ -49,18 +50,12 @@ import butterknife.ButterKnife;
 
 public class UserTripsFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
 
     @BindView(R.id.recycler_view) RecyclerView recyclerView;
     @BindView(R.id.swipe_refresh_recycler_list) SwipeRefreshLayout swipeRefreshRecyclerList;
+    @BindView(R.id.empty_view_user_trips)
+    FrameLayout emptyLayout;
 
     private UserTripsAdapter mAdapter;
 
@@ -98,17 +93,12 @@ public class UserTripsFragment extends Fragment {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
 
-
         mAdapter = new UserTripsAdapter(getActivity(), modelList);
-
-
 
     }
 
-
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_user_trips, container, false);
 
@@ -120,12 +110,7 @@ public class UserTripsFragment extends Fragment {
         FirebaseUser user = mAuth.getCurrentUser();
         userID = user.getUid();
 
-
-
         mRef.child("Trips").child(userID).addValueEventListener(new ValueEventListener() {
-
-
-
 
             @Override
             public void onDataChange(final DataSnapshot dataSnapshot) {
@@ -144,21 +129,22 @@ public class UserTripsFragment extends Fragment {
                         //clears list for refresh
                         modelList.clear();
 
+                        if (dataSnapshot.exists()) {
+                            emptyLayout.setVisibility(View.GONE);
+                            for (DataSnapshot item : dataSnapshot.getChildren()) {
 
-                        for (DataSnapshot item : dataSnapshot.getChildren()) {
+                                TripModel userInfo = item.getValue(TripModel.class);
+                                modelList.add(new UserTrips(userInfo.getName(), userInfo.getDesc(), userInfo.getPushID(), userInfo.getTripImg()));
 
-                            TripModel userInfo = item.getValue(TripModel.class);
-                            modelList.add(new UserTrips(userInfo.getName(), userInfo.getDesc(), userInfo.getPushID(), userInfo.getTripImg()));
-
+                            }
+                        } else {
+                            emptyLayout.setVisibility(View.VISIBLE);
                         }
+
                         dialog.dismiss();
 
                     }
                 }, 1500L);
-
-
-
-
 
             }
 

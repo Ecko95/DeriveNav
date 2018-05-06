@@ -13,20 +13,18 @@ import android.widget.Toast;
 import com.tapadoo.alerter.Alerter;
 
 import static android.content.Context.CONNECTIVITY_SERVICE;
+import static com.example.joshua.derivenav.MainActivity.dialog;
 
 /**
  * Created by Joshua on 14/12/2017.
  */
 
-import static com.example.joshua.derivenav.MainActivity.dialog;
 
 public class NetworkChangeReceiver extends BroadcastReceiver {
 
     @Override
-    public void onReceive(Context context, Intent intent)
-    {
-        try
-        {
+    public void onReceive(Context context, Intent intent) {
+        try {
             if (isOnline(context)) {
                 dialog(true, context);
                 Log.e("keshav", "Online Connect Intenet ");

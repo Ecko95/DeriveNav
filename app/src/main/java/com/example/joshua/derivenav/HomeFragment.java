@@ -3,7 +3,12 @@ package com.example.joshua.derivenav;
 import android.app.ActivityOptions;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -12,6 +17,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -19,6 +25,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.example.joshua.derivenav.Api.ApiController;
@@ -33,6 +41,8 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
 import java.util.HashMap;
 import java.util.List;
@@ -60,6 +70,9 @@ public class HomeFragment extends Fragment {
     private DatabaseReference dbRef;
     private String userID;
 
+    @BindView(R.id.main_background_img)
+    ImageView mMainBackground;
+
     public static HomeFragment newInstance() {
         HomeFragment fragment = new HomeFragment();
         return fragment;
@@ -83,6 +96,8 @@ public class HomeFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         ButterKnife.bind(this, view);
+
+        Picasso.with(getActivity()).load(R.drawable.main_background_img).into(mMainBackground);
 
         return view;
     }
@@ -118,45 +133,52 @@ public class HomeFragment extends Fragment {
     @OnClick(R.id.action_card_help)
     public void setAction_card_help(View view) {
 
-        mAuth = FirebaseAuth.getInstance();
-        mFirebaseDatabase = FirebaseDatabase.getInstance();
-        dbRef = mFirebaseDatabase.getReference();
-        FirebaseUser user = mAuth.getCurrentUser();
-        userID = user.getUid();
+        AsyncTask.execute(new Runnable() {
+            @Override
+            public void run() {
+                try {
 
-        String name = "Trip Name";
-        String desc = "Description";
-        final String Tripkey = dbRef.child("Locations").child(userID).push().getKey();
+                    mAuth = FirebaseAuth.getInstance();
+                    mFirebaseDatabase = FirebaseDatabase.getInstance();
+                    dbRef = mFirebaseDatabase.getReference();
+                    FirebaseUser user = mAuth.getCurrentUser();
+                    userID = user.getUid();
 
-
-        //if fields are entered, then create new Trip
-        //populate data with API
-
-        TripModel newTrip = new TripModel(name, desc, Tripkey, "https://picsum.photos/200/300/?random");
-        Map newLocationData = new HashMap();
-        newLocationData.put("cityName", "Madrid");
-        newLocationData.put("key", Tripkey);
-        newLocationData.put("userID", userID);
-        Map newLocationData2 = new HashMap();
-        newLocationData2.put("cityName", "Barcelona");
-        newLocationData2.put("key", Tripkey);
-        newLocationData2.put("userID", userID);
-
-        dbRef.child("Trips").child(userID).child(Tripkey).setValue(newTrip);
-//            for (int i = 0; i < newLocationData.size(); i++){
-//                dbRef.child("Destinations").push().setValue(newLocationData);
-//            }
-//            for (int i = 0; i < newLocationData.size(); i++){
-//                dbRef.child("Destinations").push().setValue(newLocationData2);
-//            }
-
-        dbRef.child("Trips").child(userID).child(Tripkey).setValue(newTrip);
-        dbRef.child("Destinations").push().setValue(newLocationData);
-        dbRef.child("Destinations").push().setValue(newLocationData2);
+                    String name = "Trip Name";
+                    String desc = "Description";
+                    final String Tripkey = dbRef.child("Locations").child(userID).push().getKey();
 
 
-//                   dbRef.child("Trips").child(userID).child(key).child("locations").child(key2).setValue(newLocationData);
-//                   getActivity().finish();
+                    //if fields are entered, then create new Trip
+                    //populate data with API
+
+                    TripModel newTrip = new TripModel(name, desc, Tripkey, "https://picsum.photos/200/300/?random");
+                    Map newLocationData = new HashMap();
+                    newLocationData.put("cityName", "Madrid");
+                    newLocationData.put("key", Tripkey);
+                    newLocationData.put("userID", userID);
+
+
+                    newLocationData.put("cityName", "Test City");
+                    newLocationData.put("description", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam placerat in tellus id vehicula. Maecenas pellentesque aliquam nulla ac maximus. Praesent eget nibh dolor. Pellentesque tempus sollicitudin scelerisque. Praesent commodo justo venenatis nisi euismod laoreet a at nisi. Pellentesque pretium orci nec diam fermentum consequat.");
+                    newLocationData.put("userID", userID);
+                    newLocationData.put("key", Tripkey);
+                    newLocationData.put("lat", 40.0361);
+                    newLocationData.put("lng", -3.605);
+                    newLocationData.put("img", "https://picsum.photos/200/300/?random");
+                    newLocationData.put("wikiPage", "https://en.wikipedia.org/wiki/Central Park Zoo");
+                    newLocationData.put("googleMaps", "http://maps.google.com?q=40.8506,-73.8754");
+
+                    dbRef.child("Trips").child(userID).child(Tripkey).setValue(newTrip);
+                    dbRef.child("Destinations").push().setValue(newLocationData);
+
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
     }
 
     //AMADEUS API TEST

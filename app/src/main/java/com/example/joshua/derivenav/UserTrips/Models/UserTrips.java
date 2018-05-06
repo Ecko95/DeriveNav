@@ -26,6 +26,7 @@ public class UserTrips {
         this.img = img;
     }
 
+
     public String getImg() {
         return img;
     }

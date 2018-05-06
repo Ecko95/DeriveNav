@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
 
 import android.os.Handler;
@@ -275,51 +276,67 @@ public class MapFragment extends Fragment implements BlockingStep, OnMapReadyCal
     @Override
     public void onCompleteClicked(StepperLayout.OnCompleteClickedCallback callback) {
 
-        try {
-            destinationModelList = stepDataManager.getNewDestinationList();
-            DestinationModel destinationModel = new DestinationModel();
-            final String Tripkey = dbRef.child("Locations").child(userID).push().getKey();
+        AsyncTask.execute(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    destinationModelList = stepDataManager.getNewDestinationList();
+                    DestinationModel destinationModel = new DestinationModel();
+                    final String Tripkey = dbRef.child("Locations").child(userID).push().getKey();
 
-            String tripName;
-            String desc;
-            String destinationName;
-            Map newLocationData = new HashMap();
-            double destinationLat;
-            double destinationLng;
-            String tripImage;
+                    String tripName;
+                    String desc;
+                    String destinationName;
+                    Map newLocationData = new HashMap();
+                    double destinationLat;
+                    double destinationLng;
+                    String tripImage;
+                    String destinationImage;
+                    String destinationDesc;
+                    String destinationWikiPage;
+                    String destinationGoogleMaps;
+                    DestinationModel destinationMainImg = destinationModelList.get(1);
+                    tripImage = destinationMainImg.getPoints_of_interest().get(1).getMain_image();
 
-            DestinationModel destinationMainImg = destinationModelList.get(1);
-            tripImage = destinationMainImg.getPoints_of_interest().get(1).getMain_image();
-
-            //creates new trip object
-            TripModel newTrip = new TripModel("USER INPUT TITLE", "USER INPUT DESCRIPTION", Tripkey, tripImage);
-            dbRef.child("Trips").child(userID).child(Tripkey).setValue(newTrip);
-
-
-            //iterates through points of interests
-            for (int i = 0; i < destinationModelList.size(); i++) {
-
-                DestinationModel destinationInfo = destinationModelList.get(i);
-                destinationName = destinationInfo.getPoints_of_interest().get(i).getTitle();
-                destinationLat = destinationInfo.getPoints_of_interest().get(i).getLocation().getLatitude();
-                destinationLng = destinationInfo.getPoints_of_interest().get(i).getLocation().getLongitude();
-
-                //adds locations data objects
-
-                newLocationData.put("cityName", destinationName);
-                newLocationData.put("lat", destinationLat);
-                newLocationData.put("lng", destinationLng);
-                newLocationData.put("key", Tripkey);
-                newLocationData.put("userID", userID);
+                    //creates new trip object
+                    TripModel newTrip = new TripModel("USER INPUT TITLE", "USER INPUT DESCRIPTION", Tripkey, tripImage);
+                    dbRef.child("Trips").child(userID).child(Tripkey).setValue(newTrip);
 
 
-                dbRef.child("Destinations").push().setValue(newLocationData);
+                    //iterates through points of interests
+                    for (int i = 0; i < destinationModelList.size(); i++) {
+
+                        DestinationModel destinationInfo = destinationModelList.get(i);
+                        destinationName = destinationInfo.getPoints_of_interest().get(i).getTitle();
+                        destinationLat = destinationInfo.getPoints_of_interest().get(i).getLocation().getLatitude();
+                        destinationLng = destinationInfo.getPoints_of_interest().get(i).getLocation().getLongitude();
+                        destinationImage = destinationInfo.getPoints_of_interest().get(i).getMain_image();
+                        destinationDesc = destinationInfo.getPoints_of_interest().get(i).getDetails().getDescription();
+                        destinationWikiPage = destinationInfo.getPoints_of_interest().get(i).getDetails().getWiki_page_link();
+                        destinationGoogleMaps = destinationInfo.getPoints_of_interest().get(i).getLocation().getGoogle_maps_link();
+
+                        //adds locations data objects
+
+                        newLocationData.put("cityName", destinationName);
+                        newLocationData.put("description", destinationDesc);
+                        newLocationData.put("userID", userID);
+                        newLocationData.put("key", Tripkey);
+                        newLocationData.put("lat", destinationLat);
+                        newLocationData.put("lng", destinationLng);
+                        newLocationData.put("img", destinationImage);
+                        newLocationData.put("wikiPage", destinationWikiPage);
+                        newLocationData.put("googleMaps", destinationGoogleMaps);
+
+                        dbRef.child("Destinations").push().setValue(newLocationData);
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
-            callback.complete();
-            getActivity().finish();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        });
+        callback.complete();
+        getActivity().finish();
     }
 
     private void getCheckedDestinationTrips() {

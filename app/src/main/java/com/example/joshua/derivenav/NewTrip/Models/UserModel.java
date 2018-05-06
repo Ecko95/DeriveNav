@@ -9,6 +9,9 @@ import com.google.gson.annotations.SerializedName;
 
 public class UserModel {
 
+    public UserModel() {
+    }
+
     @Expose
     @SerializedName("company")
     private Company company;

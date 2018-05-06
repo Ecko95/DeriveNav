@@ -7,6 +7,25 @@
     android:layout_height="match_parent"
     android:layout_marginTop="56dp">
 
+    <FrameLayout
+        android:id="@+id/empty_view_user_trips"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/txt_empty_msg"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fontFamily="@font/roboto_medium"
+            android:gravity="center"
+            android:text="No Trips Found"
+            android:textAlignment="center"
+            android:textAppearance="@style/AppIntroDefaultHeading"
+            android:textColor="@color/colorPrimary"
+            android:textSize="24sp" />
+    </FrameLayout>
+
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/swipe_refresh_recycler_list"
         android:layout_width="match_parent"
