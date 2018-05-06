@@ -286,39 +286,29 @@ public class MapFragment extends Fragment implements BlockingStep, OnMapReadyCal
                 getCheckedDestinationTrips();
                 String name = "Trip Name";
                 String desc = "Description";
-                final String key = dbRef.child("Trips").child(userID).push().getKey();
+                final String Tripkey = dbRef.child("Locations").child(userID).push().getKey();
+                final String Destinationkey = dbRef.child("Destinations").push().getKey();
+                final String Destinationkey2 = dbRef.child("Destinations").push().getKey();
 
                 //if fields are entered, then create new Trip
                 //populate data with API
                 try {
-//                   List<DestinationModel.Points_of_interest> points_of_interest = null;
-//                   DestinationModel.Points_of_interest destinationPointOfInterests = new DestinationModel.Points_of_interest();
-//                   DestinationModel.Details details = new DestinationModel.Details();
-//                   destinationPointOfInterests.setTitle("Title 1");
-//                   details.setShort_description("Lorem Ipsum");
-//                   destinationPointOfInterests.setDetails(details);
-//                   points_of_interest.add(0,destinationPointOfInterests);
 
-
+                    TripModel newTrip = new TripModel(name, desc, Tripkey);
                     Map newLocationData = new HashMap();
-
-                    newLocationData.put("city_name", "Madrid");
-                    newLocationData.put("lat", "32.3403");
-                    newLocationData.put("log", "-21.3234");
-
+                    newLocationData.put("cityName", "Madrid");
+                    newLocationData.put("key", Tripkey);
+                    newLocationData.put("userID", userID);
                     Map newLocationData2 = new HashMap();
-
-                    newLocationData2.put("city_name", "Barcelona");
-                    newLocationData2.put("lat", "32.3403");
-                    newLocationData2.put("lon", "-21.3234");
-
-                    TripModel newTrip = new TripModel(name, desc, key);
-                    dbRef.child("Trips").child(userID).child(key).setValue(newTrip);
-                    final String key2 = dbRef.push().getKey();
+                    newLocationData2.put("cityName", "Barcelona");
+                    newLocationData2.put("key", Tripkey);
+                    newLocationData2.put("userID", userID);
 
 
-                    dbRef.child("Trips").child(userID).child(key).child("locations").child("1").setValue(newLocationData);
-                    dbRef.child("Trips").child(userID).child(key).child("locations").child("2").setValue(newLocationData2);
+                    dbRef.child("Trips").child(userID).child(Tripkey).setValue(newTrip);
+                    dbRef.child("Destinations").child(Destinationkey).setValue(newLocationData);
+                    dbRef.child("Destinations").child(Destinationkey2).setValue(newLocationData2);
+
 
 //                   dbRef.child("Trips").child(userID).child(key).child("locations").child(key2).setValue(newLocationData);
 //                   getActivity().finish();

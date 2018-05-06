@@ -1,14 +1,11 @@
 package com.example.joshua.derivenav.UserTripDetails;
 
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import android.support.v7.widget.LinearLayoutManager;
 
-import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
@@ -18,6 +15,7 @@ import java.util.Iterator;
 
 import com.example.joshua.derivenav.NewTrip.Models.TripModel;
 import com.example.joshua.derivenav.R;
+import com.example.joshua.derivenav.UserTripDetails.Models.UserTripDetailsModel;
 import com.example.joshua.derivenav.UserTrips.Models.UserTrips;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -25,10 +23,11 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 import android.widget.Toast;
-import android.os.Handler;
 import android.support.v7.widget.Toolbar;
 
 import butterknife.BindView;
@@ -54,16 +53,26 @@ public class UserTripDetails extends AppCompatActivity {
     private static final String TAG = "UserTripDetails";
 
 
+    String city_title;
+    String key;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_trip_details);
 
         ButterKnife.bind(this);
-        initToolbar("Takeoff Android");
-        setAdapter();
-        loadFirebaseData();
+        initToolbar("Trip Details");
 
+
+        getDetails();
+
+
+//        Toast.makeText(this, city_title + key, Toast.LENGTH_SHORT).show();
+
+//        modelList.add(new UserTripDetailsModel("Android", "Hello " + " Android"));
+//        modelList.add(new UserTripDetailsModel("Beta", "Hello " + " Beta"));
+//        modelList.add(new UserTripDetailsModel("Cupcake", "Hello " + " Cupcake"));
+//        modelList.add(new UserTripDetailsModel("Donut", "Hello " + " Donut"));
 
     }
 
@@ -76,15 +85,6 @@ public class UserTripDetails extends AppCompatActivity {
 
 
     private void setAdapter() {
-
-
-//        modelList.add(new UserTripDetailsModel("Android", "Hello " + " Android"));
-//        modelList.add(new UserTripDetailsModel("Beta", "Hello " + " Beta"));
-//        modelList.add(new UserTripDetailsModel("Cupcake", "Hello " + " Cupcake"));
-//        modelList.add(new UserTripDetailsModel("Donut", "Hello " + " Donut"));
-
-
-        mAdapter = new UserTripDetailsRecyclerViewAdapter(UserTripDetails.this, modelList, "Header");
 
 
         recyclerView.setHasFixedSize(true);
@@ -104,7 +104,7 @@ public class UserTripDetails extends AppCompatActivity {
             public void onItemClick(View view, int position, UserTripDetailsModel model) {
 
                 //handle item click events here
-                Toast.makeText(UserTripDetails.this, "Hey " + model.getTitle(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(UserTripDetails.this, "Hey " + model.getCityName(), Toast.LENGTH_SHORT).show();
 
 
             }
@@ -132,48 +132,64 @@ public class UserTripDetails extends AppCompatActivity {
         final FirebaseUser user = mAuth.getCurrentUser();
         userID = user.getUid();
 
-        mRef.child("Trips").child(userID).addValueEventListener(new ValueEventListener() {
+        Query query = FirebaseDatabase.getInstance().getReference("Destinations")
+                .orderByChild("key").equalTo(key);
+        Query query2 = FirebaseDatabase.getInstance().getReference("Trips").child(userID)
+                .orderByChild("pushID").equalTo(key);
 
+
+        query.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(final DataSnapshot dataSnapshot) {
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot item : dataSnapshot.getChildren()) {
 
-                recyclerView.setAdapter(mAdapter);
-                //clears list for refresh
-                modelList.clear();
-
-                final Iterator<DataSnapshot> items = dataSnapshot.getChildren().iterator();
-                while (items.hasNext()) {
-
-                    DataSnapshot item = items.next();
-                    TripModel userInfo = item.getValue(TripModel.class);
-
-                    modelList.add(new UserTripDetailsModel(userInfo.getName(), userInfo.getDesc(), userInfo.getPushID()));
-
-
+                    UserTripDetailsModel userInfo = item.getValue(UserTripDetailsModel.class);
+                    if (userInfo != null) {
+                        modelList.add(new UserTripDetailsModel(userInfo.getCityName(), userInfo.getKey(), userInfo.getUserID()));
+                    }
                 }
-
-
+                mAdapter = new UserTripDetailsRecyclerViewAdapter(UserTripDetails.this, modelList, city_title);
+                setAdapter();
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
             }
+        });
+//
+        query2.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot item : dataSnapshot.getChildren()) {
+                    TripModel tripModel = item.getValue(TripModel.class);
+                    if (tripModel != null) {
+                        //add to list
 
+                    }
+                }
+            }
 
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
         });
 
 
     }
 
-    public void removeItem(UserTrips trip) {
-        ArrayList<UserTrips> modelList2 = new ArrayList<>();
+    private void getDetails() {
+        Log.d(TAG, "getIncomingIntent: checking for incoming intents ");
+        if (getIntent().hasExtra("title") && getIntent().hasExtra("key")) {
 
-        mRef.child("Trips").child(userID).child(trip.getKey()).removeValue();
+            city_title = getIntent().getStringExtra("title");
+            key = getIntent().getStringExtra("key");
 
-        mAdapter.updateList(modelList);
-        Toast.makeText(getApplicationContext(), "deleted" + trip.getTitle(), Toast.LENGTH_SHORT).show();
 
+            loadFirebaseData();
+
+        }
     }
 
 }

@@ -232,11 +232,13 @@ public class UserTripsFragment extends Fragment {
         mAdapter.SetOnItemClickListener(new UserTripsAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position, UserTrips model) {
-                removeItem(model);
-                for (UserTrips trip : modelList) {
-                    System.out.println("Number = " + trip);
-                }
-                mAdapter.notifyDataSetChanged();
+
+
+                //removeItem(model);
+//                for (UserTrips trip : modelList) {
+//                    System.out.println("Number = " + trip);
+//                }
+//                mAdapter.notifyDataSetChanged();
 //                Toast.makeText(getContext(), "Deleted: " + model.getTitle(), Toast.LENGTH_SHORT).show();
 
             }
@@ -245,6 +247,7 @@ public class UserTripsFragment extends Fragment {
 
     public void removeItem(UserTrips trip){
         ArrayList<UserTrips> modelList2 = new ArrayList<>();
+
 
         mRef.child("Trips").child(userID).child(trip.getKey()).removeValue();
 

@@ -17,10 +17,24 @@
         app:titleTextColor="@android:color/white" />
 
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="115dp"
+        android:padding="8dp"
+        android:text="TextView"
+        android:textAppearance="@style/AppIntroDefaultHeading"
+        android:textColor="@color/colorPrimaryText" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="174dp"
+        android:padding="8dp"
+        android:text="TextView" />
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:scrollbars="vertical" />
 
 

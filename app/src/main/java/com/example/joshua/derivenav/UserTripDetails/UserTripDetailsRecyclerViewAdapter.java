@@ -10,9 +10,8 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-import android.support.v7.widget.LinearLayoutManager;
-
 import com.example.joshua.derivenav.R;
+import com.example.joshua.derivenav.UserTripDetails.Models.UserTripDetailsModel;
 
 
 /**
@@ -36,6 +35,10 @@ public class UserTripDetailsRecyclerViewAdapter extends RecyclerView.Adapter<Rec
     public UserTripDetailsRecyclerViewAdapter(Context context, ArrayList<UserTripDetailsModel> modelList, String headerTitle) {
         this.mContext = context;
         this.modelList = modelList;
+        this.mHeaderTitle = headerTitle;
+    }
+
+    public UserTripDetailsRecyclerViewAdapter(String headerTitle) {
         this.mHeaderTitle = headerTitle;
     }
 
@@ -70,7 +73,8 @@ public class UserTripDetailsRecyclerViewAdapter extends RecyclerView.Adapter<Rec
 
 //            genericViewHolder.itemTxtTitle.setText(model.getTitle());
 //            genericViewHolder.itemTxtMessage.setText(model.getMessage());
-            genericViewHolder.itemTxtTitle.setText(model.getCity_name());
+            genericViewHolder.itemTxtTitle.setText(model.getCityName());
+            genericViewHolder.itemTxtTitle.setText(model.getKey());
 
 
         }
@@ -165,7 +169,9 @@ public class UserTripDetailsRecyclerViewAdapter extends RecyclerView.Adapter<Rec
                 @Override
                 public void onClick(View view) {
 
-                    mItemClickListener.onItemClick(itemView, getAdapterPosition(), modelList.get(getAdapterPosition() - 1));
+//                    mItemClickListener.onItemClick(itemView, getAdapterPosition(), modelList.get(getAdapterPosition() - 1));
+
+
 
 
                 }
