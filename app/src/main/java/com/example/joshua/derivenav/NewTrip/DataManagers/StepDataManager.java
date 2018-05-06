@@ -14,6 +14,18 @@ public interface StepDataManager {
 
     String getData();
 
+    void saveTripTitle(String title);
+
+    String getTripTitle();
+
+    void saveTripDesc(String description);
+
+    String getDes();
+
+    void saveTripCategory(String category);
+
+    String getCategory();
+
     void saveDestinationModel(DestinationModel data);
 
     DestinationModel getDestinationModel();

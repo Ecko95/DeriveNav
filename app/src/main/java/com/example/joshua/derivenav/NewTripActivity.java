@@ -4,6 +4,7 @@ import android.app.SearchManager;
 import android.content.Intent;
 import android.graphics.Color;
 import android.speech.RecognizerIntent;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -13,6 +14,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.AdapterView;
 
 import android.widget.SearchView;
@@ -25,6 +27,11 @@ import com.example.joshua.derivenav.NewTrip.Models.DestinationModel;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 import com.stepstone.stepper.StepperLayout;
 import com.stepstone.stepper.VerificationError;
+import com.takusemba.spotlight.OnSpotlightEndedListener;
+import com.takusemba.spotlight.OnSpotlightStartedListener;
+import com.takusemba.spotlight.OnTargetStateChangedListener;
+import com.takusemba.spotlight.SimpleTarget;
+import com.takusemba.spotlight.Spotlight;
 
 import net.steamcrafted.materialiconlib.MaterialMenuInflater;
 
@@ -36,6 +43,7 @@ import butterknife.ButterKnife;
 
 public class NewTripActivity extends AppCompatActivity implements StepDataManager, StepperLayout.StepperListener{
 
+    //step data manager override's
     @Override
     public void onError(VerificationError verificationError) {
 
@@ -67,6 +75,36 @@ public class NewTripActivity extends AppCompatActivity implements StepDataManage
     }
 
     @Override
+    public void saveTripTitle(String title) {
+        mTripTitle = title;
+    }
+
+    @Override
+    public String getTripTitle() {
+        return mTripTitle;
+    }
+
+    @Override
+    public void saveTripDesc(String description) {
+        mTripDesc = description;
+    }
+
+    @Override
+    public String getDes() {
+        return mTripDesc;
+    }
+
+    @Override
+    public void saveTripCategory(String category) {
+        mTripCategory = category;
+    }
+
+    @Override
+    public String getCategory() {
+        return mTripCategory;
+    }
+
+    @Override
     public void saveDestinationList(ArrayList<DestinationModel> newDestinationList) {
         mNewDestinationList = newDestinationList;
     }
@@ -94,12 +132,13 @@ public class NewTripActivity extends AppCompatActivity implements StepDataManage
     @BindView(R.id.stepperLayout) StepperLayout stepperLayout;
     private Menu menu;
 
-
-
 //    Data objects about to be pass to other fragments
     private static final String CURRENT_STEP_POSITION_KEY = "position";
     private static final String DATA = "data";
     private String mData;
+    private String mTripTitle;
+    private String mTripDesc;
+    private String mTripCategory;
     private ArrayList<DestinationModel> mNewDestinationList = new ArrayList<>();
     private DestinationModel mNewDestinationModel;
 
@@ -231,7 +270,9 @@ public class NewTripActivity extends AppCompatActivity implements StepDataManage
             case android.R.id.home:
                 onBackPressed();
                 return true;
-
+            case R.id.action_help:
+                helpTutorial();
+                return true;
             default:
                 Toast.makeText(this, "click", Toast.LENGTH_SHORT).show();
                 return false;
@@ -252,7 +293,7 @@ public class NewTripActivity extends AppCompatActivity implements StepDataManage
         materialSearchView.setMenuItem(item);
         materialSearchView.setSuggestions(getResources().getStringArray(R.array.query_suggestions));
         menu.findItem(R.id.action_logout).setVisible(false);
-        //hideSearch();
+        //hideMenu();
         return true;
     }
 
@@ -275,6 +316,68 @@ public class NewTripActivity extends AppCompatActivity implements StepDataManage
 
     public void hideSearch(){
         menu.findItem(R.id.action_search).setVisible(false);
+    }
+
+    public void helpTutorial() {
+        try {
+            SimpleTarget simpleTarget = new SimpleTarget.Builder(this)
+                    .setPoint(1000f, 135f) // position of the Target. setPoint(Point point), setPoint(View view) will work too.
+                    .setRadius(70f) // radius of the Target
+                    .setTitle("Search for a city") // title
+                    .setDescription("Try me out!") // description
+                    .setOnSpotlightStartedListener(new OnTargetStateChangedListener<SimpleTarget>() {
+                        @Override
+                        public void onStarted(SimpleTarget target) {
+                            // do something
+                        }
+
+                        @Override
+                        public void onEnded(SimpleTarget target) {
+                            // do something
+                        }
+                    })
+                    .build();
+            SimpleTarget secondTarget = new SimpleTarget.Builder(this)
+                    .setPoint(960f, 1970f) // position of the Target. setPoint(Point point), setPoint(View view) will work too.
+                    .setRadius(90f) // radius of the Target
+                    .setTitle("Click next") // title
+                    .setDescription("to see your search results") // description
+                    .setOnSpotlightStartedListener(new OnTargetStateChangedListener<SimpleTarget>() {
+                        @Override
+                        public void onStarted(SimpleTarget target) {
+                            // do something
+                        }
+
+                        @Override
+                        public void onEnded(SimpleTarget target) {
+                            // do something
+                        }
+                    })
+                    .build();
+
+            Spotlight.with(this)
+                    .setOverlayColor(ContextCompat.getColor(this, R.color.background)) // background overlay color
+                    .setDuration(1000L) // duration of Spotlight emerging and disappearing in ms
+                    .setAnimation(new DecelerateInterpolator(2f)) // animation of Spotlight
+                    .setTargets(simpleTarget, secondTarget) // set targets. see below for more info
+                    .setClosedOnTouchedOutside(true) // set if target is closed when touched outside
+                    .setOnSpotlightStartedListener(new OnSpotlightStartedListener() { // callback when Spotlight starts
+                        @Override
+                        public void onStarted() {
+                            //Toast.makeText(getContext(), "spotlight is started", Toast.LENGTH_SHORT).show();
+                        }
+                    })
+                    .setOnSpotlightEndedListener(new OnSpotlightEndedListener() { // callback when Spotlight ends
+                        @Override
+                        public void onEnded() {
+                            //Toast.makeText(getContext(), "spotlight is ended", Toast.LENGTH_SHORT).show();
+                        }
+                    })
+                    .start(); // start Spotlight
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
 

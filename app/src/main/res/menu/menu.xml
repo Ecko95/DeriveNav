@@ -22,4 +22,10 @@
         app:showAsAction="always"
         app:materialIconColor="#fff"
         />
+    <item
+        android:title="Help"
+        android:id="@+id/action_help"
+        app:showAsAction="always"
+        app:materialIcon="help_circle"
+        app:materialIconColor="#ffffff" />
 </menu>

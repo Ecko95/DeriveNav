@@ -1,7 +1,6 @@
 package com.example.joshua.derivenav;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.SearchManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -12,7 +11,6 @@ import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.speech.RecognizerIntent;
 import android.support.annotation.NonNull;
@@ -20,23 +18,14 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ListView;
-import android.widget.SearchView;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.joshua.derivenav.Api.ApiController;
-import com.example.joshua.derivenav.NewTrip.CityDestinationsFragment;
-import com.example.joshua.derivenav.NewTrip.MapFragment;
-import com.example.joshua.derivenav.NewTrip.Models.DestinationModel;
 import com.example.joshua.derivenav.UserTrips.UserTripsFragment;
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -49,11 +38,6 @@ import com.tapadoo.alerter.Alerter;
 import net.steamcrafted.materialiconlib.MaterialMenuInflater;
 
 import java.util.ArrayList;
-import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -216,8 +200,10 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
-    public void hideSearch(){
+
+    public void hideMenu() {
         menu.findItem(R.id.action_search).setVisible(false);
+        menu.findItem(R.id.action_help).setVisible(false);
     }
 
     private void registerNetworkBroadcastForNougat() {
@@ -324,7 +310,7 @@ public class MainActivity extends AppCompatActivity {
         MenuItem item = menu.findItem(R.id.action_search);
         searchView.setMenuItem(item);
         searchView.setSuggestions(getResources().getStringArray(R.array.query_suggestions));
-        hideSearch();
+        hideMenu();
 
         return true;
     }

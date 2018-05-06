@@ -33,6 +33,17 @@
         <item>Prague</item>
 
     </string-array>
+
+
+    <string-array name="category_options">
+        <item>Museums</item>
+        <item>Landscapes</item>
+        <item>City Break</item>
+        <item>Tropical</item>
+        <item>Road Trip</item>
+        <item>Custom</item>
+    </string-array>
+
     <string name="title_activity_results">ResultsActivity</string>
     <string name="title_activity_main2">UserTrips</string>
 

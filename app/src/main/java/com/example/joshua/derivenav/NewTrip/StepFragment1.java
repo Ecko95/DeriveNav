@@ -2,6 +2,7 @@ package com.example.joshua.derivenav.NewTrip;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
@@ -17,14 +18,21 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.DecelerateInterpolator;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.joshua.derivenav.LoginActivity;
+import com.example.joshua.derivenav.MainActivity;
 import com.example.joshua.derivenav.NewTrip.Adapters.StepperAdapter;
 import com.example.joshua.derivenav.NewTrip.DataManagers.StepDataManager;
 import com.example.joshua.derivenav.NewTripActivity;
 import com.example.joshua.derivenav.R;
+import com.firebase.ui.auth.AuthUI;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.stepstone.stepper.BlockingStep;
 import com.stepstone.stepper.Step;
 import com.stepstone.stepper.StepperLayout;
@@ -50,6 +58,8 @@ public class StepFragment1 extends Fragment implements BlockingStep, StepperLayo
 
     @BindView(R.id.txt_selected_search)
     TextView txt_selected_search;
+    @BindView(R.id.sp_category_trip)
+    Spinner spinner_categories;
 
     private static final String CURRENT_STEP_POSITION_KEY = "position";
     private StepDataManager stepDataManager;
@@ -63,6 +73,12 @@ public class StepFragment1 extends Fragment implements BlockingStep, StepperLayo
         ButterKnife.bind(this,view);
 
         int startingStepPosition = savedInstanceState != null ? savedInstanceState.getInt(CURRENT_STEP_POSITION_KEY) : 0;
+
+
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
+                R.array.category_options, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner_categories.setAdapter(adapter);
 
         try{
 
@@ -90,8 +106,9 @@ public class StepFragment1 extends Fragment implements BlockingStep, StepperLayo
 
     }
 
-    private void disableNextStep() {
-
+    private void disableNextStep(final StepperLayout.OnNextClickedCallback callback) {
+        //disables next fragment button
+        callback.getStepperLayout().setNextButtonEnabled(false);
     }
 
     @Override
@@ -111,7 +128,7 @@ public class StepFragment1 extends Fragment implements BlockingStep, StepperLayo
         if (txt_selected_search.getText() == ""){
             Toast.makeText(getContext(), "search null", Toast.LENGTH_SHORT).show();
             //disables next button
-            callback.getStepperLayout().setNextButtonEnabled(true);
+            disableNextStep(callback);
         }
         else{
             callback.getStepperLayout().showProgress("Operation in progress, please wait...");
@@ -193,67 +210,6 @@ public class StepFragment1 extends Fragment implements BlockingStep, StepperLayo
         return new StepFragment1();
     }
 
-    @OnClick(R.id.action_card_help)
-    public void setAction_card_help(View view) {
-        try {
-            SimpleTarget simpleTarget = new SimpleTarget.Builder(getActivity())
-                    .setPoint(1000f, 135f) // position of the Target. setPoint(Point point), setPoint(View view) will work too.
-                    .setRadius(70f) // radius of the Target
-                    .setTitle("Search for a city") // title
-                    .setDescription("Try me out!") // description
-                    .setOnSpotlightStartedListener(new OnTargetStateChangedListener<SimpleTarget>() {
-                        @Override
-                        public void onStarted(SimpleTarget target) {
-                            // do something
-                        }
 
-                        @Override
-                        public void onEnded(SimpleTarget target) {
-                            // do something
-                        }
-                    })
-                    .build();
-            SimpleTarget secondTarget = new SimpleTarget.Builder(getActivity())
-                    .setPoint(960f, 1970f) // position of the Target. setPoint(Point point), setPoint(View view) will work too.
-                    .setRadius(90f) // radius of the Target
-                    .setTitle("Click next") // title
-                    .setDescription("to see your search results") // description
-                    .setOnSpotlightStartedListener(new OnTargetStateChangedListener<SimpleTarget>() {
-                        @Override
-                        public void onStarted(SimpleTarget target) {
-                            // do something
-                        }
-
-                        @Override
-                        public void onEnded(SimpleTarget target) {
-                            // do something
-                        }
-                    })
-                    .build();
-
-            Spotlight.with(getActivity())
-                    .setOverlayColor(ContextCompat.getColor(getActivity(), R.color.background)) // background overlay color
-                    .setDuration(1000L) // duration of Spotlight emerging and disappearing in ms
-                    .setAnimation(new DecelerateInterpolator(2f)) // animation of Spotlight
-                    .setTargets(simpleTarget, secondTarget) // set targets. see below for more info
-                    .setClosedOnTouchedOutside(true) // set if target is closed when touched outside
-                    .setOnSpotlightStartedListener(new OnSpotlightStartedListener() { // callback when Spotlight starts
-                        @Override
-                        public void onStarted() {
-                            //Toast.makeText(getContext(), "spotlight is started", Toast.LENGTH_SHORT).show();
-                        }
-                    })
-                    .setOnSpotlightEndedListener(new OnSpotlightEndedListener() { // callback when Spotlight ends
-                        @Override
-                        public void onEnded() {
-                            //Toast.makeText(getContext(), "spotlight is ended", Toast.LENGTH_SHORT).show();
-                        }
-                    })
-                    .start(); // start Spotlight
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-    }
 
 }
