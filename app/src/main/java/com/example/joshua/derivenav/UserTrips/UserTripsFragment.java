@@ -227,8 +227,6 @@ public class UserTripsFragment extends Fragment {
         recyclerView.addItemDecoration(new GridMarginDecoration(getActivity(), 2, 2, 2, 2));
         recyclerView.setLayoutManager(layoutManager);
 
-
-
         mAdapter.SetOnItemClickListener(new UserTripsAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position, UserTrips model) {
@@ -243,17 +241,6 @@ public class UserTripsFragment extends Fragment {
 
             }
         });
-    }
-
-    public void removeItem(UserTrips trip){
-        ArrayList<UserTrips> modelList2 = new ArrayList<>();
-
-
-        mRef.child("Trips").child(userID).child(trip.getKey()).removeValue();
-
-        mAdapter.updateList(modelList);
-        Toast.makeText(getContext(), "deleted" + trip.getTitle(), Toast.LENGTH_SHORT).show();
-
     }
 
 }

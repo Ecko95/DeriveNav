@@ -1,6 +1,12 @@
 package com.example.joshua.derivenav.UserTripDetails;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
@@ -8,15 +14,22 @@ import android.support.v7.widget.LinearLayoutManager;
 
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import com.example.joshua.derivenav.LoginActivity;
+import com.example.joshua.derivenav.MainActivity;
 import com.example.joshua.derivenav.NewTrip.Models.TripModel;
 import com.example.joshua.derivenav.R;
 import com.example.joshua.derivenav.UserTripDetails.Models.UserTripDetailsModel;
 import com.example.joshua.derivenav.UserTrips.Models.UserTrips;
+import com.firebase.ui.auth.AuthUI;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -30,8 +43,12 @@ import com.squareup.picasso.Picasso;
 import android.widget.Toast;
 import android.support.v7.widget.Toolbar;
 
+import net.steamcrafted.materialiconlib.MaterialDrawableBuilder;
+import net.steamcrafted.materialiconlib.MaterialMenuInflater;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 
 public class UserTripDetails extends AppCompatActivity {
@@ -192,5 +209,56 @@ public class UserTripDetails extends AppCompatActivity {
         }
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MaterialMenuInflater
+                .with(this) // Provide the activity context
+                // Set the fall-back color for all the icons. Colors set inside the XML will always have higher priority
+                .setDefaultColor(Color.WHITE)
+                // Inflate the menu
+                .inflate(R.menu.detail_actions, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+
+            case R.id.action_delete:
+                deleteTrip();
+                return true;
+
+            default:
+                Toast.makeText(this, "click", Toast.LENGTH_SHORT).show();
+                return false;
+        }
+    }
+
+    public void deleteTrip() {
+
+        Drawable materialDeleteIcon = MaterialDrawableBuilder.with(getApplicationContext())
+                .setIcon(MaterialDrawableBuilder.IconValue.DELETE)
+                .setColor(Color.RED)
+                .setToActionbarSize()
+                .build();
+
+        new AlertDialog.Builder(this)
+                .setTitle("Delete")
+                .setMessage("Do you really want to delete this Trip?")
+                .setIcon(materialDeleteIcon)
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        mRef.child("Trips").child(userID).child(key).removeValue();
+                        mAdapter.updateList(modelList);
+                        onBackPressed();
+                        Toast.makeText(UserTripDetails.this, "deleted", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .setNegativeButton(android.R.string.no, null).show();
+    }
 }
 
