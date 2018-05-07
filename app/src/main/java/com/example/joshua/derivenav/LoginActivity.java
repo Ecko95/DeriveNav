@@ -2,22 +2,16 @@ package com.example.joshua.derivenav;
 
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.support.annotation.NonNull;
-import android.support.annotation.StringRes;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.Toast;
 
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.ErrorCodes;
 import com.firebase.ui.auth.IdpResponse;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
@@ -44,6 +38,14 @@ public class LoginActivity extends AppCompatActivity {
     private static final int RC_SIGN_IN = 123;
     @BindView(R.id.root)
     View mRootView;
+
+    public FirebaseDatabase getDatabase() {
+        if (mFirebaseDatabase == null) {
+            mFirebaseDatabase = FirebaseDatabase.getInstance();
+            mFirebaseDatabase.setPersistenceEnabled(true);
+        }
+        return mFirebaseDatabase;
+    }
 
     public static Intent createIntent(Context context){
         return new Intent(context, LoginActivity.class);
@@ -72,12 +74,16 @@ public class LoginActivity extends AppCompatActivity {
             userEmail = mAuth.getCurrentUser().getEmail();
             userPhoto = mAuth.getCurrentUser().getPhotoUrl().toString();
 
-           DatabaseReference users_db = FirebaseDatabase.getInstance().getReference().child("Users").child(userID);
+            mFirebaseDatabase = getDatabase();
+
+            DatabaseReference userRef = mFirebaseDatabase.getReference().child("Users").child(userID);
+
+            //adds new user to User db
             Map newPost = new HashMap();
-           newPost.put("name", userName );
+            newPost.put("name", userName);
             newPost.put("email", userEmail );
             newPost.put("photoURL", userPhoto);
-            users_db.setValue(newPost);
+            userRef.setValue(newPost);
 
             startActivity(new Intent(this, MainActivity.class)
                     .putExtra("my_token", response.getIdpToken()));
@@ -99,9 +105,9 @@ public class LoginActivity extends AppCompatActivity {
         }
 
     }
-
-    private void startSignedInActivity(IdpResponse response) {
-    }
+//
+//    private void startSignedInActivity(IdpResponse response) {
+//    }
 
 
     private void showSnackbar(String errorMessageRes){
@@ -134,6 +140,8 @@ public class LoginActivity extends AppCompatActivity {
                         new AuthUI.IdpConfig.EmailBuilder().build(),
                         new AuthUI.IdpConfig.GoogleBuilder().build()
                 ))
+                .setTheme(R.style.AppTheme_NoActionBar)
+                .setLogo(R.drawable.welcome)
                 .build(),RC_SIGN_IN);
     }
 

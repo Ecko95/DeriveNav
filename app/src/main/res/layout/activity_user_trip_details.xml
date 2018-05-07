@@ -5,6 +5,8 @@
     android:id="@+id/scrollView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:clipToPadding="true"
+    android:fillViewport="true"
     app:stickyFooter="@+id/footer"
     app:stickyHeader="@+id/toolbar">
 

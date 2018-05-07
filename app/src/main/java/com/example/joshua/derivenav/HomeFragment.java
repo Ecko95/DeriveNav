@@ -70,9 +70,6 @@ public class HomeFragment extends Fragment {
     private DatabaseReference dbRef;
     private String userID;
 
-    @BindView(R.id.main_background_img)
-    ImageView mMainBackground;
-
     public static HomeFragment newInstance() {
         HomeFragment fragment = new HomeFragment();
         return fragment;
@@ -97,11 +94,8 @@ public class HomeFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         ButterKnife.bind(this, view);
 
-        Picasso.with(getActivity()).load(R.drawable.main_background_img).into(mMainBackground);
-
         return view;
     }
-
 
 
     @Override

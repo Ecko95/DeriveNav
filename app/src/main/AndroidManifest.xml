@@ -46,14 +46,6 @@
         </activity>
         <activity android:name=".IntroActivity" />
 
-        <receiver
-            android:name=".NetworkChangeReceiver"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
-            </intent-filter>
-        </receiver>
-
         <activity android:name=".LoginActivity" />
         <activity
             android:name=".NewTripActivity"

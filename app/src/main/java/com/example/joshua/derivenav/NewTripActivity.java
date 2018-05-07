@@ -152,7 +152,7 @@ public class NewTripActivity extends AppCompatActivity implements StepDataManage
         setSupportActionBar(toolbar_newtrip);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        getSupportActionBar().setTitle("New Trip");
 
         int startingStepPosition = savedInstanceState != null ? savedInstanceState.getInt(CURRENT_STEP_POSITION_KEY) : 0;
         mData = savedInstanceState != null ? savedInstanceState.getString(DATA) : null;

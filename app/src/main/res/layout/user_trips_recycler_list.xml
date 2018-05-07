@@ -1,52 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="180dp"
-    android:gravity="center">
+    android:layout_height="250dp"
+    android:gravity="center"
+    app:cardElevation="5dp"
+    app:cardUseCompatPadding="true"
+    android:clickable="true"
+    android:focusableInTouchMode="true"
+    android:focusable="true">
 
-    <ImageView
-        android:id="@+id/img_main_trip"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:adjustViewBounds="true"
-        android:alpha="0.9"
-        android:background="#16000000"
-        android:scaleType="centerCrop" />
+        android:layout_height="match_parent">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:background="#80000000"
-        android:gravity="center"
-        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/item_txt_title"
+            <ImageView
+                android:id="@+id/img_main_trip"
+                android:layout_width="match_parent"
+                android:layout_height="200sp"
+                android:adjustViewBounds="true"
+                android:alpha="0.9"
+                android:background="#16000000"
+                android:scaleType="centerCrop" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linearLayout3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:maxLines="1"
-            android:padding="5dp"
-            android:text="Title"
-            android:textColor="@android:color/white"
-            android:textSize="14sp" />
+            android:layout_alignParentBottom="true"
+            android:background="@color/ms_white"
+            android:gravity="left"
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/item_txt_message"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:maxLines="1"
-            android:padding="5dp"
-            android:text="Message"
-            android:textColor="@android:color/white"
-            android:textSize="12sp" />
-    </LinearLayout>
+            <TextView
+                android:id="@+id/item_txt_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/linearLayout3"
+                android:layout_alignParentStart="true"
+                android:maxLines="1"
+                android:paddingBottom="4dp"
+                android:paddingLeft="16dp"
+                android:paddingTop="8dp"
+                android:text="Title"
+                android:textAppearance="@style/TextAppearance.AppCompat.Title" />
+
+            <TextView
+                android:id="@+id/item_txt_message"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:paddingBottom="16dp"
+                android:paddingLeft="16dp"
+                android:paddingTop="4dp"
+                android:text="Message"
+                android:textColor="@color/colorPrimaryText"
+                android:textSize="12sp" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
 
 
-</RelativeLayout>
+</android.support.v7.widget.CardView>
+
+
+
 
 
 

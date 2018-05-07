@@ -6,6 +6,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 
+import android.support.v4.widget.CircularProgressDrawable;
 import android.support.v7.widget.GridLayoutManager;
 
 import android.support.v4.app.Fragment;
@@ -32,6 +33,7 @@ import com.squareup.picasso.Picasso;
 
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 import android.os.Handler;
 
@@ -40,12 +42,6 @@ import android.view.ViewGroup;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link UserTripsFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 
 
 public class UserTripsFragment extends Fragment {
@@ -70,18 +66,11 @@ public class UserTripsFragment extends Fragment {
     private String userID;
     private Dialog dialog;
 
-    public static FirebaseDatabase getDatabase() {
-        if (mFirebaseDatabase == null) {
-            mFirebaseDatabase = FirebaseDatabase.getInstance();
-            mFirebaseDatabase.setPersistenceEnabled(true);
-        }
-        return mFirebaseDatabase;
-    }
+
 
     public UserTripsFragment() {
         // Required empty public constructor
     }
-
 
     public static UserTripsFragment newInstance() {
         UserTripsFragment fragment = new UserTripsFragment();
@@ -97,6 +86,7 @@ public class UserTripsFragment extends Fragment {
 
     }
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
@@ -106,51 +96,43 @@ public class UserTripsFragment extends Fragment {
 
         mAuth = FirebaseAuth.getInstance();
         mFirebaseDatabase = FirebaseDatabase.getInstance();
-        mRef = mFirebaseDatabase.getReference();
+        mRef = mFirebaseDatabase.getReference().child("Trips");
         FirebaseUser user = mAuth.getCurrentUser();
         userID = user.getUid();
+        Context mContext = getActivity();
+        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+        builder.setView(R.layout.fui_phone_progress_dialog);
+        builder.setCancelable(false);
+        builder.setTitle("Loading, Please wait...");
+        dialog = builder.show();
+        dialog.setCanceledOnTouchOutside(true);
 
-        mRef.child("Trips").child(userID).addValueEventListener(new ValueEventListener() {
-
+        mRef.child(userID).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(final DataSnapshot dataSnapshot) {
+                recyclerView.setAdapter(mAdapter);
+                if (dataSnapshot.exists()) {
+                    //clears list for refresh
+                    modelList.clear();
 
-                Context mContext = getActivity();
-                AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-                builder.setView(R.layout.fui_phone_progress_dialog);
-                builder.setCancelable(false);
-                builder.setTitle("Loading, Please wait...");
-                dialog = builder.show();
+                    emptyLayout.setVisibility(View.GONE);
+                    for (DataSnapshot item : dataSnapshot.getChildren()) {
 
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        recyclerView.setAdapter(mAdapter);
-                        //clears list for refresh
-                        modelList.clear();
-
-                        if (dataSnapshot.exists()) {
-                            emptyLayout.setVisibility(View.GONE);
-                            for (DataSnapshot item : dataSnapshot.getChildren()) {
-
-                                TripModel userInfo = item.getValue(TripModel.class);
-                                modelList.add(new UserTrips(userInfo.getName(), userInfo.getDesc(), userInfo.getPushID(), userInfo.getTripImg()));
-
-                            }
-                        } else {
-                            emptyLayout.setVisibility(View.VISIBLE);
-                        }
-
-                        dialog.dismiss();
+                        TripModel userInfo = item.getValue(TripModel.class);
+                        modelList.add(new UserTrips(userInfo.getName(), userInfo.getDesc(), userInfo.getPushID(), userInfo.getTripImg()));
 
                     }
-                }, 1500L);
+                } else {
+                    emptyLayout.setVisibility(View.VISIBLE);
+                    dialog.dismiss();
+                }
 
+                dialog.dismiss();
             }
-
             @Override
             public void onCancelled(DatabaseError databaseError) {
-
+                emptyLayout.setVisibility(View.VISIBLE);
+                dialog.dismiss();
             }
 
 
@@ -193,7 +175,7 @@ public class UserTripsFragment extends Fragment {
 
         recyclerView.setHasFixedSize(true);
         final GridLayoutManager layoutManager = new GridLayoutManager(getActivity(), 1);
-        recyclerView.addItemDecoration(new GridMarginDecoration(getActivity(), 2, 2, 2, 2));
+        recyclerView.addItemDecoration(new GridMarginDecoration(getActivity(), 8, 8, 8, 8));
         recyclerView.setLayoutManager(layoutManager);
 
         mAdapter.SetOnItemClickListener(new UserTripsAdapter.OnItemClickListener() {

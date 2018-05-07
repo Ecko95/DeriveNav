@@ -28,6 +28,7 @@ import android.widget.Toast;
 
 import com.example.joshua.derivenav.UserTrips.UserTripsFragment;
 import com.firebase.ui.auth.AuthUI;
+import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -44,8 +45,7 @@ public class MainActivity extends AppCompatActivity {
     private MaterialSearchView searchView;
     //defines a menu so we can hide it or diplay it according to fragments
     private Menu menu;
-    private BroadcastReceiver mNetworkReceiver;
-
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,10 +65,6 @@ public class MainActivity extends AppCompatActivity {
             startActivity(new Intent(MainActivity.this, LoginActivity.class));
             finish();
         }
-
-
-
-
 
 
         //  Declare a new thread to do a preference check
@@ -193,57 +189,12 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-//        tv_check_connection=(TextView) findViewById(R.id.tv_check_connection);
-        mNetworkReceiver = new NetworkChangeReceiver();
-        registerNetworkBroadcastForNougat();
-
-
 
     }
 
     public void hideMenu() {
         menu.findItem(R.id.action_search).setVisible(false);
         menu.findItem(R.id.action_help).setVisible(false);
-    }
-
-    private void registerNetworkBroadcastForNougat() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            registerReceiver(mNetworkReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
-        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            registerReceiver(mNetworkReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
-        }
-    }
-
-    protected void unregisterNetworkChanges() {
-        try {
-            unregisterReceiver(mNetworkReceiver);
-        } catch (IllegalArgumentException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        unregisterNetworkChanges();
-    }
-
-    public static void dialog(boolean value, Context context){
-        Activity activity = (Activity) context;
-        if(!value){
-            Alerter.create(activity)
-                    .setTitle("You're Offline!")
-                    .setBackgroundColorRes(R.color.colorAccent)
-                    .enableSwipeToDismiss()
-                    .show();
-        }else {
-            Alerter.create(activity)
-                    .setTitle("You're back Online!")
-                    .setIcon(R.drawable.alerter_ic_face)
-                    .setBackgroundColorRes(R.color.colorPrimary)
-                    .enableSwipeToDismiss()
-                    .show();
-        }
     }
 
     @Override
@@ -284,6 +235,7 @@ public class MainActivity extends AppCompatActivity {
                         .signOut(this)
                         .addOnCompleteListener(new OnCompleteListener<Void>() {
                             public void onComplete(@NonNull Task<Void> task) {
+
                                 // user is now signed out
                                 startActivity(new Intent(MainActivity.this, LoginActivity.class));
                                 finish();
