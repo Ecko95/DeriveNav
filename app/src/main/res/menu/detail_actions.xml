@@ -9,5 +9,11 @@
         app:materialIcon="delete"
         app:materialIconColor="#ffffff"
         android:id="@+id/action_delete" />
+    <item
+        android:title="Edit"
+        app:showAsAction="always"
+        app:materialIcon="pencil"
+        app:materialIconColor="#ffffff"
+        android:id="@+id/action_edit" />
 
 </menu>

@@ -1,12 +1,17 @@
 package com.example.joshua.derivenav.UserTripDetails;
 
 import android.content.Context;
+import android.content.Intent;
+import android.media.Image;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -16,6 +21,7 @@ import com.squareup.picasso.Picasso;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 
 /**
@@ -77,6 +83,33 @@ public class UserTripDetailsRecyclerViewAdapter extends RecyclerView.Adapter<Rec
             genericViewHolder.itemTxtTitle.setText(model.getCityName());
             genericViewHolder.itemTxtMessage.setText(model.getDescription());
             Picasso.with(genericViewHolder.imgItem.getContext()).load(model.getImg()).into(genericViewHolder.imgItem);
+            genericViewHolder.btn_trip_wiki.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(Intent.ACTION_VIEW);
+                    intent.setData(Uri.parse(model.getWikiPage()));
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    if (intent.resolveActivity(mContext.getPackageManager()) != null) {
+                        mContext.startActivity(intent);
+                    } else {
+                        Toast.makeText(mContext, "sorry link not found", Toast.LENGTH_LONG).show();
+                    }
+                }
+            });
+            genericViewHolder.btn_trip_maps.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(Intent.ACTION_VIEW);
+                    intent.setData(Uri.parse(model.getGoogleMaps()));
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    if (intent.resolveActivity(mContext.getPackageManager()) != null) {
+                        mContext.startActivity(intent);
+                    } else {
+                        Toast.makeText(mContext, "sorry link not found", Toast.LENGTH_LONG).show();
+                    }
+                }
+            });
+
 
 
         }
@@ -148,6 +181,10 @@ public class UserTripDetailsRecyclerViewAdapter extends RecyclerView.Adapter<Rec
         TextView itemTxtTitle;
         @BindView(R.id.item_txt_message)
         TextView itemTxtMessage;
+        @BindView(R.id.btn_trip_wiki)
+        ImageButton btn_trip_wiki;
+        @BindView(R.id.btn_trip_maps)
+        ImageButton btn_trip_maps;
 
         public ViewHolder(final View itemView) {
             super(itemView);
