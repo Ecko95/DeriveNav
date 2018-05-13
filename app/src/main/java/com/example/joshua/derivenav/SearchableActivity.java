@@ -53,10 +53,7 @@ public class SearchableActivity extends ListActivity implements ServiceListener 
         if (intent.ACTION_SEARCH.equals(intent.getAction())) {
             String query = intent.getStringExtra(SearchManager.QUERY);
             //send data to fragment
-
-//            doSearch(query);
             String selectedSearch = query;
-
 
             Intent moreDetailsIntent = new Intent(SearchableActivity.this, NewTripActivity.class);
 
@@ -72,17 +69,6 @@ public class SearchableActivity extends ListActivity implements ServiceListener 
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-//                Toast.makeText(SearchableActivity.this, "You clicked item: " + position, Toast.LENGTH_SHORT).show();
-//                String selectedSearch = (String) getListAdapter().getItem(position);
-//
-//
-//                Intent moreDetailsIntent = new Intent(SearchableActivity.this,NewTripActivity.class);
-//
-//                Bundle dataBundle = new Bundle();
-//                dataBundle.putString("SelectedSearch", selectedSearch);
-//                moreDetailsIntent.putExtras(dataBundle);
-//                startActivity(moreDetailsIntent);
-//                finish();
             }
         });
 
@@ -101,25 +87,6 @@ public class SearchableActivity extends ListActivity implements ServiceListener 
 //            doSearch(query);
         }
     }
-
-//    public void doSearch(String query){
-//        String[] result = new String[]{"Searching..."};
-//
-//        DestinationSearchService destinationSearchService = new DestinationSearchService(query);
-//
-//        destinationSearchService.addListener(this);
-//
-//        thread = new Thread(destinationSearchService);
-//
-//        thread.start();
-//
-////        adapter = new ArrayAdapter<String>(this, R.layout.cities_list_cell, R.id.text, result);
-//
-//        setListAdapter(new ArrayAdapter<String>(this, R.layout.cities_list_cell, R.id.text, result));
-//
-//
-//    }
-
 
     @Override
     public void serviceComplete(AbstractService abstractService) {

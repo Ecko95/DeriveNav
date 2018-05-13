@@ -6,62 +6,71 @@
     android:layout_height="match_parent"
     tools:context="com.example.joshua.derivenav.DestinationDetailsActivity">
 
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar_details"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/colorPrimary"
+        android:theme="@style/Base.ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="466dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="56dp"
             android:orientation="vertical"
-            android:padding="32dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0">
 
             <ImageView
                 android:id="@+id/iv_destination_img"
                 android:layout_width="match_parent"
                 android:layout_height="148dp"
-                android:padding="8dp"
+                android:adjustViewBounds="true"
+                android:cropToPadding="false"
+                android:scaleType="centerCrop"
                 app:srcCompat="@drawable/common_google_signin_btn_icon_dark" />
 
-            <TextView
-                android:id="@+id/txt_destination_title"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="8dp"
-                android:text="TextView"
-                android:textAppearance="@style/AppIntroDefaultHeading"
-                android:textColor="@color/colorPrimaryText" />
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:padding="16dp">
 
-            <TextView
-                android:id="@+id/txt_destination_desc"
-                android:layout_width="match_parent"
-                android:layout_height="160dp"
-                android:text="TextView"
-                android:padding="8dp" />
+                <TextView
+                    android:id="@+id/txt_destination_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp"
+                    android:text="TextView"
+                    android:textAppearance="@style/AppIntroDefaultHeading"
+                    android:textColor="@color/colorPrimaryText" />
+
+                <TextView
+                    android:id="@+id/txt_destination_desc"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="8dp"
+                    android:scrollbars="vertical"
+                    android:text="TextView" />
+
+            </LinearLayout>
+
 
         </LinearLayout>
-
-
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar_details"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="@color/colorPrimary"
-            android:theme="@style/Base.ThemeOverlay.AppCompat.Dark.ActionBar"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
     </android.support.constraint.ConstraintLayout>
 
 

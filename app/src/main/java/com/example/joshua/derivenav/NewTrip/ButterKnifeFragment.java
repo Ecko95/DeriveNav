@@ -7,15 +7,10 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
-
-import com.example.joshua.derivenav.R;
 
 import butterknife.ButterKnife;
 
-/**
- * A simple {@link Fragment} subclass.
- */
+// fragment subclass to init views
 abstract class ButterKnifeFragment extends Fragment {
 
     @Override

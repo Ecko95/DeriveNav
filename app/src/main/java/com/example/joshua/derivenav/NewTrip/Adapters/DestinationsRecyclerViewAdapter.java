@@ -32,9 +32,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
-/**
- * A custom adapter to use with the RecyclerView widget.
- */
 public class DestinationsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private static final String TAG = "DestinationsRecyclerVie";
@@ -46,10 +43,7 @@ public class DestinationsRecyclerViewAdapter extends RecyclerView.Adapter<Recycl
     private ArrayList<DestinationModel> modelList;
     private OnItemClickListener mItemClickListener;
     private OnCheckedListener mOnCheckedListener;
-
-
     private Set<Integer> checkSet = new HashSet<>();
-
 
 
     public DestinationsRecyclerViewAdapter(Context context, ArrayList<DestinationModel> modelList, String headerTitle) {
@@ -79,45 +73,6 @@ public class DestinationsRecyclerViewAdapter extends RecyclerView.Adapter<Recycl
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
 
-//        if (holder instanceof HeaderViewHolder) {
-//            HeaderViewHolder headerHolder = (HeaderViewHolder) holder;
-//
-//            headerHolder.txtTitleHeader.setText(mHeaderTitle);
-//
-//        } else if (holder instanceof ViewHolder) {
-//            final DestinationModel model = getItem(position - 1);
-//            ViewHolder genericViewHolder = (ViewHolder) holder;
-//
-//
-//            genericViewHolder.itemTxtTitle.setText(cityDestinationsModel.getTitle());
-//            genericViewHolder.itemTxtMessage.setText(cityDestinationsModel.getId());
-//            Picasso.with(genericViewHolder.imgItem.getContext()).load(cityDestinationsModel.getThumbnailUrl()).into(genericViewHolder.imgItem);
-//
-//            //in some cases, it will prevent unwanted situations
-//            genericViewHolder.itemCheckList.setOnCheckedChangeListener(null);
-//
-//            //if true, your checkbox will be selected, else unselected
-//            genericViewHolder.itemCheckList.setChecked(checkSet.contains(position));
-//
-//            genericViewHolder.itemCheckList.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-//                @Override
-//                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-//
-//                    if (isChecked) {
-//                        checkSet.add(position);
-//                    } else {
-//                        checkSet.remove(position);
-//                    }
-//
-//                    mOnCheckedListener.onChecked(buttonView, isChecked, position, model);
-//
-//                }
-//            });
-//
-//
-//        }
-
-
         if (holder instanceof HeaderViewHolder) {
             HeaderViewHolder headerHolder = (HeaderViewHolder) holder;
 
@@ -129,8 +84,8 @@ public class DestinationsRecyclerViewAdapter extends RecyclerView.Adapter<Recycl
             ViewHolder genericViewHolder = (ViewHolder) holder;
 
             //TEST MODEL
-            //genericViewHolder.itemTxtTitle.setText(model.getTitle());
-            //genericViewHolder.itemTxtMessage.setText(model.getMessage());
+//            genericViewHolder.itemTxtTitle.setText(model.getTitle());
+//            genericViewHolder.itemTxtMessage.setText(model.getMessage());
 
 //            //USERS MODEL
 //            genericViewHolder.itemTxtTitle.setText(model.getName());
@@ -149,7 +104,6 @@ public class DestinationsRecyclerViewAdapter extends RecyclerView.Adapter<Recycl
             //in some cases, it will prevent unwanted situations
             genericViewHolder.itemCheckList.setOnCheckedChangeListener(null);
 
-            //if true, your checkbox will be selected, else unselected
             genericViewHolder.itemCheckList.setChecked(checkSet.contains(position));
 
             genericViewHolder.itemCheckList.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -182,7 +136,6 @@ public class DestinationsRecyclerViewAdapter extends RecyclerView.Adapter<Recycl
         return position == 0;
     }
 
-
     @Override
     public int getItemCount() {
 
@@ -208,13 +161,12 @@ public class DestinationsRecyclerViewAdapter extends RecyclerView.Adapter<Recycl
 
     public void addDestinations(DestinationModel destinationModel) {
         modelList.add(destinationModel);
-        notifyDataSetChanged();
+        notifyDataSetChanged(); //refreshes adapter
     }
 
     public interface OnItemClickListener {
         void onItemClick(View view, int position, DestinationModel model);
     }
-
 
     public interface OnHeaderClickListener {
         void onHeaderClick(View view, String headerTitle);
@@ -232,12 +184,11 @@ public class DestinationsRecyclerViewAdapter extends RecyclerView.Adapter<Recycl
             super(itemView);
             this.txtTitleHeader = (TextView) itemView.findViewById(R.id.txt_header);
 
-
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
 
-                    //mHeaderClickListener.onHeaderClick(itemView, mHeaderTitle);
+//                    mHeaderClickListener.onHeaderClick(itemView, mHeaderTitle);
 
                 }
             });
@@ -246,7 +197,6 @@ public class DestinationsRecyclerViewAdapter extends RecyclerView.Adapter<Recycl
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-
 
         @BindView(R.id.img_item)
         ImageView imgItem;
@@ -261,7 +211,6 @@ public class DestinationsRecyclerViewAdapter extends RecyclerView.Adapter<Recycl
             super(itemView);
 
             ButterKnife.bind(this, itemView);
-
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

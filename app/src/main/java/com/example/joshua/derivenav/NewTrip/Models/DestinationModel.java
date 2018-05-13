@@ -3,18 +3,9 @@ package com.example.joshua.derivenav.NewTrip.Models;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class DestinationModel {
-
-    @Expose
-    private String title;
-    @Expose
-    private String message;
-    @Expose
-    private String thumbnailUrl;
-
 
     public DestinationModel(String title, String message) {
         this.title = title;
@@ -24,6 +15,14 @@ public class DestinationModel {
     public DestinationModel() {
 
     }
+
+    //Test Model
+    @Expose
+    private String title;
+    @Expose
+    private String message;
+    @Expose
+    private String thumbnailUrl;
 
     public void setId(Integer id) {
         this.id = id;
@@ -53,9 +52,7 @@ public class DestinationModel {
         this.thumbnailUrl = thumbnailUrl;
     }
 
-//end of todos model
-
-    //start of user model
+    //start of test user model
     @Expose
     @SerializedName("company")
     private Company company;
@@ -264,8 +261,7 @@ public class DestinationModel {
         }
     }
 
-
-    //POINTS OF INTEREST
+    //POINTS OF INTEREST MODEL
 
     @Expose
     @SerializedName("points_of_interest")

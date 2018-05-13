@@ -3,11 +3,11 @@ package com.example.joshua.derivenav;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
@@ -35,6 +35,8 @@ public class DestinationDetailsActivity extends AppCompatActivity {
 
         setSupportActionBar(toolbar_details);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        //make description textview scrollable
+        txt_destination_desc.setMovementMethod(new ScrollingMovementMethod());
 
         getDetails();
 

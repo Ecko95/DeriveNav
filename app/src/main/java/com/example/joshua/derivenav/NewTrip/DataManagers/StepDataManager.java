@@ -4,20 +4,20 @@ import com.example.joshua.derivenav.NewTrip.Models.DestinationModel;
 
 import java.util.ArrayList;
 
-/**
- * Created by Joshua on 26/04/2018.
- */
 
 public interface StepDataManager {
 
+    //Initial step data test
     void saveStepData(String data);
 
     String getData();
 
+    //Trip Title
     void saveTripTitle(String title);
 
     String getTripTitle();
 
+    //Trip description
     void saveTripDesc(String description);
 
     String getDesc();
@@ -25,10 +25,6 @@ public interface StepDataManager {
     void saveTripCategory(String category);
 
     String getCategory();
-
-    void saveDestinationModel(DestinationModel data);
-
-    DestinationModel getDestinationModel();
 
     //Array list of new Destination Objects
     void saveDestinationList(ArrayList<DestinationModel> newDestinationList);

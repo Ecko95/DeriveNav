@@ -44,7 +44,6 @@ public class IntroActivity extends AppIntro2 {
 //        setBarColor(Color.parseColor("#3F51B5"));
 
 
-
         // Hide Skip/Done button.
         showSkipButton(false);
         setProgressButtonEnabled(true);

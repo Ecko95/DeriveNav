@@ -56,9 +56,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-/**
- * A simple {@link Fragment} subclass.
- */
+
 public class StepFragment1 extends Fragment implements BlockingStep, StepperLayout.StepperListener {
 
     @BindView(R.id.txt_selected_search)
@@ -74,7 +72,6 @@ public class StepFragment1 extends Fragment implements BlockingStep, StepperLayo
     private String mTripDesc;
     private String mTripCategory;
 
-    private static final String CURRENT_STEP_POSITION_KEY = "position";
     private StepDataManager stepDataManager;
 
     @Override
@@ -85,8 +82,6 @@ public class StepFragment1 extends Fragment implements BlockingStep, StepperLayo
         View view = inflater.inflate(R.layout.fragment_step_fragment1, container, false);
         ButterKnife.bind(this,view);
 
-        int startingStepPosition = savedInstanceState != null ? savedInstanceState.getInt(CURRENT_STEP_POSITION_KEY) : 0;
-
 
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(), R.array.category_options, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -96,7 +91,7 @@ public class StepFragment1 extends Fragment implements BlockingStep, StepperLayo
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 mTripCategory = spinner_categories.getItemAtPosition(i).toString();
-                Toast.makeText(getContext(), mTripCategory, Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getContext(), mTripCategory, Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -123,7 +118,7 @@ public class StepFragment1 extends Fragment implements BlockingStep, StepperLayo
         }
 
         if (txt_selected_search.getText() != ""){
-            Toast.makeText(getContext(), "search null", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getContext(), "search null", Toast.LENGTH_SHORT).show();
         }
 
         //initialize your UI
@@ -134,7 +129,7 @@ public class StepFragment1 extends Fragment implements BlockingStep, StepperLayo
 
     private void disableNextStep(final StepperLayout.OnNextClickedCallback callback) {
         //disables next fragment button
-        callback.getStepperLayout().setNextButtonEnabled(false);
+//        callback.getStepperLayout().setNextButtonEnabled(false);
     }
 
     @Override
@@ -152,7 +147,7 @@ public class StepFragment1 extends Fragment implements BlockingStep, StepperLayo
     @Override
     public void onNextClicked(final StepperLayout.OnNextClickedCallback callback) {
         if (txt_selected_search.getText() == ""){
-            Toast.makeText(getContext(), "search null", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getContext(), "search null", Toast.LENGTH_SHORT).show();
             //disables next button
             disableNextStep(callback);
         }
@@ -188,7 +183,7 @@ public class StepFragment1 extends Fragment implements BlockingStep, StepperLayo
     @Override
     public void onCompleteClicked(StepperLayout.OnCompleteClickedCallback callback) {
         callback.complete();
-        Toast.makeText(getContext(), "Finish", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getContext(), "Finish", Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -196,19 +191,10 @@ public class StepFragment1 extends Fragment implements BlockingStep, StepperLayo
         callback.goToPrevStep();
     }
 
-//    @BindView(R.id.txt_selected_search)
-//    TextView txt_selected_search;
 
     public StepFragment1() {
         // Required empty public constructor
     }
-
-
-//    @Override
-//    public void onSaveInstanceState(Bundle outState) {
-//        outState.putInt(CURRENT_STEP_POSITION_KEY, mStepperLayout.getCurrentStepPosition());
-//        super.onSaveInstanceState(outState);
-//    }
 
     @Nullable
     @Override

@@ -56,40 +56,24 @@ import android.view.ViewGroup;
 
 import butterknife.ButterKnife;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link MapFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-
-
 public class MapFragment extends Fragment implements BlockingStep, OnMapReadyCallback, GoogleMap.OnCameraMoveStartedListener {
 
     private RecyclerView recyclerView;
 
-    // @BindView(R.id.recycler_view)
-    // RecyclerView recyclerView;
-
-
-    // @BindView(R.id.swipe_refresh_recycler_list)
-    // SwipeRefreshLayout swipeRefreshRecyclerList;
-
-    private SwipeRefreshLayout swipeRefreshRecyclerList;
     private MapRecyclerViewAdapter mAdapter;
-    private DestinationsRecyclerViewAdapter mDestinationAdapter;
 
-    private ArrayList<MapModel> modelList = new ArrayList<>();
+    //    private ArrayList<MapModel> modelList = new ArrayList<>();
     private ArrayList<DestinationModel> destinationModelList = new ArrayList<>();
     private MapView mapView;
     private GoogleMap googleMap;
 
     private static final String FINE_LOCATION = android.Manifest.permission.ACCESS_FINE_LOCATION;
     private static final String COARSE_LOCATION = android.Manifest.permission.ACCESS_COARSE_LOCATION;
+    private static final String TAG = "MapFragment";
+
     private boolean mLocationPermissionGranted = false;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1234;
     private StepDataManager stepDataManager;
-    private static final String TAG = "MapFragment";
-
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
     private FirebaseDatabase mFirebaseDatabase;
@@ -135,6 +119,7 @@ public class MapFragment extends Fragment implements BlockingStep, OnMapReadyCal
         ButterKnife.bind(this, view);
         findViews(view);
 
+        // init Firebase auth, db and current logged in user
         mAuth = FirebaseAuth.getInstance();
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         dbRef = mFirebaseDatabase.getReference();
@@ -146,6 +131,7 @@ public class MapFragment extends Fragment implements BlockingStep, OnMapReadyCal
 
     }
 
+    //gets location permissions
     private void getLocationPermission() {
         String[] permissions = {android.Manifest.permission.ACCESS_FINE_LOCATION,
                 android.Manifest.permission.ACCESS_COARSE_LOCATION};
@@ -161,6 +147,7 @@ public class MapFragment extends Fragment implements BlockingStep, OnMapReadyCal
     }
 
 
+    //requests location persimisions
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         mLocationPermissionGranted = false;
@@ -188,8 +175,6 @@ public class MapFragment extends Fragment implements BlockingStep, OnMapReadyCal
 
         getLocationPermission();
 
-        //setAdapter();
-
     }
 
     private void initMap(View view, Bundle savedInstanceState) {
@@ -205,18 +190,10 @@ public class MapFragment extends Fragment implements BlockingStep, OnMapReadyCal
         recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
     }
 
-
     private void setAdapter() {
 
         //set list to mapFragmentAdapter RecyclerViews
         destinationModelList = stepDataManager.getNewDestinationList();
-
-//        for (int i = 0; i < destinationModelList.size(); i++) {
-//            DestinationModel destination = destinationModelList.get(i);
-//            mAdapter.addDestinations(destination);
-//
-//        }
-
 
         mAdapter = new MapRecyclerViewAdapter(getActivity(), destinationModelList);//modelList
 
@@ -234,7 +211,6 @@ public class MapFragment extends Fragment implements BlockingStep, OnMapReadyCal
             @Override
             public void onItemClick(View view, int position, DestinationModel model) { //MapModel model
 
-
                 //handle item click events here
                 LatLng coordinates = new LatLng(model.getPoints_of_interest().get(position).getLocation().getLatitude(), model.getPoints_of_interest().get(position).getLocation().getLongitude());
                 CameraUpdate location = CameraUpdateFactory.newLatLngZoom(coordinates, 12);
@@ -244,9 +220,6 @@ public class MapFragment extends Fragment implements BlockingStep, OnMapReadyCal
                 googleMap.animateCamera(location);
             }
         });
-
-        //mAdapter.updateList(destinationModelList);
-
 
     }
 
@@ -259,6 +232,8 @@ public class MapFragment extends Fragment implements BlockingStep, OnMapReadyCal
     @Override
     public void onSelected() {
         setAdapter();
+
+
         //Toast.makeText(getContext(), stepDataManager.getDestinationModel().getName(), Toast.LENGTH_SHORT).show();
     }
 
@@ -272,10 +247,10 @@ public class MapFragment extends Fragment implements BlockingStep, OnMapReadyCal
         //null
     }
 
-
     @Override
     public void onCompleteClicked(StepperLayout.OnCompleteClickedCallback callback) {
 
+//        Async background task
         AsyncTask.execute(new Runnable() {
             @Override
             public void run() {
@@ -311,6 +286,7 @@ public class MapFragment extends Fragment implements BlockingStep, OnMapReadyCal
                     //iterates through points of interests
                     for (int i = 0; i < destinationModelList.size(); i++) {
 
+                        //gets model api data
                         DestinationModel destinationInfo = destinationModelList.get(i);
                         destinationName = destinationInfo.getPoints_of_interest().get(i).getTitle();
                         destinationLat = destinationInfo.getPoints_of_interest().get(i).getLocation().getLatitude();
@@ -341,23 +317,8 @@ public class MapFragment extends Fragment implements BlockingStep, OnMapReadyCal
             }
         });
         callback.complete();
-        getActivity().finish();
-    }
-
-    private void getCheckedDestinationTrips() {
-//        DestinationModel testDestinationModel = new DestinationModel();
-//        DestinationModel.Current_city testCurrentCity = new DestinationModel.Current_city();
-//        testCurrentCity.setName("CITY TEST");
-//        testCurrentCity.setTotal_points_of_interest(2);
-//        for(int i = 0; i < destinationModelList.size(); i++){
-////            String name = destinationModelList.get(i).getCurrent_city().getName();
-////            String desc = destinationModelList.get(i).getPoints_of_interest().get(i).getDetails().getShort_description();
-//
-//
-//
-//            TripModel newTrip = new TripModel(name,desc,key,destinationModelList);
-//
-//        }
+        Toast.makeText(getActivity(), "trip successfully saved", Toast.LENGTH_SHORT).show();
+        getActivity().finish(); // closes the activity once trip is save
     }
 
     @Override
@@ -367,6 +328,7 @@ public class MapFragment extends Fragment implements BlockingStep, OnMapReadyCal
 
     @Override
     public void onMapReady(GoogleMap mMap) {
+//        init map ui controls and init position
         googleMap = mMap;
         googleMap.setOnCameraMoveStartedListener(this);
         googleMap.getUiSettings().setMapToolbarEnabled(true);

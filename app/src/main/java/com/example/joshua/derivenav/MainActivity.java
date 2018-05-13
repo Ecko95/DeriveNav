@@ -43,7 +43,7 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
 
     private MaterialSearchView searchView;
-    //defines a menu so we can hide it or diplay it according to fragments
+    //defines a menu so we can hide it or display it according to fragments
     private Menu menu;
     private FirebaseAuth mAuth;
 
@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
             // User is signed in
-            Toast.makeText(MainActivity.this, "you're signed in", Toast.LENGTH_SHORT).show();
+            Toast.makeText(MainActivity.this, "Welcome! " + user.getDisplayName(), Toast.LENGTH_SHORT).show();
         } else {
             startActivity(new Intent(MainActivity.this, LoginActivity.class));
             finish();
@@ -126,10 +126,6 @@ public class MainActivity extends AppCompatActivity {
                             case R.id.navigation_trips:
                                 selectedFragment = UserTripsFragment.newInstance();
                                 break;
-                            case R.id.navigation_notifications:
-                                selectedFragment = HomeFragment.newInstance();
-//                                selectedFragment = MapFragment.newInstance();
-                                break;
                         }
                         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
                         transaction.replace(R.id.base_container, selectedFragment);
@@ -185,7 +181,7 @@ public class MainActivity extends AppCompatActivity {
         searchView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(MainActivity.this, position, Toast.LENGTH_SHORT).show();
+                //Toast.makeText(MainActivity.this, position, Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -205,7 +201,7 @@ public class MainActivity extends AppCompatActivity {
                 String searchWrd = matches.get(0);
                 if (!TextUtils.isEmpty(searchWrd)) {
                     searchView.setQuery(searchWrd, false);
-                    Toast.makeText(this, searchWrd, Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(this, searchWrd, Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -226,7 +222,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case android.R.id.home:
-                Toast.makeText(this, "back", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(this, "back", Toast.LENGTH_SHORT).show();
                 onBackPressed();
                 return true;
 
@@ -244,7 +240,7 @@ public class MainActivity extends AppCompatActivity {
                 return true;
 
             default:
-                Toast.makeText(this, "click", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(this, "click", Toast.LENGTH_SHORT).show();
                 return false;
         }
     }

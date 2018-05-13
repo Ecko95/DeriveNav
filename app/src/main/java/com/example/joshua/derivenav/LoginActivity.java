@@ -2,6 +2,8 @@ package com.example.joshua.derivenav;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -40,14 +42,37 @@ public class LoginActivity extends AppCompatActivity {
     View mRootView;
 
     public FirebaseDatabase getDatabase() {
+
+        //  Initialize SharedPreferences
+        SharedPreferences getPrefs = PreferenceManager
+                .getDefaultSharedPreferences(getBaseContext());
+
+        //get database instance
         if (mFirebaseDatabase == null) {
             mFirebaseDatabase = FirebaseDatabase.getInstance();
+        }
+        //  Create a new boolean and preference and set it to true
+        boolean isFirstStart = getPrefs.getBoolean("dataPersistenceOn", true);
+
+        //  If the activity has never started before...
+        if (isFirstStart) {
+
+            //  Launch app intro
+
             mFirebaseDatabase.setPersistenceEnabled(true);
+
+            //  Make a new preferences editor
+            SharedPreferences.Editor e = getPrefs.edit();
+            //  Edit preference to make it false because we don't want this to run again
+            e.putBoolean("dataPersistenceOn", false);
+
+            //  Apply changes
+            e.apply();
         }
         return mFirebaseDatabase;
     }
 
-    public static Intent createIntent(Context context){
+    public static Intent createIntent(Context context) {
         return new Intent(context, LoginActivity.class);
     }
 
@@ -56,8 +81,8 @@ public class LoginActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(requestCode == RC_SIGN_IN){
-            handleSignInResponse(resultCode,data);
+        if (requestCode == RC_SIGN_IN) {
+            handleSignInResponse(resultCode, data);
             return;
         }
     }
@@ -65,14 +90,19 @@ public class LoginActivity extends AppCompatActivity {
     private void handleSignInResponse(int resultCode, Intent data) {
         IdpResponse response = IdpResponse.fromResultIntent(data);
 
-        if (resultCode == RESULT_OK){
+        if (resultCode == RESULT_OK) {
 
 
             //add user data to db
             userID = mAuth.getCurrentUser().getUid();
             userName = mAuth.getCurrentUser().getDisplayName();
             userEmail = mAuth.getCurrentUser().getEmail();
-            userPhoto = mAuth.getCurrentUser().getPhotoUrl().toString();
+            //gets users photo URL only for Google Accounts
+            try {
+                userPhoto = mAuth.getCurrentUser().getPhotoUrl().toString();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
             mFirebaseDatabase = getDatabase();
 
@@ -81,7 +111,7 @@ public class LoginActivity extends AppCompatActivity {
             //adds new user to User db
             Map newPost = new HashMap();
             newPost.put("name", userName);
-            newPost.put("email", userEmail );
+            newPost.put("email", userEmail);
             newPost.put("photoURL", userPhoto);
             userRef.setValue(newPost);
 
@@ -89,13 +119,13 @@ public class LoginActivity extends AppCompatActivity {
                     .putExtra("my_token", response.getIdpToken()));
             finish();
 
-        }else{
-            if (response == null){
+        } else {
+            if (response == null) {
                 finish();
                 //showSnackbar("auth not working");
                 return;
             }
-            if(response.getError().getErrorCode() == ErrorCodes.NO_NETWORK){
+            if (response.getError().getErrorCode() == ErrorCodes.NO_NETWORK) {
                 showSnackbar("no internet connection");
                 return;
 
@@ -105,12 +135,8 @@ public class LoginActivity extends AppCompatActivity {
         }
 
     }
-//
-//    private void startSignedInActivity(IdpResponse response) {
-//    }
 
-
-    private void showSnackbar(String errorMessageRes){
+    private void showSnackbar(String errorMessageRes) {
         Snackbar.make(mRootView, errorMessageRes, Snackbar.LENGTH_LONG).show();
     }
 
@@ -142,7 +168,7 @@ public class LoginActivity extends AppCompatActivity {
                 ))
                 .setTheme(R.style.AppTheme_NoActionBar)
                 .setLogo(R.drawable.welcome)
-                .build(),RC_SIGN_IN);
+                .build(), RC_SIGN_IN);
     }
 
     @Override
@@ -159,7 +185,7 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        if(mAuthListener != null){
+        if (mAuthListener != null) {
             mAuth.removeAuthStateListener(mAuthListener);
         }
     }

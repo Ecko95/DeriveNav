@@ -35,17 +35,10 @@ public class ProfileActivity extends AppCompatActivity {
     private DatabaseReference mRef;
     private String userID;
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
-
-//      //enables data persistence using cache
-//        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
-//        DatabaseReference scoresRef = FirebaseDatabase.getInstance().getReference("scores");
-//        scoresRef.keepSynced(true);
 
         //initialise Firebase DB
         mAuth = FirebaseAuth.getInstance();
@@ -83,43 +76,5 @@ public class ProfileActivity extends AppCompatActivity {
             ;
         }
 
-//        mRef.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//
-//                try{
-//                    showData(dataSnapshot);
-//                }catch (Exception e){
-//                    Log.d(TAG,e.getMessage());
-//                }
-//
-//
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//                Log.e(TAG,databaseError.getMessage());
-//            }
-//        });
-
     }
-
-
-//    private void showData(DataSnapshot dataSnapshot) {
-//        for(DataSnapshot ds : dataSnapshot.getChildren()){
-//            User userInfo = new User();
-//            userInfo.setName(ds.child(userID).getValue(User.class).getName()); //sets User name
-//            userInfo.setEmail(ds.child(userID).getValue(User.class).getEmail()); //sets User name
-//            Log.d(TAG,"Data : name " + userInfo.getName());
-//            Log.d(TAG,"Data : email " + userInfo.getEmail());
-//
-//            ArrayList<String> arrayList = new ArrayList<>();
-//            //adds data to arrayList Adapter
-//            arrayList.add(userInfo.getName());
-//            arrayList.add(userInfo.getEmail());
-//            ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1,arrayList);
-//            mListView.setAdapter(adapter);
-//
-//        }
-//    }
 }

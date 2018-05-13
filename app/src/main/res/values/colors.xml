@@ -14,6 +14,7 @@
     <color name="purple500">#673AB7</color>
     <color name="overlay_transparent">#a0000000</color>
     <color name="process_overlay">#96ffffff</color>
+    <color name="disabled_button">#96d6d6d6</color>
 
 
 </resources>
