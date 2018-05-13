@@ -15,7 +15,9 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
+import com.example.joshua.derivenav.NewTrip.Models.DestinationModel;
 import com.example.joshua.derivenav.R;
+import com.example.joshua.derivenav.TripDestinationDetailsActivity;
 import com.example.joshua.derivenav.UserTripDetails.Models.UserTripDetailsModel;
 import com.squareup.picasso.Picasso;
 
@@ -111,7 +113,6 @@ public class UserTripDetailsRecyclerViewAdapter extends RecyclerView.Adapter<Rec
             });
 
 
-
         }
     }
 
@@ -198,7 +199,19 @@ public class UserTripDetailsRecyclerViewAdapter extends RecyclerView.Adapter<Rec
 
 //                    mItemClickListener.onItemClick(itemView, getAdapterPosition(), modelList.get(getAdapterPosition() - 1));
 
+                    int itemPosition = getAdapterPosition();
+                    final UserTripDetailsModel model = getItem(itemPosition - 1);
+                    Toast.makeText(mContext, "clicked:" + (itemPosition - 1), Toast.LENGTH_SHORT).show();
+                    mItemClickListener.onItemClick(itemView, getAdapterPosition(), modelList.get(getAdapterPosition() - 1));
+                    Intent intent = new Intent(mContext, TripDestinationDetailsActivity.class);
+//
+                    intent.putExtra("img_url", model.getImg());
+                    intent.putExtra("destination_title", model.getCityName());
+                    intent.putExtra("destination_desc", model.getDescription());
+                    intent.putExtra("destination_google_maps_link", model.getGoogleMaps());
+                    intent.putExtra("destination_wiki_page_link", model.getWikiPage());
 
+                    mContext.startActivity(intent);
 
 
                 }

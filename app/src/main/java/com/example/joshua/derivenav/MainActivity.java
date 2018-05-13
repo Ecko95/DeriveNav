@@ -9,6 +9,7 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -220,6 +221,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        Intent intent = new Intent(Intent.ACTION_VIEW);
         switch (item.getItemId()){
             case android.R.id.home:
                 //Toast.makeText(this, "back", Toast.LENGTH_SHORT).show();
@@ -237,6 +239,24 @@ public class MainActivity extends AppCompatActivity {
                                 finish();
                             }
                         });
+                return true;
+            case R.id.action_about:
+                intent.setData(Uri.parse("https://github.com/Ecko95/DeriveNav"));
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                if (intent.resolveActivity(getApplicationContext().getPackageManager()) != null) {
+                    getApplicationContext().startActivity(intent);
+                } else {
+                    Toast.makeText(getApplicationContext(), "sorry link not found", Toast.LENGTH_LONG).show();
+                }
+                return true;
+            case R.id.action_api:
+                intent.setData(Uri.parse("https://sandbox.amadeus.com/api-catalog"));
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                if (intent.resolveActivity(getApplicationContext().getPackageManager()) != null) {
+                    getApplicationContext().startActivity(intent);
+                } else {
+                    Toast.makeText(getApplicationContext(), "sorry link not found", Toast.LENGTH_LONG).show();
+                }
                 return true;
 
             default:

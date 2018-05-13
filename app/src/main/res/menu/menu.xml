@@ -15,17 +15,27 @@
         android:orderInCategory="100"
         android:title="@string/abc_search_hint"
         app:showAsAction="always"/>
-    <item
-        android:id="@+id/action_logout"
-        android:title="Logout"
-        app:materialIcon="logout"
-        app:showAsAction="always"
-        app:materialIconColor="#fff"
-        />
+
     <item
         android:title="Help"
         android:id="@+id/action_help"
         app:showAsAction="always"
         app:materialIcon="help_circle"
         app:materialIconColor="#ffffff" />
+    <item
+        android:title="About"
+        android:id="@+id/action_about"
+        app:showAsAction="collapseActionView"
+        app:materialIcon="github_circle" />
+    <item
+        android:title="APIs"
+        android:id="@+id/action_api"
+        app:showAsAction="collapseActionView"
+        app:materialIcon="link" />
+    <item
+        android:id="@+id/action_logout"
+        android:title="Logout"
+        app:materialIcon="logout"
+        app:showAsAction="always"
+        app:materialIconColor="#fff" />
 </menu>

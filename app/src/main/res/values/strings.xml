@@ -49,5 +49,6 @@
 
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_user_trip_details">UserTripDetailsActivity</string>
+    <string name="title_activity_trip_destination_details">TripDestinationDetailsActivity</string>
 
 </resources>

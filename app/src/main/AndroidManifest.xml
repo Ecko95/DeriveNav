@@ -45,7 +45,6 @@
                 android:resource="@xml/searchable" />
         </activity>
         <activity android:name=".IntroActivity" />
-
         <activity android:name=".LoginActivity" />
         <activity
             android:name=".NewTripActivity"
@@ -56,7 +55,16 @@
         <activity
             android:name=".UserTripDetails.UserTripDetails"
             android:label="@string/title_activity_user_trip_details"
-            android:theme="@style/AppTheme.Template.Base"></activity>
+            android:theme="@style/AppTheme.Template.Base" />
+        <activity
+            android:name=".TripDestinationDetailsActivity"
+            android:label="@string/title_activity_trip_destination_details"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.joshua.derivenav.MainActivity" />
+        </activity>
     </application>
 
 </manifest>
