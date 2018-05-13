@@ -15,6 +15,8 @@ import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.support.v7.widget.RecyclerView;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import java.util.ArrayList;
 import com.example.joshua.derivenav.Api.ApiController;
@@ -332,10 +334,17 @@ public class CityDestinationsFragment extends Fragment implements BlockingStep {
 
                     mDialog.dismiss();
                 }
-            }, 4000L);
+            }, 6000L);
         } catch (Exception e) {
             e.printStackTrace(); //print error e
         }
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        menu.findItem(R.id.action_search).setVisible(false);
+        menu.findItem(R.id.action_help).setVisible(false);
+        super.onCreateOptionsMenu(menu, inflater);
     }
 
 }

@@ -4,6 +4,7 @@ package com.example.joshua.derivenav.UserTrips;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 
 import android.support.design.widget.FloatingActionButton;
@@ -21,6 +22,7 @@ import java.util.Iterator;
 import android.support.v4.widget.SwipeRefreshLayout;
 
 import com.example.joshua.derivenav.NewTrip.Models.TripModel;
+import com.example.joshua.derivenav.NewTripActivity;
 import com.example.joshua.derivenav.R;
 import com.example.joshua.derivenav.UserTrips.Models.UserTrips;
 import com.google.firebase.auth.FirebaseAuth;
@@ -145,7 +147,7 @@ public class UserTripsFragment extends Fragment {
         fabAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //start new activity
+                startActivity(new Intent(getActivity(), NewTripActivity.class));
             }
         });
 

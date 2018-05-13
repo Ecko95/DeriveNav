@@ -18,6 +18,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.support.v7.widget.RecyclerView;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 
 import java.util.ArrayList;
@@ -352,4 +354,10 @@ public class MapFragment extends Fragment implements BlockingStep, OnMapReadyCal
 
     }
 
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        menu.findItem(R.id.action_search).setVisible(false);
+        menu.findItem(R.id.action_help).setVisible(false);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
 }
