@@ -32,6 +32,8 @@ public class TripDestinationDetailsActivity extends AppCompatActivity {
     TextView txt_destination_title;
     @BindView(R.id.txt_destination_desc)
     TextView txt_destination_desc;
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
 
 
     private static final String TAG = "TripDestinationDetailsA";
@@ -45,7 +47,6 @@ public class TripDestinationDetailsActivity extends AppCompatActivity {
         //init ButterKnife views
         ButterKnife.bind(this);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 

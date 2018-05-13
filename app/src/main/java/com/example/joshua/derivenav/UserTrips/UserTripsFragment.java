@@ -6,6 +6,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.CircularProgressDrawable;
 import android.support.v7.widget.GridLayoutManager;
 
@@ -52,6 +53,8 @@ public class UserTripsFragment extends Fragment {
     @BindView(R.id.swipe_refresh_recycler_list) SwipeRefreshLayout swipeRefreshRecyclerList;
     @BindView(R.id.empty_view_user_trips)
     FrameLayout emptyLayout;
+    @BindView(R.id.fabAdd)
+    FloatingActionButton fabAdd;
 
     private UserTripsAdapter mAdapter;
 
@@ -138,6 +141,14 @@ public class UserTripsFragment extends Fragment {
 
         });
 
+        //Floating button onClickListener
+        fabAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //start new activity
+            }
+        });
+
         return view;
 
     }
@@ -168,6 +179,7 @@ public class UserTripsFragment extends Fragment {
 
             }
         });
+
 
     }
 
