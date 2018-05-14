@@ -209,6 +209,7 @@ public class NewTripActivity extends AppCompatActivity implements StepDataManage
                 stepperLayout.setNextButtonVerificationFailed(true);
             }
 
+
         }catch(Exception e){
             Log.d(TAG,"Error catch");
         }

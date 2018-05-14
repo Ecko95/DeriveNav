@@ -35,6 +35,7 @@ import android.widget.Toast;
 
 
 import android.view.ViewGroup;
+import android.widget.Toolbar;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -192,6 +193,15 @@ public class CityDestinationsFragment extends Fragment implements BlockingStep {
 
     }
 
+    public void disableNextStep(final StepperLayout.OnNextClickedCallback callback) {
+        //disable back button
+        callback.getStepperLayout().setNextButtonVerificationFailed(true);
+        callback.getStepperLayout().setNextButtonEnabled(false);
+        callback.getStepperLayout().setBackButtonEnabled(false);
+        int disabledColor = Color.alpha(R.color.disabled_button);
+        callback.getStepperLayout().setBackButtonColor(disabledColor);
+    }
+
     @Override
     public void onNextClicked(final StepperLayout.OnNextClickedCallback callback) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -209,16 +219,17 @@ public class CityDestinationsFragment extends Fragment implements BlockingStep {
 
                     mAdapter.updateList(mCheckedDestinationList);
                     stepDataManager.saveDestinationList(mCheckedDestinationList);
+                    callback.goToNextStep();
+
+                    disableNextStep(callback);
 
                 } else {
-                    //disable back button
-                    callback.getStepperLayout().setBackButtonEnabled(false);
-                    int disabledColor = Color.alpha(R.color.disabled_button);
-                    callback.getStepperLayout().setBackButtonColor(disabledColor);
+                    Toast.makeText(getActivity(), "Please select at least one destination", Toast.LENGTH_SHORT).show();
                 }
 
 
-                callback.goToNextStep();
+
+
             }
         }, 1000L);
     }
@@ -243,7 +254,7 @@ public class CityDestinationsFragment extends Fragment implements BlockingStep {
     public void onSelected() {
         Toast.makeText(getContext(), "Searching For: " + stepDataManager.getData(), Toast.LENGTH_SHORT).show();
         mChosenCitySearch = stepDataManager.getData();
-        //getFeed();
+        getFeed();
 
     }
 
