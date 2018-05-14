@@ -44,7 +44,20 @@ import butterknife.ButterKnife;
 public class NewTripActivity extends AppCompatActivity implements StepDataManager, StepperLayout.StepperListener{
 
     //step data manager override's
+    @Override
+    public void onError(VerificationError verificationError) {
 
+    }
+
+    @Override
+    public void onStepSelected(int newStepPosition) {
+
+    }
+
+    @Override
+    public void onReturn() {
+        finish();
+    }
 
     @Override
     public void onCompleted(View completeButton) {
@@ -95,9 +108,19 @@ public class NewTripActivity extends AppCompatActivity implements StepDataManage
     public void saveDestinationList(ArrayList<DestinationModel> newDestinationList) {
         mNewDestinationList = newDestinationList;
     }
+
     @Override
     public ArrayList<DestinationModel> getNewDestinationList() {
         return mNewDestinationList;
+    }
+
+    @Override
+    public void savePointOfInterestModel(ArrayList<DestinationModel.Points_of_interest> newPointOfInterestList) {
+        mNewPointofInterestList = newPointOfInterestList;
+    }
+    @Override
+    public ArrayList<DestinationModel.Points_of_interest> getPointOfInterestList() {
+        return mNewPointofInterestList;
     }
 
     private static final String TAG = "";
@@ -116,7 +139,7 @@ public class NewTripActivity extends AppCompatActivity implements StepDataManage
     private String mTripDesc;
     private String mTripCategory;
     private ArrayList<DestinationModel> mNewDestinationList = new ArrayList<>();
-    private DestinationModel mNewDestinationModel;
+    private ArrayList<DestinationModel.Points_of_interest> mNewPointofInterestList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -178,7 +201,7 @@ public class NewTripActivity extends AppCompatActivity implements StepDataManage
             Bundle bundle = getIntent().getExtras(); // Getting the Bundle object that pass from another activity
             if(bundle != null) {
                 String SelectedSearch = bundle.getString("SelectedSearch");
-                //Toast.makeText(getApplicationContext(), SelectedSearch, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), SelectedSearch, Toast.LENGTH_SHORT).show();
                 mChosenSearch = SelectedSearch;
 
             }else{
@@ -195,10 +218,13 @@ public class NewTripActivity extends AppCompatActivity implements StepDataManage
             Bundle bundle = getIntent().getExtras(); // Getting the Bundle object that pass from another activity
             if(bundle != null) {
                 String SelectedSearch = bundle.getString("SelectedSearch");
-                //Toast.makeText(getApplicationContext(), SelectedSearch, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), SelectedSearch, Toast.LENGTH_SHORT).show();
                 mChosenSearch = SelectedSearch;
 
             }else{
+                //disables next fragment button
+                stepperLayout.setNextButtonEnabled(true);
+                stepperLayout.setNextButtonVerificationFailed(true);
 //                Toast.makeText(this, "Null", Toast.LENGTH_SHORT).show();
             }
 
@@ -208,14 +234,10 @@ public class NewTripActivity extends AppCompatActivity implements StepDataManage
 
     }
 
-    public void disableSteps() {
-        stepperLayout.setNextButtonVerificationFailed(true);
-        stepperLayout.setCompleteButtonVerificationFailed(true);
-    }
-
     public String getChosenSearch(){
         return mChosenSearch;
     }
+
 
     @Override
     protected void onNewIntent(Intent intent) {
@@ -231,7 +253,7 @@ public class NewTripActivity extends AppCompatActivity implements StepDataManage
                 String searchWrd = matches.get(0);
                 if (!TextUtils.isEmpty(searchWrd)) {
                     materialSearchView.setQuery(searchWrd, false);
-                    //Toast.makeText(this, searchWrd, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, searchWrd, Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -250,7 +272,7 @@ public class NewTripActivity extends AppCompatActivity implements StepDataManage
                 helpTutorial();
                 return true;
             default:
-                //Toast.makeText(this, "click", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "click", Toast.LENGTH_SHORT).show();
                 return false;
         }
     }
@@ -258,7 +280,8 @@ public class NewTripActivity extends AppCompatActivity implements StepDataManage
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MaterialMenuInflater
-                .with(this)
+                .with(this) // Provide the activity context
+                // Set the fall-back color for all the icons. Colors set inside the XML will always have higher priority
                 .setDefaultColor(Color.WHITE)
                 // Inflate the menu
                 .inflate(R.menu.menu, menu);
@@ -281,6 +304,13 @@ public class NewTripActivity extends AppCompatActivity implements StepDataManage
             finish();
         }
     }
+
+//    @Override
+//    protected void onSaveInstanceState(Bundle outState) {
+//        outState.putInt(CURRENT_STEP_POSITION_KEY, stepperLayout.getCurrentStepPosition());
+//        outState.putString(DATA, mData);
+//        super.onSaveInstanceState(outState);
+//    }
 
     public void hideSearch(){
         menu.findItem(R.id.action_search).setVisible(false);
@@ -348,20 +378,9 @@ public class NewTripActivity extends AppCompatActivity implements StepDataManage
 
     }
 
-    @Override
-    public void onError(VerificationError verificationError) {
 
-    }
 
-    @Override
-    public void onStepSelected(int newStepPosition) {
 
-    }
-
-    @Override
-    public void onReturn() {
-        finish();
-    }
 
 }
 
