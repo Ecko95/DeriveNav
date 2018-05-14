@@ -16,6 +16,7 @@ import android.preference.PreferenceManager;
 import android.speech.RecognizerIntent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -41,12 +42,24 @@ import net.steamcrafted.materialiconlib.MaterialMenuInflater;
 
 import java.util.ArrayList;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class MainActivity extends AppCompatActivity {
 
-    private MaterialSearchView searchView;
     //defines a menu so we can hide it or display it according to fragments
     private Menu menu;
     private FirebaseAuth mAuth;
+
+    @BindView(R.id.base_container)
+    View mRootView;
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
+    @BindView(R.id.navigation)
+    BottomNavigationView bottomNavigationView;
+
+    @BindView(R.id.search_view)
+    MaterialSearchView searchView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,19 +67,18 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
 
+        ButterKnife.bind(this); //init views
+        setSupportActionBar(toolbar);
 
-        //runs AppIntro
-//        startActivity(new Intent(getApplicationContext(),IntroActivity.class));
-
+        // welcomes user if logged in
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
             // User is signed in
-            Toast.makeText(MainActivity.this, "Welcome! " + user.getDisplayName(), Toast.LENGTH_SHORT).show();
+            showSnackbar("Welcome " + user.getDisplayName() + "!");
         } else {
             startActivity(new Intent(MainActivity.this, LoginActivity.class));
             finish();
         }
-
 
         //  Declare a new thread to do a preference check
         Thread t = new Thread(new Runnable() {
@@ -106,15 +118,7 @@ public class MainActivity extends AppCompatActivity {
         // Start the thread
         t.start();
 
-
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-
-        BottomNavigationView bottomNavigationView = findViewById(R.id.navigation);
         //set listeners for search view
-
-
         bottomNavigationView.setOnNavigationItemSelectedListener
                 (new BottomNavigationView.OnNavigationItemSelectedListener() {
                     @Override
@@ -143,10 +147,6 @@ public class MainActivity extends AppCompatActivity {
         //Used to select an item programmatically
         bottomNavigationView.getMenu().getItem(0).setChecked(true);
 
-
-
-
-        searchView = findViewById(R.id.search_view);
         searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -155,9 +155,6 @@ public class MainActivity extends AppCompatActivity {
                 searchIntent.putExtra(SearchManager.QUERY, query);
                 searchIntent.setAction(Intent.ACTION_SEARCH);
                 startActivity(searchIntent);
-
-
-
                 return false;
             }
 
@@ -168,30 +165,15 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        searchView.setOnSearchViewListener(new MaterialSearchView.SearchViewListener() {
-            @Override
-            public void onSearchViewShown() {
-                //Do some magic
-            }
-
-            @Override
-            public void onSearchViewClosed() {
-                //Do some magic
-            }
-        });
-        searchView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                //Toast.makeText(MainActivity.this, position, Toast.LENGTH_SHORT).show();
-            }
-        });
-
-
     }
 
     public void hideMenu() {
         menu.findItem(R.id.action_search).setVisible(false);
         menu.findItem(R.id.action_help).setVisible(false);
+    }
+
+    private void showSnackbar(String loginMessage) {
+        Snackbar.make(mRootView, loginMessage, Snackbar.LENGTH_LONG).show();
     }
 
     @Override

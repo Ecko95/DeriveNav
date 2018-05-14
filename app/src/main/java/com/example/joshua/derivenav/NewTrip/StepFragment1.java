@@ -121,15 +121,16 @@ public class StepFragment1 extends Fragment implements BlockingStep, StepperLayo
             //Toast.makeText(getContext(), "search null", Toast.LENGTH_SHORT).show();
         }
 
-        //initialize your UI
+        //initialize UI
         return view;
 
 
     }
 
     private void disableNextStep(final StepperLayout.OnNextClickedCallback callback) {
-        //disables next fragment button
-//        callback.getStepperLayout().setNextButtonEnabled(false);
+//        disables next fragment button
+        callback.getStepperLayout().setNextButtonEnabled(false);
+        callback.getStepperLayout().setNextButtonVerificationFailed(true);
     }
 
     @Override
@@ -143,11 +144,9 @@ public class StepFragment1 extends Fragment implements BlockingStep, StepperLayo
     }
 
 
-
     @Override
     public void onNextClicked(final StepperLayout.OnNextClickedCallback callback) {
         if (txt_selected_search.getText() == ""){
-            //Toast.makeText(getContext(), "search null", Toast.LENGTH_SHORT).show();
             //disables next button
             disableNextStep(callback);
         }
@@ -233,5 +232,6 @@ public class StepFragment1 extends Fragment implements BlockingStep, StepperLayo
     public static Step newInstance() {
         return new StepFragment1();
     }
+
 
 }

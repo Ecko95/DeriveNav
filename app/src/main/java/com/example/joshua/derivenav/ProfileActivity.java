@@ -72,29 +72,35 @@ public class ProfileActivity extends AppCompatActivity {
 
 
         if (user != null) {
-            for (UserInfo profile : user.getProviderData()) {
-                // Id of the provider (ex: google.com)
-                String providerId = profile.getProviderId();
 
-                // UID specific to the provider
-                String uid = profile.getUid();
+            try {
+                for (UserInfo profile : user.getProviderData()) {
+                    // Id of the provider (ex: google.com)
+                    String providerId = profile.getProviderId();
 
-                // Name, email address, and profile photo Url
-                String name = profile.getDisplayName();
-                String email = profile.getEmail();
-                Uri photoUrl = profile.getPhotoUrl();
+                    // UID specific to the provider
+                    String uid = profile.getUid();
 
-                ArrayList<String> arrayList = new ArrayList<>();
-                //adds data to arrayList Adapter
-                arrayList.add(name);
-                arrayList.add(email);
-                ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, arrayList);
-                mListView.setAdapter(adapter);
+                    // Name, email address, and profile photo Url
+                    String name = profile.getDisplayName();
+                    String email = profile.getEmail();
+                    Uri photoUrl = null;
+                    photoUrl = profile.getPhotoUrl();
 
-                Picasso.with(this).load(photoUrl).into(iv_profilePic);
+                    ArrayList<String> arrayList = new ArrayList<>();
+                    //adds data to arrayList Adapter
+                    arrayList.add(name);
+                    arrayList.add(email);
+                    ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, arrayList);
+                    mListView.setAdapter(adapter);
+                    Picasso.with(this).load(photoUrl).into(iv_profilePic);
 
-
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
+        } else {
+            //
         }
 
     }

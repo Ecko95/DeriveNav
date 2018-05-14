@@ -75,11 +75,10 @@ public class UserTripDetails extends AppCompatActivity {
     private DatabaseReference mRef;
     private String userID;
     private static final String TAG = "UserTripDetails";
+    private String city_title;
+    private String key;
+    private String desc;
 
-
-    String city_title;
-    String key;
-    String desc;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -90,20 +89,15 @@ public class UserTripDetails extends AppCompatActivity {
 
         getDetails();
 
-
-//        Toast.makeText(this, city_title + key, Toast.LENGTH_SHORT).show();
-
-//        modelList.add(new UserTripDetailsModel("Android", "Hello " + " Android"));
-//        modelList.add(new UserTripDetailsModel("Beta", "Hello " + " Beta"));
-//        modelList.add(new UserTripDetailsModel("Cupcake", "Hello " + " Cupcake"));
-//        modelList.add(new UserTripDetailsModel("Donut", "Hello " + " Donut"));
-
     }
 
     public void initToolbar(String title) {
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        try {
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         getSupportActionBar().setTitle(title);
     }
 
@@ -128,19 +122,15 @@ public class UserTripDetails extends AppCompatActivity {
             public void onItemClick(View view, int position, UserTripDetailsModel model) {
 
                 //handle item click events here
-                Toast.makeText(UserTripDetails.this, "Hey " + model.getCityName(), Toast.LENGTH_SHORT).show();
-
 
             }
         });
-
 
         mAdapter.SetOnHeaderClickListener(new UserTripDetailsRecyclerViewAdapter.OnHeaderClickListener() {
             @Override
             public void onHeaderClick(View view, String headerTitle) {
 
                 //handle item click events here
-                Toast.makeText(UserTripDetails.this, "Hey I am a header", Toast.LENGTH_SHORT).show();
 
             }
         });
@@ -243,11 +233,12 @@ public class UserTripDetails extends AppCompatActivity {
                 return true;
 
             default:
-                Toast.makeText(this, "click", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(this, "click", Toast.LENGTH_SHORT).show();
                 return false;
         }
     }
 
+    //delete trip confirmation dialog
     public void deleteTrip() {
 
         Drawable materialDeleteIcon = MaterialDrawableBuilder.with(getApplicationContext())
@@ -281,7 +272,7 @@ public class UserTripDetails extends AppCompatActivity {
 
                         mAdapter.updateList(modelList);
                         onBackPressed();
-                        Toast.makeText(UserTripDetails.this, "deleted", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(UserTripDetails.this, "Trip deleted successfully", Toast.LENGTH_SHORT).show();
                     }
                 })
                 .setNegativeButton(android.R.string.no, null).show();

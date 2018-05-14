@@ -101,6 +101,7 @@ public class LoginActivity extends AppCompatActivity {
             try {
                 userPhoto = mAuth.getCurrentUser().getPhotoUrl().toString();
             } catch (Exception e) {
+                userPhoto = "";
                 e.printStackTrace();
             }
 

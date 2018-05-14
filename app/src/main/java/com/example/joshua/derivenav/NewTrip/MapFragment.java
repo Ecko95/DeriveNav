@@ -4,6 +4,7 @@ package com.example.joshua.derivenav.NewTrip;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -16,8 +17,12 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.support.v7.widget.RecyclerView;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 
 import java.util.ArrayList;
@@ -33,6 +38,7 @@ import com.example.joshua.derivenav.NewTrip.DataManagers.StepDataManager;
 import com.example.joshua.derivenav.NewTrip.Models.DestinationModel;
 import com.example.joshua.derivenav.NewTrip.Models.MapModel;
 import com.example.joshua.derivenav.NewTrip.Models.TripModel;
+import com.example.joshua.derivenav.NewTripActivity;
 import com.example.joshua.derivenav.R;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -54,33 +60,18 @@ import android.widget.Toast;
 
 import android.view.ViewGroup;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
-
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link MapFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 
 
 public class MapFragment extends Fragment implements BlockingStep, OnMapReadyCallback, GoogleMap.OnCameraMoveStartedListener {
 
-    private RecyclerView recyclerView;
+    @BindView(R.id.recycler_view)
+    RecyclerView recyclerView;
 
-    // @BindView(R.id.recycler_view)
-    // RecyclerView recyclerView;
-
-
-    // @BindView(R.id.swipe_refresh_recycler_list)
-    // SwipeRefreshLayout swipeRefreshRecyclerList;
-
-    private SwipeRefreshLayout swipeRefreshRecyclerList;
     private MapRecyclerViewAdapter mAdapter;
-    private DestinationsRecyclerViewAdapter mDestinationAdapter;
 
-    private ArrayList<MapModel> modelList = new ArrayList<>();
     private ArrayList<DestinationModel> destinationModelList = new ArrayList<>();
-    private ArrayList<DestinationModel.Points_of_interest> pointOfInterestList = new ArrayList<>();
     private MapView mapView;
     private GoogleMap googleMap;
 
@@ -97,7 +88,6 @@ public class MapFragment extends Fragment implements BlockingStep, OnMapReadyCal
     private DatabaseReference dbRef;
 
     private String userID;
-    private Dialog mDialog;
 
     public MapFragment() {
         // Required empty public constructor
@@ -123,9 +113,6 @@ public class MapFragment extends Fragment implements BlockingStep, OnMapReadyCal
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
 
-        if (getArguments() != null) {
-
-        }
     }
 
     @Override
@@ -134,7 +121,6 @@ public class MapFragment extends Fragment implements BlockingStep, OnMapReadyCal
 
         View view = inflater.inflate(R.layout.fragment_map, container, false);
         ButterKnife.bind(this, view);
-        findViews(view);
 
         mAuth = FirebaseAuth.getInstance();
         mFirebaseDatabase = FirebaseDatabase.getInstance();
@@ -189,8 +175,6 @@ public class MapFragment extends Fragment implements BlockingStep, OnMapReadyCal
 
         getLocationPermission();
 
-        //setAdapter();
-
     }
 
     private void initMap(View view, Bundle savedInstanceState) {
@@ -201,19 +185,10 @@ public class MapFragment extends Fragment implements BlockingStep, OnMapReadyCal
     }
 
 
-    private void findViews(View view) {
-
-        recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
-    }
-
-
     private void setAdapter() {
 
         //set selected list to mapFragmentAdapter RecyclerView
         destinationModelList = stepDataManager.getNewDestinationList();
-
-        //save new checked list to view
-        //pointOfInterestList = stepDataManager.getPointOfInterestList();
 
 
         mAdapter = new MapRecyclerViewAdapter(getActivity(), destinationModelList);//modelList
@@ -243,8 +218,6 @@ public class MapFragment extends Fragment implements BlockingStep, OnMapReadyCal
             }
         });
 
-        //mAdapter.updateList(destinationModelList);
-
 
     }
 
@@ -257,7 +230,6 @@ public class MapFragment extends Fragment implements BlockingStep, OnMapReadyCal
     @Override
     public void onSelected() {
         setAdapter();
-        //Toast.makeText(getContext(), stepDataManager.getDestinationModel().getName(), Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -342,21 +314,6 @@ public class MapFragment extends Fragment implements BlockingStep, OnMapReadyCal
         getActivity().finish();
     }
 
-    private void getCheckedDestinationTrips() {
-//        DestinationModel testDestinationModel = new DestinationModel();
-//        DestinationModel.Current_city testCurrentCity = new DestinationModel.Current_city();
-//        testCurrentCity.setName("CITY TEST");
-//        testCurrentCity.setTotal_points_of_interest(2);
-//        for(int i = 0; i < destinationModelList.size(); i++){
-////            String name = destinationModelList.get(i).getCurrent_city().getName();
-////            String desc = destinationModelList.get(i).getPoints_of_interest().get(i).getDetails().getShort_description();
-//
-//
-//
-//            TripModel newTrip = new TripModel(name,desc,key,destinationModelList);
-//
-//        }
-    }
 
     @Override
     public void onBackClicked(StepperLayout.OnBackClickedCallback callback) {
@@ -388,4 +345,13 @@ public class MapFragment extends Fragment implements BlockingStep, OnMapReadyCal
 
     }
 
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+
+        menu.findItem(R.id.action_search).setVisible(false);
+        menu.findItem(R.id.action_help).setVisible(false);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
 }
+

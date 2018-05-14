@@ -197,11 +197,8 @@ public class UserTripDetailsRecyclerViewAdapter extends RecyclerView.Adapter<Rec
                 @Override
                 public void onClick(View view) {
 
-//                    mItemClickListener.onItemClick(itemView, getAdapterPosition(), modelList.get(getAdapterPosition() - 1));
-
                     int itemPosition = getAdapterPosition();
                     final UserTripDetailsModel model = getItem(itemPosition - 1);
-                    Toast.makeText(mContext, "clicked:" + (itemPosition - 1), Toast.LENGTH_SHORT).show();
                     mItemClickListener.onItemClick(itemView, getAdapterPosition(), modelList.get(getAdapterPosition() - 1));
                     Intent intent = new Intent(mContext, TripDestinationDetailsActivity.class);
 //

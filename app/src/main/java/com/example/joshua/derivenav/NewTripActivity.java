@@ -3,6 +3,7 @@ package com.example.joshua.derivenav;
 import android.app.SearchManager;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.PointF;
 import android.speech.RecognizerIntent;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -14,6 +15,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.AdapterView;
 
@@ -150,7 +152,6 @@ public class NewTripActivity extends AppCompatActivity implements StepDataManage
 
         setSupportActionBar(toolbar_newtrip);
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("New Trip");
 
         int startingStepPosition = savedInstanceState != null ? savedInstanceState.getInt(CURRENT_STEP_POSITION_KEY) : 0;
@@ -193,7 +194,6 @@ public class NewTripActivity extends AppCompatActivity implements StepDataManage
         materialSearchView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                //Toast.makeText(NewTripActivity.this, "you selected the following City:" + position, Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -201,36 +201,19 @@ public class NewTripActivity extends AppCompatActivity implements StepDataManage
             Bundle bundle = getIntent().getExtras(); // Getting the Bundle object that pass from another activity
             if(bundle != null) {
                 String SelectedSearch = bundle.getString("SelectedSearch");
-                Toast.makeText(getApplicationContext(), SelectedSearch, Toast.LENGTH_SHORT).show();
                 mChosenSearch = SelectedSearch;
 
             }else{
                 //disables next fragment button
                 stepperLayout.setNextButtonEnabled(false);
                 stepperLayout.setNextButtonVerificationFailed(true);
-//                Toast.makeText(this, "Null", Toast.LENGTH_SHORT).show();
             }
 
         }catch(Exception e){
             Log.d(TAG,"Error catch");
         }
-        try{
-            Bundle bundle = getIntent().getExtras(); // Getting the Bundle object that pass from another activity
-            if(bundle != null) {
-                String SelectedSearch = bundle.getString("SelectedSearch");
-                Toast.makeText(getApplicationContext(), SelectedSearch, Toast.LENGTH_SHORT).show();
-                mChosenSearch = SelectedSearch;
 
-            }else{
-                //disables next fragment button
-                stepperLayout.setNextButtonEnabled(true);
-                stepperLayout.setNextButtonVerificationFailed(true);
-//                Toast.makeText(this, "Null", Toast.LENGTH_SHORT).show();
-            }
 
-        }catch(Exception e){
-            Log.d(TAG,"Error catch");
-        }
 
     }
 
@@ -253,7 +236,7 @@ public class NewTripActivity extends AppCompatActivity implements StepDataManage
                 String searchWrd = matches.get(0);
                 if (!TextUtils.isEmpty(searchWrd)) {
                     materialSearchView.setQuery(searchWrd, false);
-                    Toast.makeText(this, searchWrd, Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(this, searchWrd, Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -291,6 +274,7 @@ public class NewTripActivity extends AppCompatActivity implements StepDataManage
         materialSearchView.setMenuItem(item);
         materialSearchView.setSuggestions(getResources().getStringArray(R.array.query_suggestions));
         menu.findItem(R.id.action_logout).setVisible(false);
+
         //hideMenu();
         return true;
     }
@@ -305,22 +289,24 @@ public class NewTripActivity extends AppCompatActivity implements StepDataManage
         }
     }
 
-//    @Override
-//    protected void onSaveInstanceState(Bundle outState) {
-//        outState.putInt(CURRENT_STEP_POSITION_KEY, stepperLayout.getCurrentStepPosition());
-//        outState.putString(DATA, mData);
-//        super.onSaveInstanceState(outState);
-//    }
-
     public void hideSearch(){
         menu.findItem(R.id.action_search).setVisible(false);
     }
 
     public void helpTutorial() {
         try {
+
+
+            View searchMenuItem = findViewById(R.id.action_search);
+            int[] searchItemLocation = new int[2];
+            searchMenuItem.getLocationInWindow(searchItemLocation);
+            PointF searchItemPoint =
+                    new PointF(searchItemLocation[0] + searchMenuItem.getWidth() / 2f, searchItemLocation[1] + searchMenuItem.getHeight() / 2f);
+
+
             SimpleTarget simpleTarget = new SimpleTarget.Builder(this)
-                    .setPoint(1000f, 135f) // position of the Target. setPoint(Point point), setPoint(View view) will work too.
-                    .setRadius(70f) // radius of the Target
+                    .setPoint(searchItemPoint) // position of the Target. setPoint(Point point), setPoint(View view) will work too.
+                    .setRadius(65f) // radius of the Target
                     .setTitle("Search for a city") // title
                     .setDescription("Try me out!") // description
                     .setOnSpotlightStartedListener(new OnTargetStateChangedListener<SimpleTarget>() {
@@ -335,8 +321,15 @@ public class NewTripActivity extends AppCompatActivity implements StepDataManage
                         }
                     })
                     .build();
+
+            View btnNext = findViewById(R.id.ms_stepNextButton);
+            int[] locationTwo = new int[2];
+            btnNext.getLocationInWindow(locationTwo);
+            PointF btnNextPoint =
+                    new PointF(locationTwo[0] + btnNext.getWidth() / 2f, locationTwo[1] + btnNext.getHeight() / 2f);
+
             SimpleTarget secondTarget = new SimpleTarget.Builder(this)
-                    .setPoint(960f, 1970f) // position of the Target. setPoint(Point point), setPoint(View view) will work too.
+                    .setPoint(btnNextPoint) // position of the Target. setPoint(Point point), setPoint(View view) will work too.
                     .setRadius(90f) // radius of the Target
                     .setTitle("Click next") // title
                     .setDescription("to see your search results") // description
@@ -362,13 +355,12 @@ public class NewTripActivity extends AppCompatActivity implements StepDataManage
                     .setOnSpotlightStartedListener(new OnSpotlightStartedListener() { // callback when Spotlight starts
                         @Override
                         public void onStarted() {
-                            //Toast.makeText(getContext(), "spotlight is started", Toast.LENGTH_SHORT).show();
+
                         }
                     })
                     .setOnSpotlightEndedListener(new OnSpotlightEndedListener() { // callback when Spotlight ends
                         @Override
                         public void onEnded() {
-                            //Toast.makeText(getContext(), "spotlight is ended", Toast.LENGTH_SHORT).show();
                         }
                     })
                     .start(); // start Spotlight

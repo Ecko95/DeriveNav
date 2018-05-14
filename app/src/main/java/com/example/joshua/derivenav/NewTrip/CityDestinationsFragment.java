@@ -3,17 +3,21 @@ package com.example.joshua.derivenav.NewTrip;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.support.v7.widget.RecyclerView;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import java.util.ArrayList;
 import java.util.List;
@@ -47,14 +51,10 @@ public class CityDestinationsFragment extends Fragment implements BlockingStep {
     private String mChosenCitySearch;
     private ArrayList<DestinationModel> mDestinationList = new ArrayList<>();
     private ArrayList<DestinationModel> mCheckedDestinationList = new ArrayList<>();
-    private ArrayList<DestinationModel.Points_of_interest> mCheckedPointOfInterestList = new ArrayList<>();
-    private DestinationModel mNewDestinationModel = new DestinationModel();
     private static final String TAG = "CityDestinationsFragmen";
 
     private boolean isItemsChecked = false;
 
-    // @BindView(R.id.recycler_view)
-    // RecyclerView recyclerView;
     @BindView(R.id.recycler_view)
     RecyclerView recyclerView;
 
@@ -99,8 +99,7 @@ public class CityDestinationsFragment extends Fragment implements BlockingStep {
 
         View view = inflater.inflate(R.layout.fragment_city_destinations, container, false);
 
-        ButterKnife.bind(this, view);
-        //findViews(view);
+        ButterKnife.bind(this, view); // inti views
 
         try{
 
@@ -108,17 +107,9 @@ public class CityDestinationsFragment extends Fragment implements BlockingStep {
             String myDataFromActivity = activity.getChosenSearch();
             mChosenCitySearch = myDataFromActivity.toString();
 
-            Toast.makeText(activity, mChosenCitySearch, Toast.LENGTH_SHORT).show();
-
-            //disable for test only
-            //get feed from AMADEUS API
-
-
-
-
         }catch(Exception e){
 
-            Toast.makeText(getActivity(), "Nothing", Toast.LENGTH_SHORT).show();
+            e.printStackTrace();
 
         }
 
@@ -141,26 +132,6 @@ public class CityDestinationsFragment extends Fragment implements BlockingStep {
 
     private void setAdapter() {
 
-
-        //add test data
-        //enable for test only
-//        modelList.add(new DestinationModel("Android", "Hello " + " Android"));
-//        modelList.add(new DestinationModel("Beta", "Hello " + " Beta"));
-//        modelList.add(new DestinationModel("Cupcake", "Hello " + " Cupcake"));
-//        modelList.add(new DestinationModel("Donut", "Hello " + " Donut"));
-//        modelList.add(new DestinationModel("Eclair", "Hello " + " Eclair"));
-//        modelList.add(new DestinationModel("Froyo", "Hello " + " Froyo"));
-//        modelList.add(new DestinationModel("Gingerbread", "Hello " + " Gingerbread"));
-//        modelList.add(new DestinationModel("Honeycomb", "Hello " + " Honeycomb"));
-//        modelList.add(new DestinationModel("Ice Cream Sandwich", "Hello " + " Ice Cream Sandwich"));
-//        modelList.add(new DestinationModel("Jelly Bean", "Hello " + " Jelly Bean"));
-//        modelList.add(new DestinationModel("KitKat", "Hello " + " KitKat"));
-//        modelList.add(new DestinationModel("Lollipop", "Hello " + " Lollipop"));
-//        modelList.add(new DestinationModel("Marshmallow", "Hello " + " Marshmallow"));
-//        modelList.add(new DestinationModel("Nougat", "Hello " + " Nougat"));
-//        modelList.add(new DestinationModel("Android O", "Hello " + " Android O"));
-
-
         mAdapter = new DestinationsRecyclerViewAdapter(getActivity(), modelList, "Points of Interests");
 
 
@@ -179,7 +150,7 @@ public class CityDestinationsFragment extends Fragment implements BlockingStep {
             public void onItemClick(View view, int position, DestinationModel model) {
 
                 //handle item click events here
-                Toast.makeText(getActivity(), "Hey " + model.getTitle(), Toast.LENGTH_SHORT).show();
+
 
 
             }
@@ -196,7 +167,7 @@ public class CityDestinationsFragment extends Fragment implements BlockingStep {
                 if (isChecked) {
                     isItemsChecked = true;
                     mCheckedDestinationList.add(model);
-                    Toast.makeText(getContext(), "added item:" + model.getPoints_of_interest().get(position - 1).getTitle(), Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getContext(), "added item: " + model.getPoints_of_interest().get(position - 1).getTitle(), Toast.LENGTH_SHORT).show();
                 } else {
 
 
@@ -213,7 +184,7 @@ public class CityDestinationsFragment extends Fragment implements BlockingStep {
             public void onHeaderClick(View view, String headerTitle) {
 
                 //handle item click events here
-                Toast.makeText(getActivity(), "Hey I am a header", Toast.LENGTH_SHORT).show();
+
 
             }
         });
@@ -234,32 +205,16 @@ public class CityDestinationsFragment extends Fragment implements BlockingStep {
             public void run() {
                 mDialog.dismiss();
 
-//                mDestinationList.add(new DestinationModel("Android", "Hello Android"));
-//                mNewDestinationModel.setName(mChosenCitySearch);
-//                mNewDestinationModel.setAddress(););
-
-                //list
-//                stepDataManager.saveDestinationList(newDestinationList);
-                //string
-//                stepDataManager.saveStepData(mChosenCitySearch);
-                //object
-//                    stepDataManager.saveDestinationModel(mNewDestinationModel);
                 if (isItemsChecked) {
-                    //proceed with all the list of destinations
-
-                    //sets destinationmodel arraylist to mapfragment
-//                    mAdapter.updateList(mCheckedDestinationList);
-//                    stepDataManager.saveDestinationList(mCheckedDestinationList);
 
                     mAdapter.updateList(mCheckedDestinationList);
                     stepDataManager.saveDestinationList(mCheckedDestinationList);
 
                 } else {
-                    //disbale next button
-                    callback.getStepperLayout().setNextButtonEnabled(false);
-                    callback.getStepperLayout().setNextButtonVerificationFailed(true);
-                    //clear the destination list when users dont select at least one value
-                    //mDestinationList.clear();
+                    //disable back button
+                    callback.getStepperLayout().setBackButtonEnabled(false);
+                    int disabledColor = Color.alpha(R.color.disabled_button);
+                    callback.getStepperLayout().setBackButtonColor(disabledColor);
                 }
 
 
@@ -286,9 +241,9 @@ public class CityDestinationsFragment extends Fragment implements BlockingStep {
 
     @Override
     public void onSelected() {
-        Toast.makeText(getContext(), stepDataManager.getData(), Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), "Searching For: " + stepDataManager.getData(), Toast.LENGTH_SHORT).show();
         mChosenCitySearch = stepDataManager.getData();
-        getFeed();
+        //getFeed();
 
     }
 
@@ -326,7 +281,7 @@ public class CityDestinationsFragment extends Fragment implements BlockingStep {
                         public void run() {
                             Call<DestinationModel> listCall = mControllerManager.getDestinationsService()
                                     .getAllPointsOfInterest(
-                                            "s4beFzBDafeBP1KjVQUWoNnMPoGID9w7", //enter API KEY HERE!
+                                            "", //enter API KEY HERE!
                                             mChosenCitySearch);//mChosenCitySearch
 
                             listCall.enqueue(new Callback<DestinationModel>() {
@@ -368,6 +323,10 @@ public class CityDestinationsFragment extends Fragment implements BlockingStep {
                                             case 404:
                                                 Log.e("Error 404", "Not Found");
                                                 break;
+                                            case 504:
+                                                Log.e("Error 504", "Timeout");
+                                                Toast.makeText(getContext(), "Server Timeout, Please try again later", Toast.LENGTH_LONG).show();
+                                                break;
                                             default:
                                                 Log.e("Error", "Generic Error");
                                         }
@@ -392,80 +351,17 @@ public class CityDestinationsFragment extends Fragment implements BlockingStep {
             e.printStackTrace();
         }
 
-
-//        try {
-//            new Handler().postDelayed(new Runnable() {
-//                @Override
-//                public void run() {
-//                    mDialog.dismiss();
-//
-//                    //run code here
-//
-////                HashMap<String,String> hashMap = new HashMap<>();
-////                hashMap.put("search",mChosenCitySearch);
-//
-//                    Call<List<DestinationModel>> listCall = mControllerManager.getDestinationsService()
-//                            .getAllPointsOfInterest(
-//                                    "t6UEKv6YlQGM32tunEqo9oXNX91hGTsi",
-//                                    mChosenCitySearch);//mChosenCitySearch
-//
-//                    listCall.enqueue(new Callback<List<DestinationModel>>() {
-//                        @Override
-//                        public void onResponse(Call<List<DestinationModel>> call, Response<List<DestinationModel>> response) {
-//                            if (response.isSuccessful()) {
-//
-//                                Toast.makeText(getContext(), "OnResponse Successfull", Toast.LENGTH_SHORT).show();
-//                                List<DestinationModel> DestinationList = response.body();
-//
-//                                for (int i = 0; i < DestinationList.size(); i++) {
-//                                    DestinationModel destination = DestinationList.get(i);
-//                                    mAdapter.addDestinations(destination);
-//
-//                                    //add new objects
-////                                    mDestinationList.add(new DestinationModel(destination.getTitle(), destination.getThumbnailUrl()));
-////                                    stepDataManager.saveDestinationList(mDestinationList);
-//                                      mDestinationList.add(new DestinationModel(destination.getCurrent_city().getName(),destination.getCurrent_city().getLocation().getGoogle_maps_link()));
-//                                      stepDataManager.saveDestinationList(mDestinationList);
-//                                }
-//                            } else {
-//                                int sc = response.code();
-//                                switch (sc) {
-//                                    case 400:
-//                                        Log.e("Error 400", "Bad Request");
-//                                        break;
-//                                    case 404:
-//                                        Log.e("Error 404", "Not Found");
-//                                        break;
-//                                    default:
-//                                        Log.e("Error", "Generic Error");
-//                                }
-//                            }
-//                            mDialog.dismiss();
-//                        }
-//
-//                        @Override
-//                        public void onFailure(Call<List<DestinationModel>> call, Throwable t) {
-//                            mDialog.dismiss();
-//                            t.printStackTrace();
-//                            Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
-//                        }
-//                    });
-//
-//                }
-//            }, 1000L);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-
-
-
-//        Call<List<DestinationModel>> listCall = mControllerManager.getDestinationsService().getAllPointsOfInterest(
-//                "UOJASf28IviDWrP4lFnEYGGJuLgrSxpH",
-//                mChosenCitySearch,
-//                10
-//        );
-
-
     }
+
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+
+        menu.findItem(R.id.action_search).setVisible(false);
+        menu.findItem(R.id.action_help).setVisible(false);
+
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
 
 }

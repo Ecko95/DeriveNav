@@ -217,7 +217,6 @@ public class DestinationsRecyclerViewAdapter extends RecyclerView.Adapter<Recycl
                 public void onClick(View view) {
                     int itemPosition = getAdapterPosition();
                     final DestinationModel model = getItem(itemPosition - 1);
-                    Toast.makeText(mContext, "clicked:" + (itemPosition - 1), Toast.LENGTH_SHORT).show();
                     mItemClickListener.onItemClick(itemView, getAdapterPosition(), modelList.get(getAdapterPosition() - 1));
                     Intent intent = new Intent(mContext, DestinationDetailsActivity.class);
 
